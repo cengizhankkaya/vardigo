@@ -1,7 +1,9 @@
 import { createApp } from "./app.js";
+import { config } from "./bootstrap/config.js";
+import { prepareDatabase } from "./bootstrap/database.js";
 
-const port = Number(process.env.PORT ?? 3000);
+prepareDatabase(config.databasePath);
 
-createApp().listen(port, () => {
-  console.log(`API http://localhost:${port}/api`);
+createApp().listen(config.port, () => {
+  console.log(`API http://localhost:${config.port}/api`);
 });
