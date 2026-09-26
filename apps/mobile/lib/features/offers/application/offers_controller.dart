@@ -27,10 +27,13 @@ final offerDetailProvider = FutureProvider.autoDispose.family<Offer, String>(
   (ref, id) => ref.watch(offersRepositoryProvider).detail(id),
 );
 
-final offersControllerProvider =
-    NotifierProvider.autoDispose<OffersController, OffersState>(
-      OffersController.new,
-    );
+/// Tab and sort the screen opens with when the link names none.
+const defaultOfferQuery = (tab: OfferTab.pending, sort: OfferSort.recommended);
+
+/// One controller per screen visit, keyed by the tab and sort it opens with
+/// (from the route, e.g. `?tab=...`).
+final offersControllerProvider = NotifierProvider.autoDispose
+    .family<OffersController, OffersState, OfferQuery>(OffersController.new);
 
 class OffersState {
   const OffersState({
@@ -79,8 +82,12 @@ class RespondFailed extends RespondResult {
 }
 
 class OffersController extends Notifier<OffersState> {
+  OffersController(this.opening);
+
+  final OfferQuery opening;
+
   @override
-  OffersState build() => const OffersState();
+  OffersState build() => OffersState(tab: opening.tab, sort: opening.sort);
 
   void selectTab(OfferTab tab) => state = state.copyWith(tab: tab);
 

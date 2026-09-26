@@ -29,6 +29,16 @@
   "themeSystem": "Sistem",
   "themeLight": "Açık",
   "themeDark": "Koyu",
+  "routeNotFoundTitle": "Sayfa bulunamadı",
+  "routeNotFoundBody": "{location} adresinde bir ekran yok.",
+  "@routeNotFoundBody": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
+  "backToRoleSelect": "Rol seçimine dön",
   "candidatesTitle": "Eşleşen Personeller",
   "candidatesFound": "{count} personel bulundu",
   "@candidatesFound": {

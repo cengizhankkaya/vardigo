@@ -1,22 +1,24 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../app/router/app_router.dart';
 import '../../../l10n/l10n.dart';
-import '../../../preview/design_preview_screen.dart';
 import '../../../shared/design_system/components/error_view.dart';
 import '../../../shared/design_system/theme/theme.dart';
 import '../../../shared/design_system/tokens/app_dimens.dart';
 import '../../appearance/presentation/theme_mode_picker.dart';
-import '../../candidates/presentation/candidates_screen.dart';
-import '../../offers/presentation/offers_screen.dart';
 import '../application/session_controller.dart';
 import '../domain/session.dart';
 import 'widgets/role_card.dart';
 
 /// Demo entry: pick the employer or the job seeker account.
 class RoleSelectScreen extends ConsumerStatefulWidget {
-  const RoleSelectScreen({super.key});
+  const RoleSelectScreen({super.key, this.from});
+
+  /// Address to continue to after logging in, when a guard sent us here.
+  final String? from;
 
   @override
   ConsumerState<RoleSelectScreen> createState() => _RoleSelectScreenState();
@@ -50,9 +52,8 @@ class _RoleSelectScreenState extends ConsumerState<RoleSelectScreen> {
       _error = null;
       _failedRole = null;
     });
-    final session = ref.read(sessionProvider.notifier);
     try {
-      await session.login(role);
+      await ref.read(sessionProvider.notifier).login(role);
     } catch (error) {
       if (mounted) {
         setState(() {
@@ -65,14 +66,12 @@ class _RoleSelectScreenState extends ConsumerState<RoleSelectScreen> {
       if (mounted) setState(() => _loggingIn = null);
     }
     if (!mounted) return;
-    await Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (_) => role == Role.employer
-            ? const CandidatesScreen()
-            : const OffersScreen(),
-      ),
-    );
-    session.logout();
+    final from = widget.from;
+    final target = from != null && requiredRoleFor(Uri.parse(from)) == role
+        ? from
+        : homeLocationFor(role);
+    // Coming back here ends the session (see appRouterProvider).
+    await context.push<void>(target);
   }
 
   @override
@@ -110,11 +109,7 @@ class _RoleSelectScreenState extends ConsumerState<RoleSelectScreen> {
             if (kDebugMode) ...[
               const SizedBox(height: 32),
               TextButton(
-                onPressed: () => Navigator.of(context).push(
-                  MaterialPageRoute<void>(
-                    builder: (_) => const DesignPreviewScreen(),
-                  ),
-                ),
+                onPressed: () => const GalleryRoute().push<void>(context),
                 child: Text(
                   l10n.openGallery,
                   style: context.textStyles.label14,

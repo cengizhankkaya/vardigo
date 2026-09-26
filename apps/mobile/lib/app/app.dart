@@ -3,10 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../features/appearance/application/theme_mode_controller.dart';
 import '../features/appearance/domain/app_theme_mode.dart';
-import '../features/session/presentation/role_select_screen.dart';
 import '../l10n/l10n.dart';
 import '../preview/phone_frame.dart';
 import '../shared/design_system/theme/app_theme.dart';
+import 'router/app_router.dart';
 
 class VardigoApp extends ConsumerWidget {
   const VardigoApp({
@@ -20,7 +20,7 @@ class VardigoApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return MaterialApp(
+    return MaterialApp.router(
       onGenerateTitle: (context) => context.l10n.appTitle,
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light(),
@@ -35,7 +35,7 @@ class VardigoApp extends ConsumerWidget {
       builder: referenceFrame
           ? (context, child) => ReferenceFrameView(child: child!)
           : null,
-      home: const RoleSelectScreen(),
+      routerConfig: ref.watch(appRouterProvider),
     );
   }
 }

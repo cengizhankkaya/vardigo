@@ -226,6 +226,24 @@ abstract class AppLocalizations {
   /// **'Koyu'**
   String get themeDark;
 
+  /// No description provided for @routeNotFoundTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Sayfa bulunamadı'**
+  String get routeNotFoundTitle;
+
+  /// No description provided for @routeNotFoundBody.
+  ///
+  /// In tr, this message translates to:
+  /// **'{location} adresinde bir ekran yok.'**
+  String routeNotFoundBody(String location);
+
+  /// No description provided for @backToRoleSelect.
+  ///
+  /// In tr, this message translates to:
+  /// **'Rol seçimine dön'**
+  String get backToRoleSelect;
+
   /// No description provided for @candidatesTitle.
   ///
   /// In tr, this message translates to:

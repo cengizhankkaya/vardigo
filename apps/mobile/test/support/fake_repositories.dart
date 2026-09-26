@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:vardigo/core/network/api_exception.dart';
 import 'package:vardigo/features/candidates/domain/candidate.dart';
 import 'package:vardigo/features/offers/domain/offer.dart';
+import 'package:vardigo/features/session/domain/session.dart';
 
 Candidate candidate(String id, {bool perfect = true}) => Candidate(
   id: id,
@@ -138,5 +140,24 @@ class FakeOffersRepository implements OffersRepository {
       remain: old.remain,
       expiresAt: old.expiresAt,
     );
+  }
+}
+
+/// Demo login that fails the first [failures] times with a connection
+/// problem, then hands out `dev-<role>` tokens.
+class FakeSessionRepository implements SessionRepository {
+  FakeSessionRepository({this.failures = 0});
+
+  int failures;
+  final logins = <Role>[];
+
+  @override
+  Future<Session> login(Role role) async {
+    logins.add(role);
+    if (failures > 0) {
+      failures--;
+      throw const ApiException(code: ApiException.network, message: '');
+    }
+    return Session(token: 'dev-${role.name}', role: role);
   }
 }

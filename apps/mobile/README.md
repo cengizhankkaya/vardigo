@@ -182,9 +182,46 @@ features/offers/presentation/
 - Provider'ları ekran okur; `widgets/` altındakiler değer ve callback alır. İstisnalar yalnız sunucu adresinden görsel URL'si kuran avatar/logo ve açılınca yüklenen talep detayıdır.
 - Bir parça iki feature'da kullanılıyorsa `shared/` altına taşınır; iki ekranın sekme tasarımı aynı `PillTabs` bileşenini farklı `PillTabsStyle` ile kullanır.
 
+## Gezinme (go_router)
+
+Gezinme [go_router](https://pub.dev/packages/go_router) ve tip güvenli route'lar ([go_router_builder](https://pub.dev/packages/go_router_builder)) ile yapılır. `Navigator.push` kullanılmaz.
+
+```text
+lib/app/router/
+├── app_router.dart          # appRouterProvider (Riverpod), part'lar, koruma ve oturum kuralı
+├── app_router.g.dart        # üretilen: $appRoutes, route mixin'leri (depoya dahil)
+├── route_definitions.dart   # yol ve ad sabitleri
+├── route_guard.dart         # guardRedirect, requiredRoleFor, homeLocationFor
+└── route_error_screen.dart  # bilinmeyen adres sayfası
+features/*/presentation/routes/*_route.dart   # route sınıfları (part of app_router.dart)
+preview/gallery_route.dart
+```
+
+| Adres | Ekran | Kim açabilir |
+|---|---|---|
+| `/` (`?from=...`) | Demo hesabı seç | Herkes |
+| `/candidates?tab=perfect\|similar&sort=recommended\|near\|rating` | Eşleşen Personeller | İşveren |
+| `/offers?tab=pending\|answered\|expired&sort=recommended\|expiring\|pay` | Görüşme Talepleri | İş arayan |
+| `/gallery` | Tasarım galerisi | Yalnız debug derleme |
+
+- **Kullanım:** `const OffersRoute(tab: OfferTab.answered).push(context)`, `const RoleSelectRoute().go(context)`, geri için `context.pop()`.
+- **Koruma:** Başka hesabın ekranına giden adres rol seçimine `?from=<adres>` ile döner. Doğru hesap seçilince o adrese devam edilir, diğer hesap seçilirse kendi ekranı açılır. Koruma her `go` ve `push`'ta çalışır.
+- **Oturum:** Başka bir ekrandan rol seçimine dönmek (geri tuşu, koruma ya da bağlantı) demo oturumunu kapatır. Bu kural tek yerde, `appRouterProvider` içindedir.
+- **Query parametreleri:** `tab` ve `sort` ekranın açıldığı sekme ve sıralamadır; sonraki sekme değişiklikleri adrese yazılmaz. Geçersiz değer (`?tab=xyz`) varsayılana düşer.
+- **Bilinmeyen adres:** "Sayfa bulunamadı" ve "Rol seçimine dön".
+- **Deep link:** iOS ve Android `vardigo://app/<adres>` bağlantılarını uygulamaya iletir. Simülatörde deneme:
+
+  ```bash
+  xcrun simctl openurl booted "vardigo://app/candidates?tab=similar"
+  adb shell am start -a android.intent.action.VIEW -d "vardigo://app/offers?tab=answered"
+  ```
+
+- Route eklendiğinde veya değiştiğinde: `dart run build_runner build --delete-conflicting-outputs`. CI, `app_router.g.dart`'ın güncel olduğunu kontrol eder.
+- Alınmayanlar: `getIt`/`injectable` (proje Riverpod kullanıyor) ve alt gezinme çubuğu (`StatefulShellRoute`); sekmeler ekranların içinde, ekranlar arasında değil.
+
 ## Ekranlar
 
-1. **Demo hesabı seç:** İşveren veya İş arayan; seçilen rolle `POST /auth/login` yapılır. Geri dönünce oturum kapanır. Görünüm (Sistem / Açık / Koyu) buradan seçilir. Debug derlemede buradan tasarım galerisi de açılır.
+1. **Demo hesabı seç:** İşveren veya İş arayan; seçilen rolle `POST /auth/login` yapılır. Başka bir ekrandan buraya dönünce oturum kapanır. Görünüm (Sistem / Açık / Koyu) buradan seçilir. Debug derlemede buradan tasarım galerisi de açılır.
 2. **Eşleşen Personeller (işveren):** sekmeler (`tab=perfect|similar`), sıralama düğmesi (Önerilen → En Yakın → Puan), çoklu seçim ve "Görüşme Talebi Gönder (N)".
    - İlk açılışta API'nin `selectedHint` değeri kadar ilk aday (Merve) seçili gelir; bu bir kez uygulanır.
    - Seçim sekmeler arasında korunur; sayı iki sekmedeki seçimlerin toplamıdır.
