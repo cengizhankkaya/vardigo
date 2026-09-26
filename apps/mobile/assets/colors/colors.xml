@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Design tokens from the case (specs/00-design-tokens.txt). Alpha comes first: #AARRGGBB. -->
+<resources>
+    <color name="primary">#335CFF</color>
+    <color name="primary_soft">#3485FF</color>
+    <color name="primary_light">#D5E2FF</color>
+    <color name="primary_lighter">#EBF1FF</color>
+    <color name="primary_darkest">#1F3BAD</color>
+
+    <color name="strong">#171717</color>
+    <color name="slate_700">#2B303B</color>
+    <color name="slate_600">#525866</color>
+    <color name="slate_500">#717784</color>
+    <color name="gray_500">#7B7B7B</color>
+    <color name="sub">#5C5C5C</color>
+    <color name="soft">#A3A3A3</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="weak">#FBFBFB</color>
+    <color name="weak_50">#F7F7F7</color>
+    <color name="slate_50">#F5F7FA</color>
+    <color name="slate_100">#F2F5F8</color>
+    <color name="slate_200">#EAECF0</color>
+    <color name="stroke">#EBEBEB</color>
+    <color name="slate_300">#CACFD8</color>
+
+    <color name="green">#1DAF61</color>
+    <color name="green_dark">#178C4E</color>
+    <color name="green_lighter">#E3F7EC</color>
+    <color name="error">#FB3748</color>
+    <color name="error_soft">#1AFB3748</color>
+    <color name="warning">#FA7319</color>
+
+    <color name="bezel">#0B0B0D</color>
+    <color name="island">#000000</color>
+    <color name="island_lens">#1C1C1E</color>
+    <color name="island_ring">#2A2A2C</color>
+    <color name="home_pill">#B9C0C9</color>
+</resources>

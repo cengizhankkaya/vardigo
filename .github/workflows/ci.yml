@@ -52,6 +52,11 @@ jobs:
           channel: stable
           cache: true
       - run: flutter pub get
+      - name: Generated code is up to date
+        run: |
+          dart run build_runner build --delete-conflicting-outputs
+          flutter gen-l10n
+          git diff --exit-code -- lib/gen lib/l10n/gen
       - run: dart format --output=none --set-exit-if-changed lib test
       - run: flutter analyze
       - run: flutter test

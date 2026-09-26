@@ -1,0 +1,17 @@
+{
+  "@@locale": "tr",
+  "appTitle": "Vardigo",
+  "galleryTitle": "Tasarım galerisi",
+  "galleryFontSection": "Urbanist",
+  "galleryFontSample": "Eşleşen Personeller · ğüşıöç İŞĞ ₺25.000",
+  "galleryIconSection": "İkonlar (orijinal renk, 24)",
+  "galleryUsageSection": "Kullanım örnekleri",
+  "notInterested": "İlgilenmiyorum",
+  "interested": "İlgileniyorum",
+  "sendRequest": "Görüşme Talebi Gönder ({count})",
+  "@sendRequest": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  }
+}

@@ -19,6 +19,29 @@ flutter analyze
 flutter test
 ```
 
+## Kod üretimi: asset, renk, font ve metin
+
+Kodda dosya yolu, hex renk, font adı veya Türkçe metin elle yazılmaz; hepsi üretilen sınıflardan okunur.
+
+| Ne | Düzenlenen kaynak | Üretilen dosya | Kullanım |
+|---|---|---|---|
+| İkonlar | `assets/icons/*.svg` | `lib/gen/assets.gen.dart` | `AppIcon(Assets.icons.star, color: ColorName.warning)` |
+| Renkler | `assets/colors/colors.xml` | `lib/gen/colors.gen.dart` | `ColorName.primary`, `ColorName.errorSoft` |
+| Font | `pubspec.yaml` → `fonts` | `lib/gen/fonts.gen.dart` | `FontFamily.urbanist` |
+| Metinler | `lib/l10n/app_tr.arb` | `lib/l10n/gen/` | `context.l10n.sendRequest(2)` |
+
+Kaynak dosyayı değiştirdikten sonra:
+
+```bash
+dart run build_runner build --delete-conflicting-outputs   # assets, renkler, font (FlutterGen)
+flutter gen-l10n                                           # metinler (flutter run/pub get de üretir)
+```
+
+Üretilen dosyalar depoya dahildir; CI, kaynakla uyumsuz kalırlarsa hata verir.
+
+- **Renkler** case'in design token listesindeki adlarla tutulur (`slate-700` → `ColorName.slate700`). XML'de alfa başta yazılır: CSS `#FB37481A` → `#1AFB3748`.
+- **Metinler** şimdilik yalnız Türkçe (`tr`). Yeni metin: `app_tr.arb` dosyasına anahtar ekle, `flutter gen-l10n` çalıştır, `context.l10n.anahtar` ile kullan. Yer tutuculu metinler (`{count}`) ARB'de tip bilgisiyle tanımlanır.
+
 ## Görseller ve font
 
 - `assets/icons/`: case paketindeki 15 SVG ikon, değiştirilmeden. [AppIcon](lib/shared/design_system/components/app_icon.dart) ikonu orijinal renginde veya tek renge boyanmış çizer; star, check, send gibi beyaz maske ikonlar kullanıldıkları yerde boyanır.

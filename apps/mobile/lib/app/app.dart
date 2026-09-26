@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../l10n/l10n.dart';
 import '../preview/design_preview_screen.dart';
 
 class VardigoApp extends StatelessWidget {
@@ -7,10 +8,12 @@ class VardigoApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'Vardigo',
+    return MaterialApp(
+      onGenerateTitle: (context) => context.l10n.appTitle,
       debugShowCheckedModeBanner: false,
-      home: DesignPreviewScreen(),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      home: const DesignPreviewScreen(),
     );
   }
 }
