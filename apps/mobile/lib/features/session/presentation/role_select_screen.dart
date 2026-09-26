@@ -5,8 +5,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../l10n/l10n.dart';
 import '../../../preview/design_preview_screen.dart';
 import '../../../shared/design_system/components/error_view.dart';
+import '../../../shared/design_system/theme/theme.dart';
 import '../../../shared/design_system/tokens/app_dimens.dart';
-import '../../../shared/design_system/tokens/app_text_styles.dart';
+import '../../appearance/presentation/theme_mode_picker.dart';
 import '../../candidates/presentation/candidates_screen.dart';
 import '../../offers/presentation/offers_screen.dart';
 import '../application/session_controller.dart';
@@ -85,9 +86,9 @@ class _RoleSelectScreenState extends ConsumerState<RoleSelectScreen> {
           padding: const EdgeInsets.all(AppSpacing.page),
           children: [
             const SizedBox(height: 40),
-            Text(l10n.roleTitle, style: AppTextStyles.title20),
+            Text(l10n.roleTitle, style: context.textStyles.title20),
             const SizedBox(height: 4),
-            Text(l10n.roleSubtitle, style: AppTextStyles.caption13),
+            Text(l10n.roleSubtitle, style: context.textStyles.caption13),
             const SizedBox(height: 24),
             RoleCard(
               title: l10n.roleEmployer,
@@ -104,6 +105,8 @@ class _RoleSelectScreenState extends ConsumerState<RoleSelectScreen> {
             ),
             if (error != null && failedRole != null)
               ErrorView(error: error, onRetry: () => _continueAs(failedRole)),
+            const SizedBox(height: 32),
+            const ThemeModePicker(),
             if (kDebugMode) ...[
               const SizedBox(height: 32),
               TextButton(
@@ -112,7 +115,10 @@ class _RoleSelectScreenState extends ConsumerState<RoleSelectScreen> {
                     builder: (_) => const DesignPreviewScreen(),
                   ),
                 ),
-                child: Text(l10n.openGallery, style: AppTextStyles.label14),
+                child: Text(
+                  l10n.openGallery,
+                  style: context.textStyles.label14,
+                ),
               ),
             ],
           ],

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../gen/assets.gen.dart';
-import '../../../../../gen/colors.gen.dart';
 import '../../../../../l10n/l10n.dart';
 import '../../../../../shared/design_system/components/action_button.dart';
+import '../../../../../shared/design_system/theme/theme.dart';
 
 /// "İlgilenmiyorum" and "İlgileniyorum"; both dimmed while [busy].
 class OfferAnswerButtons extends StatelessWidget {
@@ -21,14 +21,16 @@ class OfferAnswerButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final scheme = ColorScheme.of(context);
+    final semantic = context.semanticColors;
     return Row(
       children: [
         Expanded(
           child: ActionButton(
             icon: Assets.icons.close,
             label: l10n.notInterested,
-            foreground: ColorName.error,
-            background: ColorName.errorSoft,
+            foreground: scheme.onErrorContainer,
+            background: scheme.errorContainer,
             onTap: busy ? null : onReject,
           ),
         ),
@@ -37,8 +39,8 @@ class OfferAnswerButtons extends StatelessWidget {
           child: ActionButton(
             icon: Assets.icons.check,
             label: l10n.interested,
-            foreground: ColorName.white,
-            background: ColorName.green,
+            foreground: semantic.onSuccess,
+            background: semantic.success,
             onTap: busy ? null : onAccept,
           ),
         ),

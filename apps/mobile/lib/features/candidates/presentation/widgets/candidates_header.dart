@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import '../../../../gen/assets.gen.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../../shared/design_system/components/square_icon_button.dart';
+import '../../../../shared/design_system/theme/theme.dart';
 import '../../../../shared/design_system/tokens/app_dimens.dart';
-import '../../../../shared/design_system/tokens/app_text_styles.dart';
 import '../../domain/candidate.dart';
 import 'candidate_tabs.dart';
 import 'candidates_help_sheet.dart';
@@ -75,9 +75,12 @@ class _TitleRow extends StatelessWidget {
             children: [
               Text(
                 total == null ? '' : l10n.candidatesFound(total),
-                style: AppTextStyles.caption13,
+                style: context.textStyles.caption13,
               ),
-              Text(l10n.candidatesTitle, style: AppTextStyles.title16Medium),
+              Text(
+                l10n.candidatesTitle,
+                style: context.textStyles.title16Medium,
+              ),
             ],
           ),
         ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../gen/assets.gen.dart';
-import '../../../gen/colors.gen.dart';
+import '../theme/theme.dart';
 import '../tokens/app_dimens.dart';
 import '../tokens/app_shadows.dart';
 import 'app_icon.dart';
@@ -23,6 +23,7 @@ class SquareIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.appColors;
     return Semantics(
       button: true,
       label: label,
@@ -34,12 +35,12 @@ class SquareIconButton extends StatelessWidget {
           height: AppSizes.squareButton,
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: ColorName.white,
+            color: colors.card,
             borderRadius: BorderRadius.circular(AppRadius.squareButton),
-            border: Border.all(color: ColorName.slate200),
+            border: Border.all(color: colors.border),
             boxShadow: AppShadows.squareButton,
           ),
-          child: AppIcon(icon, size: 20, color: ColorName.slate600),
+          child: AppIcon(icon, size: 20, color: colors.icon),
         ),
       ),
     );

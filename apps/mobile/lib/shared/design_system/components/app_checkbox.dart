@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../gen/assets.gen.dart';
-import '../../../gen/colors.gen.dart';
+import '../theme/theme.dart';
 import '../tokens/app_dimens.dart';
 import 'app_icon.dart';
 
@@ -13,19 +13,21 @@ class AppCheckbox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scheme = ColorScheme.of(context);
+    final colors = context.appColors;
     return Container(
       width: AppSizes.checkbox,
       height: AppSizes.checkbox,
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: selected ? ColorName.primary : ColorName.white,
+        color: selected ? scheme.primary : colors.card,
         borderRadius: BorderRadius.circular(AppRadius.checkbox),
         border: Border.all(
-          color: selected ? ColorName.primary : ColorName.slate300,
+          color: selected ? scheme.primary : colors.borderStrong,
         ),
       ),
       child: selected
-          ? AppIcon(Assets.icons.check, size: 14, color: ColorName.white)
+          ? AppIcon(Assets.icons.check, size: 14, color: scheme.onPrimary)
           : null,
     );
   }

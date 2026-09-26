@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:vardigo/gen/colors.gen.dart';
 import 'package:vardigo/gen/fonts.gen.dart';
 import 'package:vardigo/shared/design_system/tokens/app_text_styles.dart';
 
@@ -13,7 +12,8 @@ void main() {
     expect(style.fontWeight, FontWeight.w500);
     expect(style.fontSize! * style.height!, closeTo(24, 0.001));
     expect(style.letterSpacing, -0.27);
-    expect(style.color, ColorName.slate700);
+    // Colours come from the theme (see app_theme_test).
+    expect(style.color, isNull);
   });
 
   test('every style uses Urbanist without ligatures', () {
@@ -39,12 +39,5 @@ void main() {
         ]),
       );
     }
-  });
-
-  test('caption13 is slate-500 at 80%', () {
-    expect(
-      AppTextStyles.caption13.color,
-      ColorName.slate500.withValues(alpha: 0.8),
-    );
   });
 }

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/network/api_exception.dart';
-import '../../../gen/colors.gen.dart';
 import '../../../l10n/l10n.dart';
-import '../tokens/app_text_styles.dart';
+import '../theme/theme.dart';
 
 /// Text to show for a failed call: the backend's own Turkish message when it
 /// sent one, otherwise a local text for connection problems.
@@ -36,15 +35,15 @@ class ErrorView extends StatelessWidget {
           Text(
             errorText(context, error),
             textAlign: TextAlign.center,
-            style: AppTextStyles.label14.copyWith(
-              color: ColorName.sub,
+            style: context.textStyles.label14.copyWith(
+              color: context.appColors.textSecondary,
               fontWeight: FontWeight.w400,
             ),
           ),
           const SizedBox(height: 12),
           TextButton(
             onPressed: onRetry,
-            child: Text(context.l10n.retry, style: AppTextStyles.label14),
+            child: Text(context.l10n.retry, style: context.textStyles.label14),
           ),
         ],
       ),

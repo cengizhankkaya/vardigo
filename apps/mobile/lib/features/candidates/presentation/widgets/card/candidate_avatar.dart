@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../app/providers.dart';
 import '../../../../../gen/assets.gen.dart';
-import '../../../../../gen/colors.gen.dart';
 import '../../../../../shared/design_system/components/app_icon.dart';
+import '../../../../../shared/design_system/theme/theme.dart';
 import '../../../../../shared/design_system/tokens/app_dimens.dart';
 import '../../../domain/candidate.dart';
 
@@ -17,7 +17,7 @@ class CandidateAvatar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final url = ref.watch(apiConfigProvider).assetUrl(candidate.photoPath);
-    const placeholder = ColoredBox(color: ColorName.slate100);
+    final placeholder = ColoredBox(color: context.appColors.placeholder);
     return SizedBox.square(
       dimension: AppSizes.avatar,
       child: Stack(

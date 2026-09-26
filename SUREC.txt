@@ -22,7 +22,9 @@ Mobil
   15. Eşleşen Personeller: sekme, sıralama, sekmeler arası seçim, gönderim
   16. Görüşme Talepleri: sekmeler, kabul/ret, detay, geri sayım, sıralama
   17. 390×844 telefon çerçevesi (REFERENCE_FRAME) ve tek komutluk demo.sh
-Sonuç: 144 backend + 69 mobil test; her ekran referans PNG ile simülatörde yan yana karşılaştırıldı.
+  18. Koyu tema: renkler ThemeExtension'larla temadan okunur, yalnız case paleti;
+      seçim Riverpod + shared_preferences ile saklanır
+Sonuç: 144 backend + 77 mobil test; her ekran referans PNG ile simülatörde yan yana karşılaştırıldı.
 
 TAKILDIĞIM NOKTALAR
 - Case paketi kendi içinde çelişiyor (Benzer sekmesi "ters sıra" mı score filtresi mi,

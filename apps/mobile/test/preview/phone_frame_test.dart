@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:vardigo/app/app.dart';
 import 'package:vardigo/preview/phone_frame.dart';
+import 'package:vardigo/shared/design_system/theme/app_theme.dart';
 
 void main() {
   testWidgets('frame is 390×844 and gives the screen the reference insets', (
@@ -15,6 +16,7 @@ void main() {
     late MediaQueryData inner;
     await tester.pumpWidget(
       MaterialApp(
+        theme: AppTheme.light(),
         home: Center(
           child: PhoneFrame(
             child: Builder(
@@ -37,10 +39,15 @@ void main() {
   testWidgets('status time has no fallback underline outside Material', (
     tester,
   ) async {
+    // In the app the frame sits in MaterialApp.builder: themed, but above
+    // the Navigator and outside any Material.
     await tester.pumpWidget(
-      const Directionality(
-        textDirection: TextDirection.ltr,
-        child: Center(child: PhoneFrame(child: SizedBox.expand())),
+      Theme(
+        data: AppTheme.light(),
+        child: const Directionality(
+          textDirection: TextDirection.ltr,
+          child: Center(child: PhoneFrame(child: SizedBox.expand())),
+        ),
       ),
     );
     final style = DefaultTextStyle.of(tester.element(find.text('9:41'))).style;
@@ -56,7 +63,10 @@ void main() {
     addTearDown(tester.view.reset);
 
     await tester.pumpWidget(
-      const MaterialApp(home: ReferenceFrameView(child: SizedBox.expand())),
+      MaterialApp(
+        theme: AppTheme.light(),
+        home: const ReferenceFrameView(child: SizedBox.expand()),
+      ),
     );
 
     final rect = tester.getRect(find.byType(PhoneFrame));

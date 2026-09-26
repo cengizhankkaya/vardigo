@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import '../../../../gen/assets.gen.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../../shared/design_system/components/square_icon_button.dart';
+import '../../../../shared/design_system/theme/theme.dart';
 import '../../../../shared/design_system/tokens/app_dimens.dart';
-import '../../../../shared/design_system/tokens/app_text_styles.dart';
 import '../../domain/offer.dart';
 
 /// Back button, "Görüşme Talepleri" and a subtitle for the active tab.
@@ -48,8 +48,8 @@ class OffersHeader extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(l10n.offersTitle, style: AppTextStyles.title20),
-                Text(subtitle, style: AppTextStyles.caption12),
+                Text(l10n.offersTitle, style: context.textStyles.title20),
+                Text(subtitle, style: context.textStyles.caption12),
               ],
             ),
           ),

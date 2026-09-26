@@ -7,7 +7,7 @@
 | Parça | Durum |
 |---|---|
 | Backend | Tamamlandı: case'teki tüm endpoint'ler, SQLite kalıcılığı, Swagger, 144 test |
-| Mobil | Tamamlandı: iki case ekranı (Eşleşen Personeller, Görüşme Talepleri), demo rol seçimi, 390×844 telefon çerçevesi, 69 test |
+| Mobil | Tamamlandı: iki case ekranı (Eşleşen Personeller, Görüşme Talepleri), demo rol seçimi, 390×844 telefon çerçevesi, 77 test |
 
 ## 5 dakikada çalışan demo
 
@@ -90,7 +90,7 @@ npm test           # 144 test; her test kendi geçici veritabanını kullanır
 npm run typecheck
 
 cd apps/mobile
-flutter test       # 69 test; canlı API testi için apps/mobile/README.md
+flutter test       # 77 test; canlı API testi için apps/mobile/README.md
 ```
 
 CI her push'ta backend testlerini, derleme ve smoke testini, mobil kod üretimi/format/analiz/testlerini ve uygulamanın repository'lerini gerçek sunucuya karşı çalıştırır.
@@ -100,7 +100,7 @@ Case'in altı adımlık minimum testi, sunucu yeniden başlatma dahil [apps/api/
 ## Teknoloji
 
 - Backend: Node.js, TypeScript, Express 5, `node:sqlite`; testler Vitest + Supertest; Swagger UI.
-- Mobil: Flutter / Dart, iOS ve Android; Riverpod, Dio, flutter_svg; FlutterGen (asset, renk, font) ve gen-l10n (metinler). Ayrıntı: [apps/mobile/README.md](apps/mobile/README.md).
+- Mobil: Flutter / Dart, iOS ve Android; Riverpod, Dio, flutter_svg, shared_preferences; açık ve koyu tema; FlutterGen (asset, renk, font) ve gen-l10n (metinler). Ayrıntı: [apps/mobile/README.md](apps/mobile/README.md).
 - Paketler: backend npm, mobil Flutter pub.
 
 ## Klasörler

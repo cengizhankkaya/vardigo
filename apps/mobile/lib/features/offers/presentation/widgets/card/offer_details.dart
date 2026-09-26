@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../gen/assets.gen.dart';
-import '../../../../../gen/colors.gen.dart';
 import '../../../../../l10n/l10n.dart';
 import '../../../../../shared/design_system/components/action_button.dart';
 import '../../../../../shared/design_system/components/error_view.dart';
-import '../../../../../shared/design_system/tokens/app_text_styles.dart';
+import '../../../../../shared/design_system/theme/theme.dart';
 import '../../../application/offers_controller.dart';
 
 /// "Detayları Gör" / "Detayları Gizle".
@@ -26,8 +25,8 @@ class OfferDetailsButton extends StatelessWidget {
     return ActionButton(
       icon: Assets.icons.eye,
       label: expanded ? l10n.hideDetails : l10n.viewDetails,
-      foreground: ColorName.sub,
-      border: ColorName.stroke,
+      foreground: context.appColors.textSecondary,
+      border: context.appColors.stroke,
       onTap: onTap,
     );
   }
@@ -44,7 +43,7 @@ class OfferDetails extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = context.l10n;
     final detail = ref.watch(offerDetailProvider(offerId));
-    const style = AppTextStyles.caption12Medium;
+    final style = context.textStyles.caption12Medium;
     return Padding(
       padding: const EdgeInsets.only(top: 10),
       child: detail.when(
@@ -65,7 +64,7 @@ class OfferDetails extends ConsumerWidget {
         loading: () => const LinearProgressIndicator(minHeight: 2),
         error: (error, _) => Text(
           errorText(context, error),
-          style: style.copyWith(color: ColorName.error),
+          style: style.copyWith(color: ColorScheme.of(context).error),
         ),
       ),
     );

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../../gen/colors.gen.dart';
+import '../../../../shared/design_system/theme/theme.dart';
 import '../../../../shared/design_system/tokens/app_dimens.dart';
 import '../../../../shared/design_system/tokens/app_shadows.dart';
-import '../../../../shared/design_system/tokens/app_text_styles.dart';
 
 /// One demo account: title, hint and a chevron, or a spinner while logging in.
 class RoleCard extends StatelessWidget {
@@ -22,6 +21,7 @@ class RoleCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.appColors;
     return Semantics(
       button: true,
       child: GestureDetector(
@@ -30,9 +30,9 @@ class RoleCard extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: ColorName.white,
+            color: colors.card,
             borderRadius: BorderRadius.circular(AppRadius.card),
-            border: Border.all(color: ColorName.slate200),
+            border: Border.all(color: colors.border),
             boxShadow: AppShadows.card,
           ),
           child: Row(
@@ -41,9 +41,9 @@ class RoleCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(title, style: AppTextStyles.title18),
+                    Text(title, style: context.textStyles.title18),
                     const SizedBox(height: 4),
-                    Text(hint, style: AppTextStyles.caption12),
+                    Text(hint, style: context.textStyles.caption12),
                   ],
                 ),
               ),
@@ -53,7 +53,7 @@ class RoleCard extends StatelessWidget {
                   child: CircularProgressIndicator(strokeWidth: 2),
                 )
               else
-                const Icon(Icons.chevron_right, color: ColorName.slate500),
+                Icon(Icons.chevron_right, color: colors.textInactive),
             ],
           ),
         ),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../../gen/assets.gen.dart';
+import '../theme/theme.dart';
 import '../tokens/app_dimens.dart';
-import '../tokens/app_text_styles.dart';
 import 'app_icon.dart';
 
 /// Short icon + label button used inside cards. Dimmed when [onTap] is null.
@@ -52,7 +52,9 @@ class ActionButton extends StatelessWidget {
                     label,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: AppTextStyles.label14.copyWith(color: foreground),
+                    style: context.textStyles.label14.copyWith(
+                      color: foreground,
+                    ),
                   ),
                 ),
               ],

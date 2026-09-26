@@ -6,8 +6,10 @@ import 'package:vardigo/l10n/l10n.dart';
 import 'package:vardigo/shared/design_system/components/error_view.dart';
 import 'package:vardigo/shared/design_system/components/primary_button.dart';
 import 'package:vardigo/shared/design_system/components/square_icon_button.dart';
+import 'package:vardigo/shared/design_system/theme/app_theme.dart';
 
 Widget _wrap(Widget child) => MaterialApp(
+  theme: AppTheme.light(),
   localizationsDelegates: AppLocalizations.localizationsDelegates,
   supportedLocales: AppLocalizations.supportedLocales,
   home: Scaffold(body: Center(child: child)),

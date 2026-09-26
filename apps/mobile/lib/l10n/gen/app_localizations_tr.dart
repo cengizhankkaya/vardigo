@@ -67,6 +67,18 @@ class AppLocalizationsTr extends AppLocalizations {
   String get openGallery => 'Tasarım galerisi';
 
   @override
+  String get appearance => 'Görünüm';
+
+  @override
+  String get themeSystem => 'Sistem';
+
+  @override
+  String get themeLight => 'Açık';
+
+  @override
+  String get themeDark => 'Koyu';
+
+  @override
   String get candidatesTitle => 'Eşleşen Personeller';
 
   @override

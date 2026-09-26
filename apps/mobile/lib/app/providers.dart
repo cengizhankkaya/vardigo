@@ -3,6 +3,8 @@ import 'package:http/http.dart' as http;
 
 import '../core/config/api_config.dart';
 import '../core/network/api_client.dart';
+import '../features/appearance/data/prefs_theme_mode_repository.dart';
+import '../features/appearance/domain/app_theme_mode.dart';
 import '../features/candidates/data/api_candidates_repository.dart';
 import '../features/candidates/domain/candidate.dart';
 import '../features/offers/data/api_offers_repository.dart';
@@ -41,4 +43,10 @@ final candidatesRepositoryProvider = Provider<CandidatesRepository>(
 
 final offersRepositoryProvider = Provider<OffersRepository>(
   (ref) => ApiOffersRepository(ref.watch(apiClientProvider)),
+);
+
+/// Theme choice storage. `main` swaps in the device store; elsewhere (tests,
+/// previews) the choice lives in memory.
+final themeModeRepositoryProvider = Provider<ThemeModeRepository>(
+  (ref) => InMemoryThemeModeRepository(),
 );

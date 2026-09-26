@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../../../gen/colors.gen.dart';
 import '../../../../shared/design_system/components/pill_tabs.dart';
+import '../../../../shared/design_system/theme/theme.dart';
 import '../../../../shared/design_system/tokens/app_dimens.dart';
 import '../../../../shared/design_system/tokens/app_shadows.dart';
-import '../../../../shared/design_system/tokens/app_text_styles.dart';
 import '../../domain/candidate.dart';
 
 /// "%100 Eşleşme (26)" / "Benzer Personeller (16)".
@@ -22,20 +21,10 @@ class CandidateTabs extends StatelessWidget {
   final String similarLabel;
   final ValueChanged<CandidateTab> onTab;
 
-  static const _style = PillTabsStyle(
-    background: ColorName.slate100,
-    radius: AppRadius.pill,
-    pillRadius: AppRadius.pill,
-    pillPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-    activeColor: ColorName.primary,
-    activeShadow: AppShadows.candidateTabActive,
-    textStyle: AppTextStyles.caption12Medium,
-    activeTextColor: ColorName.white,
-    inactiveTextColor: ColorName.slate500,
-  );
-
   @override
   Widget build(BuildContext context) {
+    final scheme = ColorScheme.of(context);
+    final colors = context.appColors;
     return PillTabs(
       tabs: [
         (CandidateTab.perfect, perfectLabel),
@@ -43,7 +32,17 @@ class CandidateTabs extends StatelessWidget {
       ],
       selected: tab,
       onSelected: onTab,
-      style: _style,
+      style: PillTabsStyle(
+        background: colors.tabTrack,
+        radius: AppRadius.pill,
+        pillRadius: AppRadius.pill,
+        pillPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+        activeColor: scheme.primary,
+        activeShadow: AppShadows.candidateTabActive,
+        textStyle: context.textStyles.caption12Medium,
+        activeTextColor: scheme.onPrimary,
+        inactiveTextColor: colors.textInactive,
+      ),
     );
   }
 }

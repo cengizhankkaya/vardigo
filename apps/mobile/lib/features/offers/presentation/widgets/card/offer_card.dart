@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../gen/colors.gen.dart';
+import '../../../../../shared/design_system/theme/theme.dart';
 import '../../../../../shared/design_system/tokens/app_dimens.dart';
 import '../../../../../shared/design_system/tokens/app_shadows.dart';
 import '../../../domain/offer.dart';
@@ -35,12 +35,13 @@ class OfferCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.appColors;
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: ColorName.white,
+        color: colors.card,
         borderRadius: BorderRadius.circular(AppRadius.card),
-        border: Border.all(color: ColorName.stroke),
+        border: Border.all(color: colors.stroke),
         boxShadow: AppShadows.card,
       ),
       child: Column(
