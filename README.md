@@ -110,9 +110,6 @@ vardigo/
 ├── apps/
 │   ├── api/            # Backend (README, kaynak, testler, seed, görseller)
 │   └── mobile/         # Flutter iOS/Android
-├── packages/contracts/ # İlk iskeletten kalan boş klasör
-├── resources/          # İlk iskeletten kalan boş klasörler
-├── scripts/            # İlk iskeletten kalan boş klasör
 ├── .github/workflows/  # CI
 ├── demo.sh             # Tek komutla API + uygulama
 └── SUREC.txt           # Süreç notu
