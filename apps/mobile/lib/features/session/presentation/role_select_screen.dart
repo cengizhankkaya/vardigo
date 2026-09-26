@@ -2,17 +2,16 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../gen/colors.gen.dart';
 import '../../../l10n/l10n.dart';
 import '../../../preview/design_preview_screen.dart';
 import '../../../shared/design_system/components/error_view.dart';
 import '../../../shared/design_system/tokens/app_dimens.dart';
-import '../../../shared/design_system/tokens/app_shadows.dart';
 import '../../../shared/design_system/tokens/app_text_styles.dart';
 import '../../candidates/presentation/candidates_screen.dart';
 import '../../offers/presentation/offers_screen.dart';
 import '../application/session_controller.dart';
 import '../domain/session.dart';
+import 'widgets/role_card.dart';
 
 /// Demo entry: pick the employer or the job seeker account.
 class RoleSelectScreen extends ConsumerStatefulWidget {
@@ -90,14 +89,14 @@ class _RoleSelectScreenState extends ConsumerState<RoleSelectScreen> {
             const SizedBox(height: 4),
             Text(l10n.roleSubtitle, style: AppTextStyles.caption13),
             const SizedBox(height: 24),
-            _RoleCard(
+            RoleCard(
               title: l10n.roleEmployer,
               hint: l10n.roleEmployerHint,
               loading: _loggingIn == Role.employer,
               onTap: () => _continueAs(Role.employer),
             ),
             const SizedBox(height: 12),
-            _RoleCard(
+            RoleCard(
               title: l10n.roleWorker,
               hint: l10n.roleWorkerHint,
               loading: _loggingIn == Role.worker,
@@ -117,61 +116,6 @@ class _RoleSelectScreenState extends ConsumerState<RoleSelectScreen> {
               ),
             ],
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class _RoleCard extends StatelessWidget {
-  const _RoleCard({
-    required this.title,
-    required this.hint,
-    required this.loading,
-    required this.onTap,
-  });
-
-  final String title;
-  final String hint;
-  final bool loading;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Semantics(
-      button: true,
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: onTap,
-        child: Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: ColorName.white,
-            borderRadius: BorderRadius.circular(AppRadius.card),
-            border: Border.all(color: ColorName.slate200),
-            boxShadow: AppShadows.card,
-          ),
-          child: Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(title, style: AppTextStyles.title18),
-                    const SizedBox(height: 4),
-                    Text(hint, style: AppTextStyles.caption12),
-                  ],
-                ),
-              ),
-              if (loading)
-                const SizedBox.square(
-                  dimension: 20,
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                )
-              else
-                const Icon(Icons.chevron_right, color: ColorName.slate500),
-            ],
-          ),
         ),
       ),
     );

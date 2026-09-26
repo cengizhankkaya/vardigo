@@ -1,0 +1,53 @@
+import 'package:flutter/material.dart';
+
+import '../../../../../gen/assets.gen.dart';
+import '../../../../../gen/colors.gen.dart';
+import '../../../../../l10n/l10n.dart';
+import '../../../../../shared/design_system/components/app_icon.dart';
+import '../../../../../shared/design_system/tokens/app_dimens.dart';
+import '../../../../../shared/design_system/tokens/app_text_styles.dart';
+import '../../../domain/offer.dart';
+
+/// "Teklifin sonlanmasına 21 saat 32 dakika kaldı." with the time in bold;
+/// red when little time is left.
+class OfferCountdown extends StatelessWidget {
+  const OfferCountdown({super.key, required this.offer, required this.now});
+
+  final Offer offer;
+  final DateTime now;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final left = offer.remainingAt(now);
+    final time = l10n.hoursMinutes(left.inHours, left.inMinutes % 60);
+    final sentence = l10n.countdown(time);
+    final start = sentence.indexOf(time);
+    final urgent = offer.isUrgentAt(now);
+    final base = AppTextStyles.caption12.copyWith(color: ColorName.strong);
+    return Row(
+      children: [
+        AppIcon(Assets.icons.alarm, color: urgent ? ColorName.error : null),
+        const SizedBox(width: AppSpacing.iconText),
+        Expanded(
+          child: Text.rich(
+            TextSpan(
+              style: base,
+              children: [
+                TextSpan(text: sentence.substring(0, start)),
+                TextSpan(
+                  text: time,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    color: urgent ? ColorName.error : ColorName.strong,
+                  ),
+                ),
+                TextSpan(text: sentence.substring(start + time.length)),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}

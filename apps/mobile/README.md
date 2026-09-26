@@ -109,11 +109,27 @@ Referansta Dynamic Island yerine çentik görünür; case metni Dynamic Island i
 - `lib/main.dart`: giriş noktası.
 - `lib/app/`: uygulama kökü; yönlendirme ve bağımlılık bağlantıları.
 - `lib/core/`: ağ, hata ve saat gibi ortak altyapı.
-- `lib/shared/design_system/`: renk, tipografi, tema ve ortak bileşenler.
+- `lib/shared/design_system/`: renk, tipografi, tema ve ortak bileşenler (buton, sekme, checkbox, boş/yükleniyor/hata görünümleri).
+- `lib/shared/widgets/`: ekranlara ortak, Riverpod bilen parçalar: `AsyncListView` (yenilenebilir liste + yükleniyor/boş/hata) ve `showAppSnackBar`.
 - `lib/features/`: session, candidates ve offers.
 - `lib/preview/`: tasarım galerisi ve case'in 390×844 telefon çerçevesi görünümü.
 
 Feature'lar presentation/application/domain/data sınırlarıyla büyür. Domain Flutter UI, Dio veya Riverpod bilmez; widget HTTP isteği yapmaz.
+
+Presentation katmanı ekran ve widget olarak ayrılır:
+
+```text
+features/offers/presentation/
+├── offers_screen.dart          # provider'ları okur, parçaları birleştirir
+├── offer_labels.dart           # enum → Türkçe metin (sekme, sıralama, boş liste)
+└── widgets/
+    ├── offers_header.dart, offer_tabs.dart, offer_sort_row.dart
+    └── card/                   # offer_card.dart ve parçaları: özet, butonlar,
+                                # detay, durum etiketi, geri sayım
+```
+
+- Provider'ları ekran okur; `widgets/` altındakiler değer ve callback alır. İstisnalar yalnız sunucu adresinden görsel URL'si kuran avatar/logo ve açılınca yüklenen talep detayıdır.
+- Bir parça iki feature'da kullanılıyorsa `shared/` altına taşınır; iki ekranın sekme tasarımı aynı `PillTabs` bileşenini farklı `PillTabsStyle` ile kullanır.
 
 ## Ekranlar
 
