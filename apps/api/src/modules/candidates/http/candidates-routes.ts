@@ -1,5 +1,6 @@
 import { type RequestHandler, Router } from "express";
-import { HttpError, sendOk } from "../../../platform/http/response.js";
+import { optionalQuery } from "../../../platform/http/query.js";
+import { sendOk } from "../../../platform/http/response.js";
 import { listCandidates } from "../application/list-candidates.js";
 import { type Candidate, CANDIDATE_SORTS, CANDIDATE_TABS, isPerfect } from "../domain/candidate.js";
 import type { SqliteCandidatesRepository } from "../infrastructure/sqlite-candidates-repository.js";
@@ -8,12 +9,6 @@ export interface CandidateLabels {
   totalPerfect: number;
   totalSimilar: number;
   selectedHint: number;
-}
-
-function optionalQuery<T extends string>(value: unknown, name: string, allowed: readonly T[]): T | undefined {
-  if (value === undefined) return undefined;
-  if (typeof value === "string" && (allowed as readonly string[]).includes(value)) return value as T;
-  throw new HttpError(400, "VALIDATION_ERROR", `${name} şunlardan biri olmalı: ${allowed.join(", ")}`);
 }
 
 function toDto(candidate: Candidate) {

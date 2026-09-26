@@ -12,5 +12,8 @@ export const demoJob: OfferJob = {
   validForMs: (21 * 60 + 32) * 60_000,
 };
 
+/** Extra fields shown on the offer detail; the case gives one fixed example. */
+export const demoOfferDetails = { city: "İstanbul", note: "Şube: Sinanpaşa Mah." };
+
 /** The case has one job seeker account; offers to any candidate land in its inbox. */
 export const DEMO_RECIPIENT_USER_ID = "u_worker";

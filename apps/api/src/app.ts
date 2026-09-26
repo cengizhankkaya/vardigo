@@ -1,6 +1,6 @@
 import express from "express";
-import { DEMO_RECIPIENT_USER_ID, demoJob } from "./demo/demo-job.js";
-import { candidateLabels } from "./demo/labels.js";
+import { DEMO_RECIPIENT_USER_ID, demoJob, demoOfferDetails } from "./demo/demo-job.js";
+import { candidateLabels, pendingCountLabel } from "./demo/labels.js";
 import { authRoutes } from "./modules/auth/http/auth-routes.js";
 import { requireRole } from "./modules/auth/http/require-role.js";
 import { SqliteUsersRepository } from "./modules/auth/infrastructure/sqlite-users-repository.js";
@@ -22,6 +22,7 @@ export function createApp({ db, now = Date.now }: AppDeps) {
   const candidates = new SqliteCandidatesRepository(db);
   const offers = new SqliteOffersRepository(db);
   const employerOnly = requireRole(users, "employer");
+  const workerOnly = requireRole(users, "worker");
 
   const app = express();
   app.disable("x-powered-by");
@@ -33,7 +34,14 @@ export function createApp({ db, now = Date.now }: AppDeps) {
   api.use("/candidates", candidatesRoutes(candidates, candidateLabels, employerOnly));
   api.use(
     "/offers",
-    offersRoutes({ db, offers, candidates, job: demoJob, recipientUserId: DEMO_RECIPIENT_USER_ID, now }, employerOnly),
+    offersRoutes({
+      create: { db, offers, candidates, job: demoJob, recipientUserId: DEMO_RECIPIENT_USER_ID, now },
+      list: { db, offers, now },
+      pendingCountLabel,
+      detailExtras: demoOfferDetails,
+      employerOnly,
+      workerOnly,
+    }),
   );
   app.use("/api", api);
 

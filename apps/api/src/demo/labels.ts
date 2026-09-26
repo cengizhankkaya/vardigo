@@ -7,3 +7,6 @@ export const candidateLabels: CandidateLabels = {
   totalSimilar: seedData.labels.totalSimilar,
   selectedHint: 1,
 };
+
+/** Header count from the reference design; `pendingCount` in the API is the real number. */
+export const pendingCountLabel: number = seedData.labels.pendingCountLabel;

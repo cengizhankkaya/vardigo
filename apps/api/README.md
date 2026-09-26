@@ -44,6 +44,8 @@ Sunucu açılırken tabloları oluşturur ve veritabanı boşsa [src/demo/seed.j
 | POST | `/api/auth/login` | Demo hesabı için token döner |
 | GET | `/api/candidates` | İşveren: eşleşen adaylar |
 | POST | `/api/offers` | İşveren: seçilen adaylara görüşme talebi |
+| GET | `/api/offers` | İş arayan: talepler (sekmeye göre) |
+| GET | `/api/offers/:id` | İş arayan: talep detayı |
 
 ## Giriş
 
@@ -96,6 +98,50 @@ Talepler ya hepsi birlikte oluşturulur ya da hiçbiri oluşturulmaz.
 
 Süresi dolmuş, kabul edilmiş veya reddedilmiş talepten sonra aynı adaya yeniden talep gönderilebilir.
 
+## Talepleri listeleme (iş arayan)
+
+```bash
+curl "http://localhost:3000/api/offers?status=pending" -H "Authorization: Bearer dev-worker"
+```
+
+```json
+{
+  "ok": true,
+  "data": {
+    "pendingCount": 3,
+    "pendingCountLabel": 12,
+    "offers": [
+      {
+        "id": "o_garson",
+        "title": "Garson",
+        "place": "Zarif Cheff Restaurant",
+        "pay": "45.000",
+        "logo": "/assets/logos/zarif.svg",
+        "district": "Kadıköy",
+        "when": "16 Ağu · 12:00 - 16:00",
+        "status": "pending",
+        "remain": "21 saat 32 dakika",
+        "expiresAt": "2026-09-27T07:03:00.000Z"
+      }
+    ]
+  }
+}
+```
+
+| `status` | Sekme | İçerik |
+|---|---|---|
+| `pending` (varsayılan) | Bekleyen | Yanıt bekleyen ve süresi dolmamış talepler |
+| `answered` | Cevaplanan | Kabul (`accepted`) ve ret (`rejected`) edilenler |
+| `expired` | Süresi Dolan | `expiresAt` anı geçmiş, yanıtlanmamış talepler |
+
+- `remain` sunucuda hesaplanır: tam saat ve dakika, aşağı yuvarlanır; süresi dolanlarda `0 saat 0 dakika`.
+- Süresi dolan bekleyen talepler her istekte önce `expired` yapılır, sonra liste ve sayı üretilir. Yanıtlanmış talepler süre geçince değişmez.
+- `pendingCount` gerçek bekleyen sayısıdır. `pendingCountLabel` (12) referans tasarımdaki sabit etikettir.
+- Sıralama: en yeni talep önce; aynı anda oluşturulanlar oluşturulma sırasını korur.
+- İş arayan yalnız kendi gelen kutusunu görür.
+
+`GET /api/offers/:id` aynı alanlara ek olarak `city` ve `note` döner; bulunamazsa `404 OFFER_NOT_FOUND`.
+
 ## Klasörler
 
 - `src/app.ts`: Express uygulaması ve route bağlantıları.
@@ -104,6 +150,6 @@ Süresi dolmuş, kabul edilmiş veya reddedilmiş talepten sonra aynı adaya yen
 - `src/platform/`: HTTP yanıtları, SQLite bağlantısı ve migration'lar.
 - `src/modules/auth/`: demo login ve Bearer token rol kontrolü.
 - `src/modules/candidates/`: aday listeleme, sekme filtresi ve sıralama.
-- `src/modules/offers/`: talep oluşturma ve süre dolumu. Listeleme ve yanıtlama sonraki adımlarda eklenecek.
+- `src/modules/offers/`: talep oluşturma, listeleme, detay ve süre dolumu. Kabul/ret sonraki adımda eklenecek.
 - `src/demo/`: case seed verisi, seed yükleyici ve reset komutu.
 - `test/`: Vitest + Supertest testleri.

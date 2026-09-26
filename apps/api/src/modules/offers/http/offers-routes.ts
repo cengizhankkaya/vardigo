@@ -1,8 +1,21 @@
 import { type RequestHandler, Router } from "express";
+import { optionalQuery } from "../../../platform/http/query.js";
 import { HttpError, sendOk } from "../../../platform/http/response.js";
+import { currentUser } from "../../auth/http/require-role.js";
 import { createOffers, type CreateOffersDeps } from "../application/create-offers.js";
+import { getOffer, listOffers, type ListOffersDeps } from "../application/list-offers.js";
+import { formatRemain, type Offer, OFFER_STATUS_FILTERS } from "../domain/offer.js";
 
 const MAX_WORKER_IDS = 100;
+
+export interface OffersRoutesDeps {
+  create: CreateOffersDeps;
+  list: ListOffersDeps;
+  pendingCountLabel: number;
+  detailExtras: { city: string; note: string };
+  employerOnly: RequestHandler;
+  workerOnly: RequestHandler;
+}
 
 function parseWorkerIds(body: unknown): string[] {
   const workerIds: unknown = (body as { workerIds?: unknown } | undefined)?.workerIds;
@@ -24,11 +37,26 @@ function parseWorkerIds(body: unknown): string[] {
   return workerIds;
 }
 
-export function offersRoutes(createDeps: CreateOffersDeps, employerOnly: RequestHandler): Router {
+function toDto(offer: Offer, now: number) {
+  return {
+    id: offer.id,
+    title: offer.title,
+    place: offer.place,
+    pay: offer.pay,
+    logo: `/assets/${offer.logo}`,
+    district: offer.district,
+    when: offer.when,
+    status: offer.status,
+    remain: formatRemain(offer.expiresAtMs, now),
+    expiresAt: new Date(offer.expiresAtMs).toISOString(),
+  };
+}
+
+export function offersRoutes(deps: OffersRoutesDeps): Router {
   const router = Router();
 
-  router.post("/", employerOnly, (req, res) => {
-    const result = createOffers(createDeps, parseWorkerIds(req.body));
+  router.post("/", deps.employerOnly, (req, res) => {
+    const result = createOffers(deps.create, parseWorkerIds(req.body));
     switch (result.kind) {
       case "created":
         sendOk(res, { created: result.created }, 201);
@@ -42,6 +70,24 @@ export function offersRoutes(createDeps: CreateOffersDeps, employerOnly: Request
           `Seçilen personel için açık teklif var: ${result.workerIds.join(", ")}`,
         );
     }
+  });
+
+  router.get("/", deps.workerOnly, (req, res) => {
+    const status = optionalQuery(req.query.status, "status", OFFER_STATUS_FILTERS) ?? "pending";
+    const listing = listOffers(deps.list, currentUser(res).id, status);
+    sendOk(res, {
+      pendingCount: listing.pendingCount,
+      pendingCountLabel: deps.pendingCountLabel,
+      offers: listing.offers.map((offer) => toDto(offer, listing.now)),
+    });
+  });
+
+  router.get("/:id", deps.workerOnly, (req, res) => {
+    const { now, offer } = getOffer(deps.list, currentUser(res).id, req.params.id as string);
+    if (!offer) {
+      throw new HttpError(404, "OFFER_NOT_FOUND", "Teklif bulunamadı");
+    }
+    sendOk(res, { ...toDto(offer, now), ...deps.detailExtras });
   });
 
   return router;
