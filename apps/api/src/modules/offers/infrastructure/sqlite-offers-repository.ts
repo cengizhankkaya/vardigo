@@ -1,5 +1,21 @@
 import type { Database } from "../../../platform/database/connection.js";
-import type { NewOffer } from "../domain/offer.js";
+import type { NewOffer, Offer, OfferStatus } from "../domain/offer.js";
+
+const OFFER_COLUMNS = "id, title, place, pay, logo, district, when_label, status, expires_at_ms";
+
+function toOffer(row: Record<string, unknown>): Offer {
+  return {
+    id: String(row.id),
+    title: String(row.title),
+    place: String(row.place),
+    pay: String(row.pay),
+    logo: String(row.logo),
+    district: String(row.district),
+    when: String(row.when_label),
+    status: row.status as OfferStatus,
+    expiresAtMs: Number(row.expires_at_ms),
+  };
+}
 
 export class SqliteOffersRepository {
   constructor(private readonly db: Database) {}
@@ -32,5 +48,32 @@ export class SqliteOffersRepository {
         offer.id, offer.recipientUserId, offer.candidateId, job.title, job.place, job.pay, job.payValue,
         job.logo, job.district, job.when, offer.createdAtMs + job.validForMs, offer.createdAtMs,
       );
+  }
+
+  /** Newest first; offers created together keep their insert order. */
+  listForRecipient(recipientUserId: string, statuses: readonly OfferStatus[]): Offer[] {
+    const placeholders = statuses.map(() => "?").join(", ");
+    return this.db
+      .prepare(
+        `SELECT ${OFFER_COLUMNS} FROM offers
+         WHERE recipient_user_id = ? AND status IN (${placeholders})
+         ORDER BY created_at_ms DESC, rowid ASC`,
+      )
+      .all(recipientUserId, ...statuses)
+      .map(toOffer);
+  }
+
+  countPending(recipientUserId: string): number {
+    const row = this.db
+      .prepare("SELECT COUNT(*) AS n FROM offers WHERE recipient_user_id = ? AND status = 'pending'")
+      .get(recipientUserId);
+    return Number(row?.n ?? 0);
+  }
+
+  findForRecipient(id: string, recipientUserId: string): Offer | undefined {
+    const row = this.db
+      .prepare(`SELECT ${OFFER_COLUMNS} FROM offers WHERE id = ? AND recipient_user_id = ?`)
+      .get(id, recipientUserId);
+    return row ? toOffer(row) : undefined;
   }
 }

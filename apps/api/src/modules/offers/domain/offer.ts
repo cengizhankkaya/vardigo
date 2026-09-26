@@ -14,6 +14,18 @@ export interface OfferJob {
   validForMs: number;
 }
 
+export interface Offer {
+  id: string;
+  title: string;
+  place: string;
+  pay: string;
+  logo: string;
+  district: string;
+  when: string;
+  status: OfferStatus;
+  expiresAtMs: number;
+}
+
 export interface NewOffer {
   id: string;
   recipientUserId: string;
