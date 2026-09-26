@@ -40,6 +40,20 @@ Sunucu açılırken tabloları oluşturur ve veritabanı boşsa [src/demo/seed.j
 | Metot | Yol | Açıklama |
 |---|---|---|
 | GET | `/api/health` | Sunucu ayakta mı |
+| POST | `/api/auth/login` | Demo hesabı için token döner |
+
+## Giriş
+
+SMS veya parola yok; case'teki iki sabit demo hesabı kullanılır.
+
+```bash
+curl -X POST http://localhost:3000/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"role":"employer"}'
+# {"ok":true,"data":{"token":"dev-employer","role":"employer"}}
+```
+
+`role` alanı `employer` (işveren) veya `worker` (iş arayan) olabilir. Korumalı isteklerde token `Authorization: Bearer dev-employer` başlığıyla gönderilir. Token yoksa veya geçersizse `401 UNAUTHORIZED`, başka rolün token'ı kullanılırsa `401 ROLE_NOT_ALLOWED` döner.
 
 ## Klasörler
 
@@ -47,6 +61,6 @@ Sunucu açılırken tabloları oluşturur ve veritabanı boşsa [src/demo/seed.j
 - `src/server.ts`: HTTP sunucusunu başlatır.
 - `src/bootstrap/`: ayarlar ve açılışta veritabanı hazırlığı.
 - `src/platform/`: HTTP yanıtları, SQLite bağlantısı ve migration'lar.
-- `src/modules/`: auth, candidates ve offers; ilgili özellik geliştirildiğinde açılacak.
+- `src/modules/auth/`: demo login ve Bearer token rol kontrolü. candidates ve offers modülleri sonraki adımlarda eklenecek.
 - `src/demo/`: case seed verisi, seed yükleyici ve reset komutu.
 - `test/`: Vitest + Supertest testleri.
