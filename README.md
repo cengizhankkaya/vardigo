@@ -7,7 +7,7 @@
 | Parça | Durum |
 |---|---|
 | Backend | Tamamlandı: case'teki tüm endpoint'ler, SQLite kalıcılığı, Swagger, 131 test |
-| Mobil | Sıradaki adım: Flutter ekranları geliştirilecek |
+| Mobil | Rol seçimi ve Eşleşen Personeller ekranı gerçek API'yle çalışıyor; Görüşme Talepleri ekranı sırada |
 
 ## Hızlı başlangıç (backend)
 
