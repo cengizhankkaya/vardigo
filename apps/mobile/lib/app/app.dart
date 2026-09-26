@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../preview/design_preview_screen.dart';
+
 class VardigoApp extends StatelessWidget {
   const VardigoApp({super.key});
 
@@ -8,7 +10,7 @@ class VardigoApp extends StatelessWidget {
     return const MaterialApp(
       title: 'Vardigo',
       debugShowCheckedModeBanner: false,
-      home: Scaffold(body: Center(child: Text('Vardigo'))),
+      home: DesignPreviewScreen(),
     );
   }
 }
