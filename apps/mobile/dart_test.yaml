@@ -1,0 +1,3 @@
+tags:
+  # Pixel comparisons; the PNGs are drawn on macOS, where CI checks them too.
+  golden:

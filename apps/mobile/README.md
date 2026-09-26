@@ -283,7 +283,8 @@ core/presentation/pages/route_error_screen.dart  # bilinmeyen adres sayfası
 - Veri temiz seed'den alınmış gerçek yanıtlardır (`candidates.json`, `offers_seed.json`); saat seed anına sabittir, sayaçlar 21 sa 32 dk / 18 sa 0 dk okur.
 - Fotoğraf ve logolar backend'in kendi dosyalarıdır (`apps/api/public/assets`), ağ kullanılmaz.
 - Yazı gerçek Urbanist'tir; Urbanist'te olmayan ₺ için Flutter SDK'daki Roboto yedek font olarak yüklenir (cihazda sistem fontu bu işi görür). Font yükleme yalnız bu klasörü etkiler (`test/goldens/flutter_test_config.dart`); diğer testler Flutter'ın test fontuyla çalışır.
-- macOS ile CI (Linux) arasındaki yazı yumuşatma farkları için piksellerin %0,5'ine kadar fark kabul edilir; 2 px'lik bir boşluk değişikliği bile ~%6 fark verir.
+- PNG'ler macOS'ta üretilir; CI da onları macOS'ta (`Mobile goldens` işi) kontrol eder, çünkü Linux yazıyı farklı çizer. Ubuntu'daki `Mobile` işi bunları `--exclude-tags golden` ile atlar. Başarısızlıkta fark görüntüleri `golden-failures` artifact'ı olarak saklanır.
+- Aynı platformdaki küçük çizim farkları için piksellerin %0,5'ine kadar fark kabul edilir; 2 px'lik bir boşluk değişikliği bile ~%6 fark verir.
 - Goldenlar referans PNG'lerin kopyası değildir; aşağıdaki farklar bilerek korunur. Görevleri, onaylanmış görünümün sonradan bozulmasını yakalamaktır.
 
 ### Referansla farklar
