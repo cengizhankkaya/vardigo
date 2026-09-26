@@ -19,6 +19,16 @@ flutter analyze
 flutter test
 ```
 
+## Görseller ve font
+
+- `assets/icons/`: case paketindeki 15 SVG ikon, değiştirilmeden. [AppIcon](lib/shared/design_system/components/app_icon.dart) ikonu orijinal renginde veya tek renge boyanmış çizer; star, check, send gibi beyaz maske ikonlar kullanıldıkları yerde boyanır.
+- `assets/fonts/urbanist/`: Urbanist 400, 500, 600, 700 (sürüm 1.3, [github.com/coreyhu/Urbanist](https://github.com/coreyhu/Urbanist)); lisans [OFL.txt](assets/fonts/urbanist/OFL.txt). Font uygulamayla birlikte gelir, internetten indirilmez. `liga` ve `calt` kapalı kullanılır.
+- Urbanist'te ₺ işareti yok; bu karakter sistem fontuyla çizilir.
+- `online.svg` içindeki çok hafif gölge (filtre) flutter_svg tarafından çizilmez; beyaz halka ve yeşil nokta görünür.
+- Aday fotoğrafları ve işletme logoları uygulamaya gömülmez; API'nin `/assets/...` adreslerinden yüklenir.
+
+Uygulama şimdilik [tasarım galerisi](lib/preview/design_preview_screen.dart) ile açılır: font ağırlıkları, Türkçe karakterler, tüm ikonlar ve referanstaki kullanım örnekleri.
+
 ## Klasörler
 
 - `lib/main.dart`: giriş noktası.
@@ -32,4 +42,4 @@ Feature'lar presentation/application/domain/data sınırlarıyla büyür. Domain
 
 ## Durum
 
-Boş uygulama iOS simülatöründe (iPhone 17 Pro) açılıyor. Android henüz denenmedi.
+Tasarım galerisi iOS simülatöründe (iPhone 17 Pro) açılıyor. Android henüz denenmedi.
