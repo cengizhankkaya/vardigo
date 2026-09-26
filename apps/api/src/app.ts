@@ -14,7 +14,7 @@ import { offersRoutes } from "./modules/offers/http/offers-routes.js";
 import { SqliteOffersRepository } from "./modules/offers/infrastructure/sqlite-offers-repository.js";
 import type { Database } from "./platform/database/connection.js";
 import { localhostCors } from "./platform/http/cors.js";
-import { errorHandler, notFoundHandler } from "./platform/http/error-handler.js";
+import { errorHandler, notFoundHandler, requireJsonBody } from "./platform/http/error-handler.js";
 import { sendOk } from "./platform/http/response.js";
 
 export interface AppDeps {
@@ -35,6 +35,7 @@ export function createApp({ db, now = Date.now }: AppDeps) {
   const app = express();
   app.disable("x-powered-by");
   app.use(localhostCors);
+  app.use(requireJsonBody);
   app.use(express.json());
 
   app.use("/assets", express.static(ASSETS_DIR, { index: false, dotfiles: "ignore", maxAge: "1h" }));

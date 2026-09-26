@@ -46,6 +46,30 @@ Token tarayıcıda hatırlanır; rol değiştirmek için Authorize'dan çıkış
 { "ok": false, "error": { "code": "NOT_FOUND", "message": "Endpoint bulunamadı" } }
 ```
 
+## Hata kodları
+
+İstemci davranışı `code` alanına göre seçer; `message` kullanıcıya gösterilebilecek Türkçe metindir. İç ayrıntılar (SQL, dosya yolu, stack trace) yanıta konmaz, yalnız sunucu loguna yazılır.
+
+| HTTP | `code` | Ne zaman |
+|---|---|---|
+| 400 | `INVALID_JSON` | Gövde geçerli JSON değil |
+| 400 | `VALIDATION_ERROR` | Alan eksik/yanlış tipte, geçersiz `tab`/`sort`/`status`, yanıt isteğine gövde gönderilmiş |
+| 400 | `EMPTY_SELECTION` | `workerIds` boş |
+| 400 | `DUPLICATE_WORKER_IDS` | Aynı aday iki kez seçilmiş |
+| 400 | `BAD_REQUEST` | Adreste bozuk karakter kodlaması |
+| 401 | `AUTH_REQUIRED` | `Authorization` başlığı yok |
+| 401 | `INVALID_TOKEN` | Token tanınmıyor |
+| 401 | `ROLE_NOT_ALLOWED` | Token başka role ait |
+| 404 | `NOT_FOUND` | Endpoint yok |
+| 404 | `CANDIDATE_NOT_FOUND` | Seçilen aday yok |
+| 404 | `OFFER_NOT_FOUND` | Talep yok veya başka kullanıcının |
+| 409 | `OFFER_PENDING_EXISTS` | Adayın bekleyen talebi var |
+| 409 | `OFFER_STATE` | Talep daha önce yanıtlanmış |
+| 409 | `OFFER_EXPIRED` | Talebin süresi dolmuş |
+| 413 | `PAYLOAD_TOO_LARGE` | Gövde 100 KB'tan büyük |
+| 415 | `UNSUPPORTED_MEDIA_TYPE` | Gövde JSON değil veya UTF-8 değil |
+| 500 | `INTERNAL_ERROR` | Beklenmeyen sunucu hatası |
+
 ## Endpoint'ler
 
 | Metot | Yol | Açıklama |
@@ -72,7 +96,7 @@ curl -X POST http://localhost:3000/api/auth/login \
 # {"ok":true,"data":{"token":"dev-employer","role":"employer"}}
 ```
 
-`role` alanı `employer` (işveren) veya `worker` (iş arayan) olabilir. Korumalı isteklerde token `Authorization: Bearer dev-employer` başlığıyla gönderilir. Token yoksa veya geçersizse `401 UNAUTHORIZED`, başka rolün token'ı kullanılırsa `401 ROLE_NOT_ALLOWED` döner.
+`role` alanı `employer` (işveren) veya `worker` (iş arayan) olabilir. Korumalı isteklerde token `Authorization: Bearer dev-employer` başlığıyla gönderilir. Token yoksa `401 AUTH_REQUIRED`, geçersizse `401 INVALID_TOKEN`, başka rolün token'ı kullanılırsa `401 ROLE_NOT_ALLOWED` döner. `Bearer` kelimesi büyük/küçük harf duyarsızdır.
 
 ## Adaylar (işveren)
 

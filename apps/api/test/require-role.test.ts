@@ -23,15 +23,21 @@ describe("requireRole", () => {
     expect(res.body).toEqual({ userId: "u_employer" });
   });
 
-  it.each([
-    ["missing header", undefined],
-    ["unknown token", "Bearer nope"],
-    ["wrong scheme", "Basic dev-employer"],
-  ])("returns 401 UNAUTHORIZED for %s", async (_name, header) => {
-    const req = request(app).get("/employer-only");
-    const res = await (header ? req.set("Authorization", header) : req);
+  it("returns 401 AUTH_REQUIRED without a header", async () => {
+    const res = await request(app).get("/employer-only");
     expect(res.status).toBe(401);
-    expect(res.body.error.code).toBe("UNAUTHORIZED");
+    expect(res.body.error).toEqual({ code: "AUTH_REQUIRED", message: "Giriş yapmanız gerekiyor" });
+  });
+
+  it.each(["Bearer nope", "Basic dev-employer", "Bearer"])("returns 401 INVALID_TOKEN for %j", async (header) => {
+    const res = await request(app).get("/employer-only").set("Authorization", header);
+    expect(res.status).toBe(401);
+    expect(res.body.error.code).toBe("INVALID_TOKEN");
+  });
+
+  it("accepts the scheme in any case", async () => {
+    const res = await request(app).get("/employer-only").set("Authorization", "bearer dev-employer");
+    expect(res.status).toBe(200);
   });
 
   it("returns 401 ROLE_NOT_ALLOWED for the other role", async () => {

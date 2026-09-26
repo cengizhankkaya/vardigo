@@ -32,7 +32,7 @@ npm run smoke
 ```text
 ✓ 1. İşveren adayları görür: 4 kişi (Merve Y., Ferhat C., Derya A., Ayşe K.)
 ✓ 2. Merve + Derya'ya talep: 201 created 2
-✓ 3. İş arayan talepleri görür: 5 bekleyen (yeni 2 + seed)
+✓ 3. İş arayan talepleri görür: 5 bekleyen (yeni 2 + önceden bekleyenler)
 ✓ 4. Biri kabul, biri ret: accept 200, reject 200
 ✓ 5. Cevaplananlar: accepted, rejected
 ✓ 6. Yenileyince aynı durum: accepted, rejected
