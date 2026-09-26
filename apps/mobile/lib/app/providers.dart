@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:http/http.dart' as http;
 
 import '../core/config/api_config.dart';
 import '../core/network/api_client.dart';
@@ -22,6 +23,13 @@ final apiClientProvider = Provider<ApiClient>(
     token: () => ref.read(sessionProvider)?.token,
   ),
 );
+
+/// Downloads SVG logos; tests replace it with an in-memory client.
+final svgHttpClientProvider = Provider<http.Client>((ref) {
+  final client = http.Client();
+  ref.onDispose(client.close);
+  return client;
+});
 
 final sessionRepositoryProvider = Provider<SessionRepository>(
   (ref) => ApiSessionRepository(ref.watch(apiClientProvider)),
