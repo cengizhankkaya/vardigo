@@ -1,6 +1,10 @@
 import '../../../../core/api/api_client.dart';
 import '../../../../core/api/json_reader.dart';
 import '../../domain/entities/candidate.dart';
+import '../../domain/entities/candidate_list.dart';
+import '../../domain/entities/candidate_sort.dart';
+import '../../domain/entities/candidate_tab.dart';
+import '../../domain/repositories/candidates_repository.dart';
 
 class ApiCandidatesRepository implements CandidatesRepository {
   ApiCandidatesRepository(this._api);

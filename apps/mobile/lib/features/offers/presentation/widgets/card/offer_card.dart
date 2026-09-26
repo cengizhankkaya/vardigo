@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../core/theme/theme.dart';
-import '../../../../../core/theme/tokens/app_dimens.dart';
+import '../../../../../core/theme/tokens/app_radius.dart';
 import '../../../../../core/theme/tokens/app_shadows.dart';
 import '../../../domain/entities/offer.dart';
 import 'offer_answer_buttons.dart';
 import 'offer_countdown.dart';
 import 'offer_details.dart';
+import 'offer_details_button.dart';
 import 'offer_status_label.dart';
 import 'offer_summary.dart';
 

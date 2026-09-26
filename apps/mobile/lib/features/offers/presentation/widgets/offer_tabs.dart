@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/l10n/l10n.dart';
 import '../../../../core/presentation/widgets/pill_tabs.dart';
+import '../../../../core/presentation/widgets/pill_tabs_style.dart';
 import '../../../../core/theme/theme.dart';
 import '../../../../core/theme/tokens/app_shadows.dart';
-import '../../domain/entities/offer.dart';
-import '../extensions/offer_labels.dart';
+import '../../domain/entities/offer_tab.dart';
+import '../extensions/offer_tab_labels.dart';
 
 /// Bekleyen / Cevaplanan / Süresi Dolan.
 class OfferTabs extends StatelessWidget {

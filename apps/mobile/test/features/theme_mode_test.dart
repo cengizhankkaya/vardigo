@@ -4,9 +4,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vardigo/app/app.dart';
 import 'package:vardigo/app/providers.dart';
-import 'package:vardigo/features/appearance/presentation/controllers/theme_mode_controller.dart';
-import 'package:vardigo/features/appearance/infrastructure/repositories/prefs_theme_mode_repository.dart';
 import 'package:vardigo/features/appearance/domain/entities/app_theme_mode.dart';
+import 'package:vardigo/features/appearance/infrastructure/repositories/in_memory_theme_mode_repository.dart';
+import 'package:vardigo/features/appearance/infrastructure/repositories/prefs_theme_mode_repository.dart';
+import 'package:vardigo/features/appearance/presentation/controllers/theme_mode_controller.dart';
 import 'package:vardigo/features/session/presentation/pages/role_select_screen.dart';
 import 'package:vardigo/gen/colors.gen.dart';
 

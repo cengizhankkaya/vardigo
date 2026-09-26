@@ -7,10 +7,10 @@ import '../../../../app/router/app_router.dart';
 import '../../../../core/l10n/l10n.dart';
 import '../../../../core/presentation/widgets/error_view.dart';
 import '../../../../core/theme/theme.dart';
-import '../../../../core/theme/tokens/app_dimens.dart';
+import '../../../../core/theme/tokens/app_spacing.dart';
 import '../../../appearance/presentation/widgets/theme_mode_picker.dart';
+import '../../domain/entities/role.dart';
 import '../controllers/session_controller.dart';
-import '../../domain/entities/session.dart';
 import '../widgets/role_card.dart';
 
 /// Demo entry: pick the employer or the job seeker account.

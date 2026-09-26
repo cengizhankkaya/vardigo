@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/l10n/l10n.dart';
-import '../../../../core/presentation/widgets/error_view.dart';
-import '../../../../core/theme/tokens/app_dimens.dart';
 import '../../../../core/presentation/extensions/snack_bar_context.dart';
+import '../../../../core/presentation/failure_message/error_text.dart';
 import '../../../../core/presentation/widgets/async_list_view.dart';
+import '../../../../core/theme/tokens/app_spacing.dart';
+import '../../domain/entities/candidate_list.dart';
+import '../../domain/entities/candidate_sort.dart';
+import '../../domain/entities/candidate_tab.dart';
+import '../controllers/candidate_query.dart';
 import '../controllers/candidates_controller.dart';
-import '../../domain/entities/candidate.dart';
+import '../controllers/submit_result.dart';
 import '../widgets/candidates_header.dart';
 import '../widgets/card/candidate_card.dart';
 import '../widgets/selection_row.dart';
@@ -110,7 +114,7 @@ class _CandidatesScreenState extends ConsumerState<CandidatesScreen> {
     final result = await ref.read(_controller.notifier).submit();
     if (result == null || !mounted) return;
     final l10n = context.l10n;
-    showAppSnackBar(context, switch (result) {
+    context.showAppSnackBar(switch (result) {
       SubmitSucceeded(:final count) => l10n.requestsSent(count),
       SubmitFailed(uncertain: true) => l10n.sendUncertain,
       SubmitFailed(:final error) => errorText(context, error),

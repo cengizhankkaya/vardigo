@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 
-import 'api_config.dart';
 import '../error/exceptions/api_exception.dart';
+import 'api_config.dart';
 
 /// Talks to the backend and unwraps its `{ ok, data | error }` envelope.
 /// Every failure becomes an [ApiException].

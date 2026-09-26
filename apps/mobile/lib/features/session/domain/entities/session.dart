@@ -1,5 +1,4 @@
-/// The two demo accounts of the case.
-enum Role { employer, worker }
+import 'role.dart';
 
 /// A logged-in demo account; [token] goes into every API call.
 class Session {
@@ -7,8 +6,4 @@ class Session {
 
   final String token;
   final Role role;
-}
-
-abstract interface class SessionRepository {
-  Future<Session> login(Role role);
 }

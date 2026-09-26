@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../app/providers.dart';
-import '../../../../../gen/assets.gen.dart';
 import '../../../../../core/presentation/widgets/app_icon.dart';
 import '../../../../../core/theme/theme.dart';
-import '../../../../../core/theme/tokens/app_dimens.dart';
+import '../../../../../core/theme/tokens/app_sizes.dart';
+import '../../../../../gen/assets.gen.dart';
 import '../../../domain/entities/candidate.dart';
 
 /// Round photo from the API, with the green badge when online.

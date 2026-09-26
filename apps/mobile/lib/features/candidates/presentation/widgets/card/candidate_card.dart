@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../../../../../core/presentation/widgets/app_checkbox.dart';
 import '../../../../../core/theme/theme.dart';
-import '../../../../../core/theme/tokens/app_dimens.dart';
+import '../../../../../core/theme/tokens/app_radius.dart';
 import '../../../../../core/theme/tokens/app_shadows.dart';
+import '../../../../../core/theme/tokens/app_spacing.dart';
 import '../../../domain/entities/candidate.dart';
 import 'candidate_avatar.dart';
 import 'candidate_info.dart';

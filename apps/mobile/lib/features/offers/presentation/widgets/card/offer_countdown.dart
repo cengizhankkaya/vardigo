@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../gen/assets.gen.dart';
 import '../../../../../core/l10n/l10n.dart';
 import '../../../../../core/presentation/widgets/app_icon.dart';
 import '../../../../../core/theme/theme.dart';
-import '../../../../../core/theme/tokens/app_dimens.dart';
+import '../../../../../core/theme/tokens/app_spacing.dart';
+import '../../../../../gen/assets.gen.dart';
 import '../../../domain/entities/offer.dart';
 
 /// "Teklifin sonlanmasına 21 saat 32 dakika kaldı." with the time in bold;

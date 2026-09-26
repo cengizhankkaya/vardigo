@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../l10n/l10n.dart';
-import '../widgets/primary_button.dart';
 import '../../theme/theme.dart';
-import '../../theme/tokens/app_dimens.dart';
+import '../../theme/tokens/app_spacing.dart';
+import '../widgets/primary_button.dart';
 
 /// Shown for an address with no screen, e.g. a mistyped deep link.
 class RouteErrorScreen extends StatelessWidget {

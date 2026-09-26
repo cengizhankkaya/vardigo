@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'tokens/app_text_styles.dart';
 import 'app_colors.dart';
+import 'tokens/app_text_styles.dart';
 
 /// The case's 10 text styles with this theme's default colours. Widgets read
 /// them with `context.textStyles.title18` and change only the colour with

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../../gen/assets.gen.dart';
 import '../../theme/theme.dart';
-import '../../theme/tokens/app_dimens.dart';
+import '../../theme/tokens/app_radius.dart';
+import '../../theme/tokens/app_sizes.dart';
 import 'app_icon.dart';
 
 /// Short icon + label button used inside cards. Dimmed when [onTap] is null.

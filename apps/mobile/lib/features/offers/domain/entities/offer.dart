@@ -1,9 +1,4 @@
-enum OfferStatus { pending, accepted, rejected, expired }
-
-/// Tabs on the job seeker screen; `answered` covers accepted and rejected.
-enum OfferTab { pending, answered, expired }
-
-enum OfferSort { recommended, expiring, pay }
+import 'offer_status.dart';
 
 class Offer {
   const Offer({
@@ -56,31 +51,4 @@ class Offer {
   bool isUrgentAt(DateTime now) => isPending && remainingAt(now) < urgentBelow;
 
   static const urgentBelow = Duration(hours: 6);
-}
-
-class OfferList {
-  const OfferList({
-    required this.pendingCount,
-    required this.pendingCountLabel,
-    required this.offers,
-  });
-
-  /// Real number of pending offers.
-  final int pendingCount;
-
-  /// Fixed header number from the reference design (12).
-  final int pendingCountLabel;
-  final List<Offer> offers;
-}
-
-abstract interface class OffersRepository {
-  Future<OfferList> fetch({OfferTab tab = OfferTab.pending, OfferSort? sort});
-
-  Future<Offer> detail(String id);
-
-  /// "İlgileniyorum". Returns the offer with its new status.
-  Future<Offer> accept(String id);
-
-  /// "İlgilenmiyorum". Returns the offer with its new status.
-  Future<Offer> reject(String id);
 }

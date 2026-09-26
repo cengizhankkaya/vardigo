@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../gen/assets.gen.dart';
 import '../../../../../core/l10n/l10n.dart';
 import '../../../../../core/presentation/widgets/app_icon.dart';
 import '../../../../../core/theme/theme.dart';
-import '../../../../../core/theme/tokens/app_dimens.dart';
+import '../../../../../core/theme/tokens/app_radius.dart';
+import '../../../../../core/theme/tokens/app_spacing.dart';
+import '../../../../../gen/assets.gen.dart';
 
 /// "Ücret beklentisi uyuşuyor · ₺25.000 / ay"; green when it fits, amber
 /// when it does not.

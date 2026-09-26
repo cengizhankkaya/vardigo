@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../gen/assets.gen.dart';
 import '../../../../core/l10n/l10n.dart';
 import '../../../../core/presentation/widgets/square_icon_button.dart';
 import '../../../../core/theme/theme.dart';
-import '../../../../core/theme/tokens/app_dimens.dart';
-import '../../domain/entities/offer.dart';
+import '../../../../core/theme/tokens/app_sizes.dart';
+import '../../../../core/theme/tokens/app_spacing.dart';
+import '../../../../gen/assets.gen.dart';
+import '../../domain/entities/offer_tab.dart';
 
 /// Back button, "Görüşme Talepleri" and a subtitle for the active tab.
 /// [pendingCount] is null until the first list arrives.

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/l10n/l10n.dart';
 import '../../../../core/presentation/widgets/sort_chip.dart';
 import '../../../../core/theme/theme.dart';
-import '../../domain/entities/candidate.dart';
+import '../../domain/entities/candidate_sort.dart';
 import '../extensions/candidate_sort_label.dart';
 
 /// "2 kişi seçildi" and the sort chip. [onSort] is null while sending.

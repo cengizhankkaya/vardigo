@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-import '../../../../gen/assets.gen.dart';
-import '../../../../gen/colors.gen.dart';
 import '../../../../core/l10n/l10n.dart';
 import '../../../../core/presentation/widgets/action_button.dart';
 import '../../../../core/presentation/widgets/app_icon.dart';
 import '../../../../core/presentation/widgets/primary_button.dart';
 import '../../../../core/theme/theme.dart';
-import '../../../../core/theme/tokens/app_dimens.dart';
+import '../../../../core/theme/tokens/app_spacing.dart';
+import '../../../../gen/assets.gen.dart';
+import '../../../../gen/colors.gen.dart';
 
 /// Development gallery: fonts, text styles, colours and icons as they render
 /// on the device, to catch a wrong token before building screens. Follows

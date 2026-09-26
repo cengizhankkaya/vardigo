@@ -3,9 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:vardigo/app/providers.dart';
 import 'package:vardigo/core/error/exceptions/api_exception.dart';
-import 'package:vardigo/features/candidates/presentation/pages/candidates_screen.dart';
 import 'package:vardigo/core/l10n/l10n.dart';
 import 'package:vardigo/core/theme/app_theme.dart';
+import 'package:vardigo/features/candidates/presentation/pages/candidates_screen.dart';
 
 import '../support/fake_repositories.dart';
 

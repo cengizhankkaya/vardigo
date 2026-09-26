@@ -2,9 +2,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../app/providers.dart';
 import '../../../../core/error/exceptions/api_exception.dart';
-import '../../domain/entities/candidate.dart';
-
-typedef CandidateQuery = ({CandidateTab tab, CandidateSort sort});
+import '../../domain/entities/candidate_list.dart';
+import '../../domain/entities/candidate_sort.dart';
+import '../../domain/entities/candidate_tab.dart';
+import 'candidate_query.dart';
+import 'candidates_state.dart';
+import 'submit_result.dart';
 
 /// One list per tab + sort. Switching back and forth reuses loaded lists;
 /// an answer for an old tab never shows up under the current one.
@@ -15,70 +18,12 @@ final candidateListProvider = FutureProvider.autoDispose
           .fetch(tab: query.tab, sort: query.sort),
     );
 
-/// Tab and sort the screen opens with when the link names none.
-const defaultCandidateQuery = (
-  tab: CandidateTab.perfect,
-  sort: CandidateSort.recommended,
-);
-
 /// One controller per screen visit, keyed by the tab and sort it opens with
 /// (from the route, e.g. `?tab=...`).
 final candidatesControllerProvider = NotifierProvider.autoDispose
     .family<CandidatesController, CandidatesState, CandidateQuery>(
       CandidatesController.new,
     );
-
-class CandidatesState {
-  const CandidatesState({
-    this.tab = CandidateTab.perfect,
-    this.sort = CandidateSort.recommended,
-    this.selected = const {},
-    this.submitting = false,
-    this.initialSelectionApplied = false,
-  });
-
-  final CandidateTab tab;
-  final CandidateSort sort;
-
-  /// Selected candidate ids across both tabs, in selection order.
-  final Set<String> selected;
-  final bool submitting;
-  final bool initialSelectionApplied;
-
-  CandidateQuery get query => (tab: tab, sort: sort);
-
-  CandidatesState copyWith({
-    CandidateTab? tab,
-    CandidateSort? sort,
-    Set<String>? selected,
-    bool? submitting,
-    bool? initialSelectionApplied,
-  }) => CandidatesState(
-    tab: tab ?? this.tab,
-    sort: sort ?? this.sort,
-    selected: selected ?? this.selected,
-    submitting: submitting ?? this.submitting,
-    initialSelectionApplied:
-        initialSelectionApplied ?? this.initialSelectionApplied,
-  );
-}
-
-sealed class SubmitResult {
-  const SubmitResult();
-}
-
-class SubmitSucceeded extends SubmitResult {
-  const SubmitSucceeded(this.count);
-  final int count;
-}
-
-class SubmitFailed extends SubmitResult {
-  const SubmitFailed(this.error);
-  final ApiException error;
-
-  /// No answer from the server: the requests may or may not exist.
-  bool get uncertain => error.isConnectionProblem;
-}
 
 class CandidatesController extends Notifier<CandidatesState> {
   CandidatesController(this.opening);

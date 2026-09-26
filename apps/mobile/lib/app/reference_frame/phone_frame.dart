@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../../core/theme/theme.dart';
+import '../../core/theme/tokens/app_frame.dart';
+import '../../core/theme/tokens/app_radius.dart';
+import '../../core/theme/tokens/app_shadows.dart';
 import '../../gen/assets.gen.dart';
 import '../../gen/colors.gen.dart';
-import '../../core/theme/theme.dart';
-import '../../core/theme/tokens/app_dimens.dart';
-import '../../core/theme/tokens/app_shadows.dart';
 
 /// The case's reference phone: 390×844 with a black bezel, Dynamic Island,
 /// 9:41 status bar and home pill, drawn around [child].
@@ -163,32 +164,6 @@ class _HomePill extends StatelessWidget {
         decoration: BoxDecoration(
           color: ColorName.homePill,
           borderRadius: BorderRadius.circular(AppRadius.pill),
-        ),
-      ),
-    );
-  }
-}
-
-/// Shows [child] inside a [PhoneFrame] centred on the device, scaled down in
-/// one ratio when the screen is smaller than the frame. Enabled with
-/// `--dart-define=REFERENCE_FRAME=true`.
-class ReferenceFrameView extends StatelessWidget {
-  const ReferenceFrameView({super.key, required this.child});
-
-  static const enabled = bool.fromEnvironment('REFERENCE_FRAME');
-
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return ColoredBox(
-      color: context.appColors.backdrop,
-      child: SafeArea(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(12),
-            child: FittedBox(child: PhoneFrame(child: child)),
-          ),
         ),
       ),
     );

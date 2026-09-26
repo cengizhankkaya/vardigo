@@ -2,8 +2,19 @@ import 'dart:async';
 
 import 'package:vardigo/core/error/exceptions/api_exception.dart';
 import 'package:vardigo/features/candidates/domain/entities/candidate.dart';
+import 'package:vardigo/features/candidates/domain/entities/candidate_list.dart';
+import 'package:vardigo/features/candidates/domain/entities/candidate_sort.dart';
+import 'package:vardigo/features/candidates/domain/entities/candidate_tab.dart';
+import 'package:vardigo/features/candidates/domain/repositories/candidates_repository.dart';
 import 'package:vardigo/features/offers/domain/entities/offer.dart';
+import 'package:vardigo/features/offers/domain/entities/offer_list.dart';
+import 'package:vardigo/features/offers/domain/entities/offer_sort.dart';
+import 'package:vardigo/features/offers/domain/entities/offer_status.dart';
+import 'package:vardigo/features/offers/domain/entities/offer_tab.dart';
+import 'package:vardigo/features/offers/domain/repositories/offers_repository.dart';
+import 'package:vardigo/features/session/domain/entities/role.dart';
 import 'package:vardigo/features/session/domain/entities/session.dart';
+import 'package:vardigo/features/session/domain/repositories/session_repository.dart';
 
 Candidate candidate(String id, {bool perfect = true}) => Candidate(
   id: id,

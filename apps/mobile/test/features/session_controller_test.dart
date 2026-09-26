@@ -6,9 +6,10 @@ import 'package:vardigo/core/api/api_config.dart';
 import 'package:vardigo/core/api/api_client.dart';
 import 'package:vardigo/core/error/exceptions/api_exception.dart';
 import 'package:vardigo/features/session/presentation/controllers/session_controller.dart';
-import 'package:vardigo/features/session/domain/entities/session.dart';
 
 import '../support/fake_adapter.dart';
+
+import 'package:vardigo/features/session/domain/entities/role.dart';
 
 void main() {
   late FakeAdapter adapter;

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../theme/tokens/app_spacing.dart';
 import 'empty_view.dart';
 import 'error_view.dart';
 import 'loading_view.dart';
-import '../../theme/tokens/app_dimens.dart';
 
 /// Pull-to-refresh list for a loaded value: [header] on top, then the items,
 /// or the loading, empty or error state in their place. A refresh keeps the

@@ -1,7 +1,12 @@
 import '../../../../core/api/api_client.dart';
-import '../../../../core/error/exceptions/api_exception.dart';
 import '../../../../core/api/json_reader.dart';
+import '../../../../core/error/exceptions/api_exception.dart';
 import '../../domain/entities/offer.dart';
+import '../../domain/entities/offer_list.dart';
+import '../../domain/entities/offer_sort.dart';
+import '../../domain/entities/offer_status.dart';
+import '../../domain/entities/offer_tab.dart';
+import '../../domain/repositories/offers_repository.dart';
 
 class ApiOffersRepository implements OffersRepository {
   ApiOffersRepository(this._api);

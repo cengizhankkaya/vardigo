@@ -1,8 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:vardigo/features/candidates/presentation/pages/candidates_screen.dart';
-import 'package:vardigo/features/session/domain/entities/session.dart';
 
 import '../support/test_app.dart';
+
+import 'package:vardigo/features/session/domain/entities/role.dart';
 
 void main() {
   testWidgets('"Tekrar dene" logs in again with the same account', (

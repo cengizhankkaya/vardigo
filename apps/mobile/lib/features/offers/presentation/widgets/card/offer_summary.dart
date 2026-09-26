@@ -3,12 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../../app/providers.dart';
-import '../../../../../gen/assets.gen.dart';
 import '../../../../../core/l10n/l10n.dart';
 import '../../../../../core/presentation/widgets/app_icon.dart';
 import '../../../../../core/presentation/widgets/inline_divider.dart';
 import '../../../../../core/theme/theme.dart';
-import '../../../../../core/theme/tokens/app_dimens.dart';
+import '../../../../../core/theme/tokens/app_sizes.dart';
+import '../../../../../core/theme/tokens/app_spacing.dart';
+import '../../../../../gen/assets.gen.dart';
 import '../../../domain/entities/offer.dart';
 
 /// Logo, title and pay, place, then district | date.

@@ -2,13 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/l10n/l10n.dart';
-import '../../../../core/presentation/widgets/error_view.dart';
-import '../../../../core/theme/tokens/app_dimens.dart';
 import '../../../../core/presentation/extensions/snack_bar_context.dart';
+import '../../../../core/presentation/failure_message/error_text.dart';
 import '../../../../core/presentation/widgets/async_list_view.dart';
-import '../controllers/offers_controller.dart';
+import '../../../../core/theme/tokens/app_spacing.dart';
 import '../../domain/entities/offer.dart';
-import '../extensions/offer_labels.dart';
+import '../../domain/entities/offer_list.dart';
+import '../../domain/entities/offer_sort.dart';
+import '../../domain/entities/offer_status.dart';
+import '../../domain/entities/offer_tab.dart';
+import '../controllers/offer_query.dart';
+import '../controllers/offers_controller.dart';
+import '../controllers/respond_result.dart';
+import '../extensions/offer_tab_labels.dart';
 import '../widgets/card/offer_card.dart';
 import '../widgets/offer_sort_row.dart';
 import '../widgets/offer_tabs.dart';
@@ -125,7 +131,7 @@ class _OffersScreenState extends ConsumerState<OffersScreen> {
         .respond(offer, accept: accept);
     if (!mounted) return;
     final l10n = context.l10n;
-    showAppSnackBar(context, switch (result) {
+    context.showAppSnackBar(switch (result) {
       Responded(offer: final o) when o.status == OfferStatus.accepted =>
         l10n.offerAccepted(o.title),
       Responded(offer: final o) => l10n.offerRejected(o.title),

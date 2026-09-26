@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../gen/assets.gen.dart';
 import '../../../../../core/l10n/l10n.dart';
 import '../../../../../core/presentation/widgets/action_button.dart';
 import '../../../../../core/theme/theme.dart';
+import '../../../../../gen/assets.gen.dart';
 
 /// "İlgilenmiyorum" and "İlgileniyorum"; both dimmed while [busy].
 class OfferAnswerButtons extends StatelessWidget {

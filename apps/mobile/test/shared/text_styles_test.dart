@@ -1,8 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:vardigo/gen/fonts.gen.dart';
 import 'package:vardigo/core/theme/tokens/app_text_styles.dart';
+import 'package:vardigo/gen/fonts.gen.dart';
 
 void main() {
   test('line height is converted from pixels to a multiplier', () {

@@ -3,10 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/l10n/l10n.dart';
 import '../../../../core/presentation/widgets/pill_tabs.dart';
+import '../../../../core/presentation/widgets/pill_tabs_style.dart';
 import '../../../../core/theme/theme.dart';
 import '../../../../core/theme/tokens/app_shadows.dart';
-import '../controllers/theme_mode_controller.dart';
 import '../../domain/entities/app_theme_mode.dart';
+import '../controllers/theme_mode_controller.dart';
 
 /// "Görünüm": Sistem / Açık / Koyu.
 class ThemeModePicker extends ConsumerWidget {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/theme/theme.dart';
-import '../../../../core/theme/tokens/app_dimens.dart';
+import '../../../../core/theme/tokens/app_radius.dart';
 import '../../../../core/theme/tokens/app_shadows.dart';
 
 /// One demo account: title, hint and a chevron, or a spinner while logging in.

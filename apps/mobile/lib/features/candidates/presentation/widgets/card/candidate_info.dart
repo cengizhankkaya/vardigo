@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../gen/assets.gen.dart';
 import '../../../../../core/presentation/widgets/app_icon.dart';
 import '../../../../../core/presentation/widgets/inline_divider.dart';
 import '../../../../../core/theme/theme.dart';
-import '../../../../../core/theme/tokens/app_dimens.dart';
+import '../../../../../core/theme/tokens/app_spacing.dart';
+import '../../../../../gen/assets.gen.dart';
 import '../../../domain/entities/candidate.dart';
 
 /// Name, then rating | attendance | distance.

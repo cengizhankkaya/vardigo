@@ -3,8 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../app/providers.dart';
 import '../../../../core/error/exceptions/api_exception.dart';
 import '../../domain/entities/offer.dart';
-
-typedef OfferQuery = ({OfferTab tab, OfferSort sort});
+import '../../domain/entities/offer_list.dart';
+import '../../domain/entities/offer_sort.dart';
+import '../../domain/entities/offer_tab.dart';
+import 'offer_query.dart';
+import 'offers_state.dart';
+import 'respond_result.dart';
 
 /// Current time; tests replace it.
 final clockProvider = Provider<DateTime Function()>((ref) => DateTime.now);
@@ -27,59 +31,10 @@ final offerDetailProvider = FutureProvider.autoDispose.family<Offer, String>(
   (ref, id) => ref.watch(offersRepositoryProvider).detail(id),
 );
 
-/// Tab and sort the screen opens with when the link names none.
-const defaultOfferQuery = (tab: OfferTab.pending, sort: OfferSort.recommended);
-
 /// One controller per screen visit, keyed by the tab and sort it opens with
 /// (from the route, e.g. `?tab=...`).
 final offersControllerProvider = NotifierProvider.autoDispose
     .family<OffersController, OffersState, OfferQuery>(OffersController.new);
-
-class OffersState {
-  const OffersState({
-    this.tab = OfferTab.pending,
-    this.sort = OfferSort.recommended,
-    this.busy = const {},
-    this.expanded = const {},
-  });
-
-  final OfferTab tab;
-  final OfferSort sort;
-
-  /// Offers with an accept/reject call in flight.
-  final Set<String> busy;
-
-  /// Offers with their details open.
-  final Set<String> expanded;
-
-  OfferQuery get query => (tab: tab, sort: sort);
-
-  OffersState copyWith({
-    OfferTab? tab,
-    OfferSort? sort,
-    Set<String>? busy,
-    Set<String>? expanded,
-  }) => OffersState(
-    tab: tab ?? this.tab,
-    sort: sort ?? this.sort,
-    busy: busy ?? this.busy,
-    expanded: expanded ?? this.expanded,
-  );
-}
-
-sealed class RespondResult {
-  const RespondResult();
-}
-
-class Responded extends RespondResult {
-  const Responded(this.offer);
-  final Offer offer;
-}
-
-class RespondFailed extends RespondResult {
-  const RespondFailed(this.error);
-  final ApiException error;
-}
 
 class OffersController extends Notifier<OffersState> {
   OffersController(this.opening);

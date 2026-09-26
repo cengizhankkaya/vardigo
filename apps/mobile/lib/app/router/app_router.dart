@@ -3,16 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../features/candidates/domain/entities/candidate.dart';
-import '../../features/candidates/presentation/pages/candidates_screen.dart';
-import '../../features/offers/domain/entities/offer.dart';
-import '../../features/offers/presentation/pages/offers_screen.dart';
-import '../../features/session/presentation/controllers/session_controller.dart';
-import '../../features/session/domain/entities/session.dart';
-import '../../features/session/presentation/pages/role_select_screen.dart';
-import '../../features/design_gallery/presentation/pages/design_preview_screen.dart';
-import 'route_definitions.dart';
 import '../../core/presentation/pages/route_error_screen.dart';
+import '../../features/candidates/domain/entities/candidate_sort.dart';
+import '../../features/candidates/domain/entities/candidate_tab.dart';
+import '../../features/candidates/presentation/pages/candidates_screen.dart';
+import '../../features/design_gallery/presentation/pages/design_preview_screen.dart';
+import '../../features/offers/domain/entities/offer_sort.dart';
+import '../../features/offers/domain/entities/offer_tab.dart';
+import '../../features/offers/presentation/pages/offers_screen.dart';
+import '../../features/session/domain/entities/role.dart';
+import '../../features/session/domain/entities/session.dart';
+import '../../features/session/presentation/controllers/session_controller.dart';
+import '../../features/session/presentation/pages/role_select_screen.dart';
+import 'route_definitions.dart';
 
 part '../../features/candidates/presentation/routes/candidates_routes.dart';
 part '../../features/offers/presentation/routes/offers_routes.dart';

@@ -5,9 +5,16 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:vardigo/app/providers.dart';
 import 'package:vardigo/core/error/exceptions/api_exception.dart';
 import 'package:vardigo/features/offers/presentation/controllers/offers_controller.dart';
-import 'package:vardigo/features/offers/domain/entities/offer.dart';
 
 import '../support/fake_repositories.dart';
+
+import 'package:vardigo/features/offers/domain/entities/offer_status.dart';
+import 'package:vardigo/features/offers/domain/entities/offer_tab.dart';
+import 'package:vardigo/features/offers/domain/entities/offer_sort.dart';
+import 'package:vardigo/features/offers/domain/entities/offer_list.dart';
+import 'package:vardigo/features/offers/presentation/controllers/offer_query.dart';
+import 'package:vardigo/features/offers/presentation/controllers/offers_state.dart';
+import 'package:vardigo/features/offers/presentation/controllers/respond_result.dart';
 
 void main() {
   late FakeOffersRepository repo;

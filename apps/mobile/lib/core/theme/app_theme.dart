@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 import '../../gen/fonts.gen.dart';
-import 'tokens/app_text_styles.dart';
 import 'app_colors.dart';
 import 'app_palette.dart';
 import 'app_text_theme.dart';
 import 'semantic_colors.dart';
+import 'tokens/app_text_styles.dart';
 
 /// Light (the reference design) and dark themes. Both use Urbanist with
 /// ligatures off, only case colours, and no Material ripple.

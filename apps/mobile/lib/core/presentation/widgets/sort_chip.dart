@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../gen/assets.gen.dart';
 import '../../theme/theme.dart';
-import '../../theme/tokens/app_dimens.dart';
+import '../../theme/tokens/app_radius.dart';
 import '../../theme/tokens/app_shadows.dart';
 import 'app_icon.dart';
 

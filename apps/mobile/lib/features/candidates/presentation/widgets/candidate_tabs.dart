@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/presentation/widgets/pill_tabs.dart';
+import '../../../../core/presentation/widgets/pill_tabs_style.dart';
 import '../../../../core/theme/theme.dart';
-import '../../../../core/theme/tokens/app_dimens.dart';
+import '../../../../core/theme/tokens/app_radius.dart';
 import '../../../../core/theme/tokens/app_shadows.dart';
-import '../../domain/entities/candidate.dart';
+import '../../domain/entities/candidate_tab.dart';
 
 /// "%100 Eşleşme (26)" / "Benzer Personeller (16)".
 class CandidateTabs extends StatelessWidget {

@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../app/providers.dart';
+import '../../domain/entities/role.dart';
 import '../../domain/entities/session.dart';
 
 /// The logged-in demo account, or null before login.

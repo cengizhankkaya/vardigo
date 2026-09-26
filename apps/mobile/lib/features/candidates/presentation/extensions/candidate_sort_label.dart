@@ -1,5 +1,5 @@
 import '../../../../core/l10n/l10n.dart';
-import '../../domain/entities/candidate.dart';
+import '../../domain/entities/candidate_sort.dart';
 
 extension CandidateSortLabel on CandidateSort {
   /// "Önerilen", "En Yakın", "Puan".
