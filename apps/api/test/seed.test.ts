@@ -73,6 +73,14 @@ describe("seedDatabase", () => {
     expect(count(db, "app_meta")).toBe(0);
   });
 
+  it.each(["4,8", "", "5.5", "abc"])("rejects rating %j", (rating) => {
+    const db = freshDb();
+    const broken = structuredClone(seedData);
+    broken.candidates[0]!.rating = rating;
+    expect(() => seedDatabase(db, NOW, broken)).toThrow(/rating/);
+    expect(count(db, "candidates")).toBe(0);
+  });
+
   it("rejects candidates whose perfect flag disagrees with score", () => {
     const db = freshDb();
     const broken = structuredClone(seedData);

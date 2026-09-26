@@ -18,10 +18,16 @@ export function resolveExpiresAt(value: string, now: number): number {
   return date;
 }
 
+// The rating sort compares Number(rating); "4,8" would become NaN and break it silently.
+const RATING = /^\d(\.\d+)?$/;
+
 function validate(data: SeedData): void {
   for (const candidate of data.candidates) {
     if (candidate.perfect !== isPerfect(candidate)) {
       throw new Error(`Seed adayı ${candidate.id}: perfect alanı score >= ${PERFECT_SCORE} ile uyuşmuyor`);
+    }
+    if (!RATING.test(candidate.rating) || Number(candidate.rating) > 5) {
+      throw new Error(`Seed adayı ${candidate.id}: rating 0-5 arası "4.9" biçiminde olmalı, gelen: ${candidate.rating}`);
     }
   }
   const userIds = new Set(data.users.map((user) => user.id));
