@@ -51,6 +51,7 @@ export function createApp({ db, now = Date.now }: AppDeps) {
     offersRoutes({
       create: { db, offers, candidates, job: demoJob, recipientUserId: DEMO_RECIPIENT_USER_ID, now },
       list: { db, offers, now },
+      respond: { db, offers, now },
       pendingCountLabel,
       detailExtras: demoOfferDetails,
       employerOnly,
