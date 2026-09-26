@@ -42,6 +42,21 @@ flutter gen-l10n                                           # metinler (flutter r
 - **Renkler** case'in design token listesindeki adlarla tutulur (`slate-700` → `ColorName.slate700`). XML'de alfa başta yazılır: CSS `#FB37481A` → `#1AFB3748`.
 - **Metinler** şimdilik yalnız Türkçe (`tr`). Yeni metin: `app_tr.arb` dosyasına anahtar ekle, `flutter gen-l10n` çalıştır, `context.l10n.anahtar` ile kullan. Yer tutuculu metinler (`{count}`) ARB'de tip bilgisiyle tanımlanır.
 
+## Tema ve token'lar
+
+Kod üretimiyle gelmeyen tasarım değerleri `lib/shared/design_system/` altında elle yazılmış sabitlerdir:
+
+| Dosya | İçerik | Kullanım |
+|---|---|---|
+| [tokens/app_text_styles.dart](lib/shared/design_system/tokens/app_text_styles.dart) | Case'in 10 yazı stili (boyut / ağırlık / satır yüksekliği, harf aralığı, varsayılan renk) | `Text('...', style: AppTextStyles.title18)` |
+| [tokens/app_dimens.dart](lib/shared/design_system/tokens/app_dimens.dart) | Boşluk, köşe yarıçapı ve boyutlar | `AppSpacing.page`, `AppRadius.card`, `AppSizes.avatar` |
+| [tokens/app_shadows.dart](lib/shared/design_system/tokens/app_shadows.dart) | Kart, buton, sekme ve telefon çerçevesi gölgeleri | `BoxDecoration(boxShadow: AppShadows.card)` |
+| [theme/app_theme.dart](lib/shared/design_system/theme/app_theme.dart) | Uygulama teması | `MaterialApp(theme: AppTheme.light())` |
+
+- Satır yüksekliği case'teki piksel değerinden çevrilir (18/24 → `height: 24 / 18`).
+- Rengi farklı kullanım için yalnız renk değiştirilir: `AppTextStyles.title16Semibold.copyWith(color: ColorName.green)`.
+- Tema varsayılan fontu Urbanist yapar, tüm metinlerde `liga`/`calt` kapalıdır ve Material dalga efekti kapalıdır.
+
 ## Görseller ve font
 
 - `assets/icons/`: case paketindeki 15 SVG ikon, değiştirilmeden. [AppIcon](lib/shared/design_system/components/app_icon.dart) ikonu orijinal renginde veya tek renge boyanmış çizer; star, check, send gibi beyaz maske ikonlar kullanıldıkları yerde boyanır.
@@ -50,7 +65,7 @@ flutter gen-l10n                                           # metinler (flutter r
 - `online.svg` içindeki çok hafif gölge (filtre) flutter_svg tarafından çizilmez; beyaz halka ve yeşil nokta görünür.
 - Aday fotoğrafları ve işletme logoları uygulamaya gömülmez; API'nin `/assets/...` adreslerinden yüklenir.
 
-Uygulama şimdilik [tasarım galerisi](lib/preview/design_preview_screen.dart) ile açılır: font ağırlıkları, Türkçe karakterler, tüm ikonlar ve referanstaki kullanım örnekleri.
+Uygulama şimdilik [tasarım galerisi](lib/preview/design_preview_screen.dart) ile açılır: font ağırlıkları, Türkçe karakterler, 10 yazı stili, ana renkler, tüm ikonlar ve referanstaki kullanım örnekleri.
 
 ## Klasörler
 
