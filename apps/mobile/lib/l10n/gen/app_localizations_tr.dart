@@ -246,12 +246,4 @@ class AppLocalizationsTr extends AppLocalizations {
   String detailPayWhen(String pay, String when) {
     return '$pay · $when';
   }
-
-  @override
-  String get offersHelp =>
-      'İşverenlerin sana gönderdiği görüşme talepleri burada. Süresi dolmadan İlgileniyorum veya İlgilenmiyorum diyebilirsin; kararın kaydedilir ve Cevaplanan sekmesine geçer.';
-
-  @override
-  String get offersComingSoon =>
-      'Görüşme Talepleri ekranı sonraki adımda eklenecek.';
 }

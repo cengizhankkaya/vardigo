@@ -188,7 +188,5 @@
         "type": "String"
       }
     }
-  },
-  "offersHelp": "İşverenlerin sana gönderdiği görüşme talepleri burada. Süresi dolmadan İlgileniyorum veya İlgilenmiyorum diyebilirsin; kararın kaydedilir ve Cevaplanan sekmesine geçer.",
-  "offersComingSoon": "Görüşme Talepleri ekranı sonraki adımda eklenecek."
+  }
 }

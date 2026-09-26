@@ -10,9 +10,9 @@ import '../../../shared/design_system/tokens/app_dimens.dart';
 import '../../../shared/design_system/tokens/app_shadows.dart';
 import '../../../shared/design_system/tokens/app_text_styles.dart';
 import '../../candidates/presentation/candidates_screen.dart';
+import '../../offers/presentation/offers_screen.dart';
 import '../application/session_controller.dart';
 import '../domain/session.dart';
-import 'worker_placeholder_screen.dart';
 
 /// Demo entry: pick the employer or the job seeker account.
 class RoleSelectScreen extends ConsumerStatefulWidget {
@@ -60,7 +60,7 @@ class _RoleSelectScreenState extends ConsumerState<RoleSelectScreen> {
       MaterialPageRoute<void>(
         builder: (_) => role == Role.employer
             ? const CandidatesScreen()
-            : const WorkerPlaceholderScreen(),
+            : const OffersScreen(),
       ),
     );
     session.logout();

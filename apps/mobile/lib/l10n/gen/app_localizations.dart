@@ -483,18 +483,6 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'{pay} · {when}'**
   String detailPayWhen(String pay, String when);
-
-  /// No description provided for @offersHelp.
-  ///
-  /// In tr, this message translates to:
-  /// **'İşverenlerin sana gönderdiği görüşme talepleri burada. Süresi dolmadan İlgileniyorum veya İlgilenmiyorum diyebilirsin; kararın kaydedilir ve Cevaplanan sekmesine geçer.'**
-  String get offersHelp;
-
-  /// No description provided for @offersComingSoon.
-  ///
-  /// In tr, this message translates to:
-  /// **'Görüşme Talepleri ekranı sonraki adımda eklenecek.'**
-  String get offersComingSoon;
 }
 
 class _AppLocalizationsDelegate
