@@ -1,9 +1,9 @@
+import { isPerfect, PERFECT_SCORE } from "../modules/candidates/domain/candidate.js";
 import { type Database, transaction } from "../platform/database/connection.js";
 import seedData from "./seed.json" with { type: "json" };
 
 export type SeedData = typeof seedData;
 
-const PERFECT_SCORE = 80;
 const SEED_MARKER = "seeded_at_ms";
 
 export function resolveExpiresAt(value: string, now: number): number {
@@ -20,7 +20,7 @@ export function resolveExpiresAt(value: string, now: number): number {
 
 function validate(data: SeedData): void {
   for (const candidate of data.candidates) {
-    if (candidate.perfect !== candidate.score >= PERFECT_SCORE) {
+    if (candidate.perfect !== isPerfect(candidate)) {
       throw new Error(`Seed adayı ${candidate.id}: perfect alanı score >= ${PERFECT_SCORE} ile uyuşmuyor`);
     }
   }

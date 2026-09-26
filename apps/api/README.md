@@ -42,6 +42,7 @@ Sunucu açılırken tabloları oluşturur ve veritabanı boşsa [src/demo/seed.j
 |---|---|---|
 | GET | `/api/health` | Sunucu ayakta mı |
 | POST | `/api/auth/login` | Demo hesabı için token döner |
+| GET | `/api/candidates` | İşveren: eşleşen adaylar |
 
 ## Giriş
 
@@ -56,12 +57,28 @@ curl -X POST http://localhost:3000/api/auth/login \
 
 `role` alanı `employer` (işveren) veya `worker` (iş arayan) olabilir. Korumalı isteklerde token `Authorization: Bearer dev-employer` başlığıyla gönderilir. Token yoksa veya geçersizse `401 UNAUTHORIZED`, başka rolün token'ı kullanılırsa `401 ROLE_NOT_ALLOWED` döner.
 
+## Adaylar (işveren)
+
+```bash
+curl "http://localhost:3000/api/candidates?tab=perfect&sort=near" \
+  -H "Authorization: Bearer dev-employer"
+```
+
+| Parametre | Değerler | Varsayılan |
+|---|---|---|
+| `tab` | `perfect` (score ≥ 80), `similar` (score < 80) | yok: tüm adaylar |
+| `sort` | `recommended` (score azalan), `near` (km artan), `rating` (puan azalan) | `recommended` |
+
+Geçersiz değer `400 VALIDATION_ERROR` döner. `totalPerfect` (26), `totalSimilar` (16) ve `selectedHint` (1) referans tasarımdaki sabit etiketlerdir; listedeki gerçek aday sayısı 4'tür. Eşit değerlerde seed sırası korunur.
+
 ## Klasörler
 
 - `src/app.ts`: Express uygulaması ve route bağlantıları.
 - `src/server.ts`: HTTP sunucusunu başlatır.
 - `src/bootstrap/`: ayarlar ve açılışta veritabanı hazırlığı.
 - `src/platform/`: HTTP yanıtları, SQLite bağlantısı ve migration'lar.
-- `src/modules/auth/`: demo login ve Bearer token rol kontrolü. candidates ve offers modülleri sonraki adımlarda eklenecek.
+- `src/modules/auth/`: demo login ve Bearer token rol kontrolü.
+- `src/modules/candidates/`: aday listeleme, sekme filtresi ve sıralama.
+- `src/modules/offers/`: sonraki adımlarda eklenecek.
 - `src/demo/`: case seed verisi, seed yükleyici ve reset komutu.
 - `test/`: Vitest + Supertest testleri.
