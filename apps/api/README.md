@@ -36,7 +36,7 @@ Sunucu çalışırken tarayıcıda **http://localhost:3000/api/docs** açılır.
 1. Sağ üstteki **Authorize** düğmesine `dev-employer` (işveren) veya `dev-worker` (iş arayan) yazın.
 2. Bir endpoint'i açıp **Try it out**, ardından **Execute** deyin; gerçek yanıt sayfada görünür.
 
-Token tarayıcıda hatırlanır; rol değiştirmek için Authorize'dan çıkış yapıp diğer token'ı girin. Ham OpenAPI belgesi: `/api/openapi.json` ([src/docs/openapi.ts](src/docs/openapi.ts)).
+Token tarayıcıda hatırlanır; rol değiştirmek için Authorize'dan çıkış yapıp diğer token'ı girin. Ham OpenAPI belgesi: `/api/openapi.json` ([src/swagger/openapi.ts](src/swagger/openapi.ts)).
 
 ## Cevap zarfı
 
@@ -156,7 +156,7 @@ curl "http://localhost:3000/api/offers?status=pending" -H "Authorization: Bearer
 
 - `src/app.ts`: Express uygulaması ve route bağlantıları.
 - `src/server.ts`: HTTP sunucusunu başlatır.
-- `src/docs/`: OpenAPI belgesi (Swagger).
+- `src/swagger/`: OpenAPI belgesi (Swagger arayüzünün kaynağı).
 - `src/bootstrap/`: ayarlar ve açılışta veritabanı hazırlığı.
 - `src/platform/`: HTTP yanıtları, SQLite bağlantısı ve migration'lar.
 - `src/modules/auth/`: demo login ve Bearer token rol kontrolü.

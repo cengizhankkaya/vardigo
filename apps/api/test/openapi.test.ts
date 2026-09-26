@@ -1,6 +1,6 @@
 import request from "supertest";
 import { beforeEach, describe, expect, it } from "vitest";
-import { openApiDocument } from "../src/docs/openapi.js";
+import { openApiDocument } from "../src/swagger/openapi.js";
 import { createTestApp } from "./support/test-app.js";
 
 describe("API docs", () => {

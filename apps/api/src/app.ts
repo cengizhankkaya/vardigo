@@ -1,6 +1,6 @@
 import express from "express";
 import swaggerUi from "swagger-ui-express";
-import { openApiDocument } from "./docs/openapi.js";
+import { openApiDocument } from "./swagger/openapi.js";
 import { DEMO_RECIPIENT_USER_ID, demoJob, demoOfferDetails } from "./demo/demo-job.js";
 import { candidateLabels, pendingCountLabel } from "./demo/labels.js";
 import { authRoutes } from "./modules/auth/http/auth-routes.js";
