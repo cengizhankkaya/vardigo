@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../l10n/l10n.dart';
 import '../shared/design_system/assets/app_icons.dart';
 import '../shared/design_system/components/app_icon.dart';
 
@@ -8,30 +9,29 @@ import '../shared/design_system/components/app_icon.dart';
 class DesignPreviewScreen extends StatelessWidget {
   const DesignPreviewScreen({super.key});
 
-  static const _sample = 'Eşleşen Personeller · ğüşıöç İŞĞ ₺25.000';
-
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.all(20),
           children: [
-            _text('Tasarım galerisi', 20, FontWeight.w600),
+            _text(l10n.galleryTitle, 20, FontWeight.w600),
             const SizedBox(height: 16),
-            _section('Urbanist'),
+            _section(l10n.galleryFontSection),
             for (final weight in [400, 500, 600, 700])
               Padding(
                 padding: const EdgeInsets.only(bottom: 6),
                 child: _text(
-                  '$weight  $_sample',
+                  '$weight  ${l10n.galleryFontSample}',
                   16,
                   FontWeight.values[weight ~/ 100 - 1],
                 ),
               ),
             const SizedBox(height: 16),
-            _section('İkonlar (orijinal renk, 24)'),
+            _section(l10n.galleryIconSection),
             Wrap(
               spacing: 12,
               runSpacing: 12,
@@ -50,7 +50,7 @@ class DesignPreviewScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 20),
-            _section('Kullanım örnekleri'),
+            _section(l10n.galleryUsageSection),
             Row(
               children: [
                 const AppIcon(AppIcons.star, color: Color(0xFFFA7319)),
@@ -85,7 +85,7 @@ class DesignPreviewScreen extends StatelessWidget {
                 Expanded(
                   child: _button(
                     AppIcons.close,
-                    'İlgilenmiyorum',
+                    l10n.notInterested,
                     const Color(0xFFFB3748),
                     const Color(0x1AFB3748),
                   ),
@@ -94,7 +94,7 @@ class DesignPreviewScreen extends StatelessWidget {
                 Expanded(
                   child: _button(
                     AppIcons.check,
-                    'İlgileniyorum',
+                    l10n.interested,
                     Colors.white,
                     const Color(0xFF1DAF61),
                   ),
@@ -104,7 +104,7 @@ class DesignPreviewScreen extends StatelessWidget {
             const SizedBox(height: 12),
             _button(
               AppIcons.send,
-              'Görüşme Talebi Gönder (1)',
+              l10n.sendRequest(1),
               Colors.white,
               const Color(0xFF335CFF),
               height: 44,
