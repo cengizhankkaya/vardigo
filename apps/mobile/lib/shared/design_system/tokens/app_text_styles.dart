@@ -7,6 +7,12 @@ import '../../../gen/fonts.gen.dart';
 /// letter spacing and default colour. Screens change only the colour with
 /// `copyWith(color: ...)`.
 abstract final class AppTextStyles {
+  /// The case asks for `liga` and `calt` off on every text.
+  static const noLigatures = [
+    FontFeature.disable('liga'),
+    FontFeature.disable('calt'),
+  ];
+
   /// "9:41" in the reference phone frame. 17 / 700 / 22, -0.3.
   static const statusTime = _Style(
     17,
@@ -108,12 +114,6 @@ class _Style extends TextStyle {
         leadingDistribution: TextLeadingDistribution.even,
         letterSpacing: tracking,
         color: color,
-        fontFeatures: noLigatures,
+        fontFeatures: AppTextStyles.noLigatures,
       );
-
-  /// The case asks for `liga` and `calt` off.
-  static const noLigatures = [
-    FontFeature.disable('liga'),
-    FontFeature.disable('calt'),
-  ];
 }
