@@ -67,7 +67,7 @@ flutter gen-l10n                                           # metinler (flutter r
 
 ## Tema ve token'lar
 
-Uygulamanın açık (referans tasarım) ve koyu teması vardır. Seçim rol ekranındaki **Görünüm: Sistem / Açık / Koyu** ile yapılır, cihazda saklanır ve uygulama yeniden açıldığında korunur.
+Uygulamanın açık (referans tasarım) ve koyu teması vardır. Seçim rol ekranındaki **Görünüm: Sistem / Açık / Koyu** ile yapılır, cihazda saklanır ve uygulama yeniden açıldığında korunur. Varsayılan **Açık**tır: cihaz koyu moddayken de case ekranları referansla aynı açılır; koyu tema yalnız seçilince devreye girer.
 
 ### Yapı
 

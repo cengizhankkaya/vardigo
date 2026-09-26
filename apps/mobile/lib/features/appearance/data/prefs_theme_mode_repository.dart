@@ -15,7 +15,7 @@ class PrefsThemeModeRepository implements ThemeModeRepository {
     final saved = _prefs.getString(_key);
     return AppThemeMode.values.firstWhere(
       (mode) => mode.name == saved,
-      orElse: () => AppThemeMode.system,
+      orElse: () => AppThemeMode.light,
     );
   }
 
@@ -25,7 +25,7 @@ class PrefsThemeModeRepository implements ThemeModeRepository {
 
 /// Keeps the choice only while the app runs; the default outside `main`.
 class InMemoryThemeModeRepository implements ThemeModeRepository {
-  AppThemeMode _mode = AppThemeMode.system;
+  AppThemeMode _mode = AppThemeMode.light;
 
   @override
   AppThemeMode read() => _mode;

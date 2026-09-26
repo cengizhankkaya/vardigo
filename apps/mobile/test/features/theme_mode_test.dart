@@ -12,22 +12,22 @@ import 'package:vardigo/gen/colors.gen.dart';
 
 void main() {
   group('PrefsThemeModeRepository', () {
-    test('starts on system and keeps what is written', () async {
+    test('starts on light and keeps what is written', () async {
       SharedPreferences.setMockInitialValues({});
       final prefs = await SharedPreferences.getInstance();
       final repo = PrefsThemeModeRepository(prefs);
-      expect(repo.read(), AppThemeMode.system);
+      expect(repo.read(), AppThemeMode.light);
 
       await repo.write(AppThemeMode.dark);
       expect(PrefsThemeModeRepository(prefs).read(), AppThemeMode.dark);
     });
 
-    test('an unknown saved value falls back to system', () async {
+    test('an unknown saved value falls back to light', () async {
       SharedPreferences.setMockInitialValues({'theme_mode': 'sepia'});
       final repo = PrefsThemeModeRepository(
         await SharedPreferences.getInstance(),
       );
-      expect(repo.read(), AppThemeMode.system);
+      expect(repo.read(), AppThemeMode.light);
     });
   });
 
