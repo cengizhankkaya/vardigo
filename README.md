@@ -2,7 +2,12 @@
 
 İki ekranlı case için Flutter mobil uygulama ve REST API.
 
-**Durum:** Backend tamamlandı: case'teki tüm endpoint'ler, SQLite kalıcılığı, Swagger ve testler hazır. Flutter ekranları henüz geliştirilmedi.
+**Durum:**
+
+| Parça | Durum |
+|---|---|
+| Backend | Tamamlandı: case'teki tüm endpoint'ler, SQLite kalıcılığı, Swagger, 131 test |
+| Mobil | Sıradaki adım: Flutter ekranları geliştirilecek |
 
 ## Hızlı başlangıç (backend)
 
@@ -33,12 +38,38 @@ npm run smoke
 ✓ 6. Yenileyince aynı durum: accepted, rejected
 ```
 
-Veriyi başlangıç haline döndürmek için `npm run db:reset`. Endpoint'ler, örnek istekler ve hata kodları: [apps/api/README.md](apps/api/README.md).
+Veriyi başlangıç haline döndürmek için `npm run db:reset`.
+
+## API özeti
+
+Tüm yanıtlar `{ ok: true, data }` veya `{ ok: false, error: { code, message } }` biçimindedir.
+
+| Metot | Yol | Rol | Açıklama |
+|---|---|---|---|
+| POST | `/api/auth/login` | — | `{ "role": "employer" \| "worker" }` → demo token |
+| GET | `/api/candidates` | İşveren | Eşleşen adaylar; `tab=perfect\|similar`, `sort=recommended\|near\|rating` |
+| POST | `/api/offers` | İşveren | `{ "workerIds": [...] }` → seçilen adaylara görüşme talebi |
+| GET | `/api/offers` | İş arayan | Talepler; `status=pending\|answered\|expired`, `sort=recommended\|expiring\|pay` |
+| GET | `/api/offers/:id` | İş arayan | Talep detayı |
+| POST | `/api/offers/:id/accept` | İş arayan | İlgileniyorum |
+| POST | `/api/offers/:id/reject` | İş arayan | İlgilenmiyorum |
+
+Örnek istekler, alanlar ve hata kodları: [apps/api/README.md](apps/api/README.md) veya Swagger.
+
+## Testler
+
+```bash
+cd apps/api
+npm test           # 131 test; her test kendi geçici veritabanını kullanır
+npm run typecheck
+```
+
+Case'in altı adımlık minimum testi, sunucu yeniden başlatma dahil [apps/api/test/minimum-flow.test.ts](apps/api/test/minimum-flow.test.ts) içinde de otomatik çalışır.
 
 ## Teknoloji
 
 - Backend: Node.js, TypeScript, Express 5, `node:sqlite`; testler Vitest + Supertest; Swagger UI.
-- Mobil: Flutter / Dart (sonraki adım).
+- Mobil: Flutter / Dart, iOS ve Android.
 - Paketler: backend npm, mobil Flutter pub.
 
 ## Klasörler
@@ -47,7 +78,7 @@ Veriyi başlangıç haline döndürmek için `npm run db:reset`. Endpoint'ler, �
 vardigo/
 ├── apps/
 │   ├── api/            # Backend (README, kaynak, testler, seed, görseller)
-│   └── mobile/         # Flutter iOS/Android (sonraki adım)
+│   └── mobile/         # Flutter iOS/Android
 ├── packages/contracts/ # İlk iskeletten kalan boş klasör
 ├── resources/          # İlk iskeletten kalan boş klasörler
 ├── scripts/
@@ -57,15 +88,16 @@ vardigo/
 
 ## Case yorumları
 
-Case paketindeki bazı bilgiler birbiriyle çelişiyor; uygulanan kararlar:
+Case paketindeki bazı bilgiler birbiriyle çelişiyor veya tanımsız; uygulanan kararlar:
 
 - **Sekmeler:** API spesifikasyonundaki score ≥ 80 kuralı esas alındı. "%100 Eşleşme" sekmesinde Merve ve Ferhat, "Benzer" sekmesinde Derya ve Ayşe görünür. Ekran spesifikasyonundaki "ikinci sekmede aynı kartlar ters sırada" ifadesi uygulanmadı.
 - **Başlık sayıları:** 26 / 16 ve bekleyen talep için 12, referans tasarımdaki sabit etiketlerdir (`totalPerfect`, `totalSimilar`, `pendingCountLabel`). Gerçek sayılar ayrı alanlarda döner: 4 aday, `pendingCount`.
 - **Aday ücret satırı:** Seed'de ücret bilgisi yok; kartlardaki "Ücret beklentisi uyuşuyor/uyuşmuyor · ₺25.000 / ay" değerleri referans tasarımdan alındı (Merve ve Ayşe uyuşuyor, Derya ve Ferhat uyuşmuyor).
+- **Talep sıralaması:** Referansta "Sırala: Önerilen" düğmesi var ama seçenekler tanımlı değil. Önerilen (en yeni önce), süresi en yakın biten ve ücret seçenekleri eklendi.
 - **Tek iş arayan:** Case'te bir iş arayan hesabı olduğu için hangi adaya gönderilirse gönderilsin talepler o hesabın gelen kutusuna düşer.
 - **Süre:** Seed'deki `USE_NOW_PLUS_21H32M` gibi süreler ilk kurulum anından hesaplanır. Yanıtlanmış talepler süre geçince `expired` olmaz.
 - **Giriş:** `dev-employer` / `dev-worker` token'ları case gereği sabit ve herkese açıktır; gerçek bir kimlik doğrulama değildir. Sunucu varsayılan olarak yalnız bu bilgisayardan erişilebilir (`127.0.0.1`).
 
 ## Geliştirme
 
-Her özellik ayrı bir branch'te küçük commit'lerle geliştirilir ve PR ile `main`'e birleştirilir. Testler ilgili özellikle aynı commit'lerde yazılır (`npm test`).
+Her özellik ayrı bir branch'te küçük commit'lerle geliştirilir ve merge commit ile `main`'e birleştirilir; her adım Git geçmişinde ayrı görünür. Testler ilgili özellikle aynı commit'lerde yazılır. Süreç notu: [SUREC.txt](SUREC.txt).
