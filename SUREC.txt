@@ -1,10 +1,39 @@
 VARDIGO — SÜREÇ NOTU (geliştikçe güncellenecek, en fazla 1 sayfa)
 
-26 Eylül 2026 — İlk adım
-Araçlar: Codex, terminal, Python ve Git.
-Kullanıcıyla belirlenen kapsam: Flutter mobil + Node.js/TypeScript/Express API + SQLite.
-Yapılanlar: apps/api ve apps/mobile başlangıç klasörleri, ortak sözleşme/kaynak
-alanları, README, mimari sınırlar, commit sırası ve ignore kuralları hazırlandı.
-Bu aşamada uygulama kodu, paket kurulumu, API veya ekran geliştirilmedi.
-Doğrulama: klasörler, yerel belge bağlantıları ve ilk commitin Git kapsamı.
-Uygulama build, cihaz ve API testleri henüz yapılmadı.
+ARAÇLAR
+Codex (ilk iskelet), Claude Code / Claude Opus 5.5 (backend), terminal, Git, GitHub Desktop.
+Node.js 25, Express 5, TypeScript 7, node:sqlite, Vitest + Supertest, Swagger UI.
+
+SIRA
+26 Eylül 2026 — İskelet: apps/api ve apps/mobile klasörleri, README, ignore kuralları.
+26 Eylül 2026 — Backend; her adım ayrı branch ve PR:
+  1. Express + TypeScript iskeleti ve case'in { ok, data | error } cevap zarfı
+  2. SQLite tabloları, migration ve seed.json'un bir kez yüklenmesi
+  3. Demo login ve Bearer token rol kontrolü
+  4. GET /candidates: score >= 80 sekmeleri ve sıralama
+  5. POST /offers: hepsi-ya-hiçbiri oluşturma, 400/404/409 kuralları
+  6. GET /offers ve detay: sekmeler, sunucuda hesaplanan kalan süre
+  7. Swagger (/api/docs): API'yi tarayıcıdan görerek ilerlemek için
+  8. Kabul/ret: kalıcı karar, süre dolunca 409
+  9. Fotoğraf/logo servisi ve yalnız localhost'a açık CORS
+  10. npm run smoke: case minimum testini çalışan sunucuya karşı koşturur
+Her adımda testler aynı commit'lerde yazıldı (125 test) ve sunucu elle denendi.
+
+TAKILDIĞIM NOKTALAR
+- Case paketi kendi içinde çelişiyor (Benzer sekmesi "ters sıra" mı score filtresi mi,
+  4 aday ama başlıkta 26/16, 3 teklif ama 12). API spesifikasyonu esas alındı;
+  tasarımdaki sayılar ayrı etiket alanlarında döndürüldü. README'de yazılı.
+- Süresi dolan teklif: hata dönerken transaction geri alınırsa teklif tekrar
+  "pending" kalıyordu. Kullanım senaryosu hata fırlatmak yerine sonuç döndürüyor;
+  "expired" güncellemesi kaydediliyor, 409 sonra üretiliyor. Testle doğrulandı.
+- .gitignore'daki "docs/" kuralı her docs klasörünü dışlıyordu; Swagger dosyası
+  Git'e girmiyordu. Kural "/docs/" yapıldı, klasör "swagger" olarak adlandırıldı.
+
+BİLEREK YAPILMAYANLAR
+- Gerçek kimlik doğrulama: case sabit demo token istiyor.
+- Docker: case "Docker veya tek komut" diyor; npm install && npm run dev yeterli.
+- pnpm workspace ve ayrı sözleşme paketi: tek paket için gereksiz bulundu.
+- Sayfalama, arama, yeni eşleştirme algoritması: case kapsamında değil.
+
+SIRADAKİ
+Flutter: tema/tokenlar, Eşleşen Personeller ekranı, Görüşme Talepleri ekranı, API bağlantısı.

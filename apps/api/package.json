@@ -11,6 +11,7 @@
     "build": "tsc -p tsconfig.build.json",
     "start": "node --disable-warning=ExperimentalWarning dist/server.js",
     "db:reset": "tsx --disable-warning=ExperimentalWarning src/demo/reset.ts",
+    "smoke": "tsx src/demo/smoke.ts",
     "typecheck": "tsc --noEmit",
     "test": "vitest run"
   },
