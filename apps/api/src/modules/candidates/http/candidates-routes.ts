@@ -2,7 +2,7 @@ import { type RequestHandler, Router } from "express";
 import { optionalQuery } from "../../../platform/http/query.js";
 import { sendOk } from "../../../platform/http/response.js";
 import { listCandidates } from "../application/list-candidates.js";
-import { type Candidate, CANDIDATE_SORTS, CANDIDATE_TABS, isPerfect } from "../domain/candidate.js";
+import { type Candidate, type CandidatePay, CANDIDATE_SORTS, CANDIDATE_TABS, isPerfect } from "../domain/candidate.js";
 import type { SqliteCandidatesRepository } from "../infrastructure/sqlite-candidates-repository.js";
 
 export interface CandidateLabels {
@@ -11,7 +11,12 @@ export interface CandidateLabels {
   selectedHint: number;
 }
 
-function toDto(candidate: Candidate) {
+/** "25.000", same style as the offer pay field. */
+function formatPay(value: number): string {
+  return value.toLocaleString("tr-TR", { maximumFractionDigits: 0 });
+}
+
+function toDto(candidate: Candidate, pay: CandidatePay | undefined) {
   return {
     id: candidate.id,
     name: candidate.name,
@@ -22,12 +27,15 @@ function toDto(candidate: Candidate) {
     online: candidate.online,
     perfect: isPerfect(candidate),
     score: candidate.score,
+    expectedPay: pay ? formatPay(pay.expectedPay) : null,
+    payCompatible: pay?.payCompatible ?? null,
   };
 }
 
 export function candidatesRoutes(
   candidates: SqliteCandidatesRepository,
   labels: CandidateLabels,
+  pay: Record<string, CandidatePay>,
   guard: RequestHandler,
 ): Router {
   const router = Router();
@@ -37,7 +45,7 @@ export function candidatesRoutes(
     const sort = optionalQuery(req.query.sort, "sort", CANDIDATE_SORTS);
     sendOk(res, {
       ...labels,
-      candidates: listCandidates(candidates.findAll(), { tab, sort }).map(toDto),
+      candidates: listCandidates(candidates.findAll(), { tab, sort }).map((c) => toDto(c, pay[c.id])),
     });
   });
 

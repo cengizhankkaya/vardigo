@@ -18,6 +18,12 @@ export interface Candidate {
   score: number;
 }
 
+/** Monthly pay the candidate expects and whether it fits the job. */
+export interface CandidatePay {
+  expectedPay: number;
+  payCompatible: boolean;
+}
+
 export function isPerfect(candidate: Pick<Candidate, "score">): boolean {
   return candidate.score >= PERFECT_SCORE;
 }
