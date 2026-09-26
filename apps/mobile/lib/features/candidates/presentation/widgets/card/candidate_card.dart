@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../shared/design_system/components/app_checkbox.dart';
-import '../../../../../shared/design_system/theme/theme.dart';
-import '../../../../../shared/design_system/tokens/app_dimens.dart';
-import '../../../../../shared/design_system/tokens/app_shadows.dart';
-import '../../../domain/candidate.dart';
+import '../../../../../core/presentation/widgets/app_checkbox.dart';
+import '../../../../../core/theme/theme.dart';
+import '../../../../../core/theme/tokens/app_radius.dart';
+import '../../../../../core/theme/tokens/app_shadows.dart';
+import '../../../../../core/theme/tokens/app_spacing.dart';
+import '../../../domain/entities/candidate.dart';
 import 'candidate_avatar.dart';
 import 'candidate_info.dart';
 import 'pay_match_line.dart';

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../core/presentation/widgets/app_icon.dart';
+import '../../../../../core/presentation/widgets/inline_divider.dart';
+import '../../../../../core/theme/theme.dart';
+import '../../../../../core/theme/tokens/app_spacing.dart';
 import '../../../../../gen/assets.gen.dart';
-import '../../../../../shared/design_system/components/app_icon.dart';
-import '../../../../../shared/design_system/components/inline_divider.dart';
-import '../../../../../shared/design_system/theme/theme.dart';
-import '../../../../../shared/design_system/tokens/app_dimens.dart';
-import '../../../domain/candidate.dart';
+import '../../../domain/entities/candidate.dart';
 
 /// Name, then rating | attendance | distance.
 class CandidateInfo extends StatelessWidget {

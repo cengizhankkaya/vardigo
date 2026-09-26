@@ -2,10 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:vardigo/core/theme/theme.dart';
+import 'package:vardigo/core/theme/tokens/app_text_styles.dart';
 import 'package:vardigo/gen/colors.gen.dart';
 import 'package:vardigo/gen/fonts.gen.dart';
-import 'package:vardigo/shared/design_system/theme/theme.dart';
-import 'package:vardigo/shared/design_system/tokens/app_text_styles.dart';
 
 /// Every colour in assets/colors/colors.xml, the case palette.
 Set<Color> _casePalette() {

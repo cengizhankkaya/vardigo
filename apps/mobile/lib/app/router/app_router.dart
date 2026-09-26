@@ -3,21 +3,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../features/candidates/domain/candidate.dart';
-import '../../features/candidates/presentation/candidates_screen.dart';
-import '../../features/offers/domain/offer.dart';
-import '../../features/offers/presentation/offers_screen.dart';
-import '../../features/session/application/session_controller.dart';
-import '../../features/session/domain/session.dart';
-import '../../features/session/presentation/role_select_screen.dart';
-import '../../preview/design_preview_screen.dart';
+import '../../core/presentation/pages/route_error_screen.dart';
+import '../../features/candidates/domain/entities/candidate_sort.dart';
+import '../../features/candidates/domain/entities/candidate_tab.dart';
+import '../../features/candidates/presentation/pages/candidates_screen.dart';
+import '../../features/design_gallery/presentation/pages/design_preview_screen.dart';
+import '../../features/offers/domain/entities/offer_sort.dart';
+import '../../features/offers/domain/entities/offer_tab.dart';
+import '../../features/offers/presentation/pages/offers_screen.dart';
+import '../../features/session/domain/entities/role.dart';
+import '../../features/session/domain/entities/session.dart';
+import '../../features/session/presentation/controllers/session_controller.dart';
+import '../../features/session/presentation/pages/role_select_screen.dart';
 import 'route_definitions.dart';
-import 'route_error_screen.dart';
 
-part '../../features/candidates/presentation/routes/candidates_route.dart';
-part '../../features/offers/presentation/routes/offers_route.dart';
-part '../../features/session/presentation/routes/role_select_route.dart';
-part '../../preview/gallery_route.dart';
+part '../../features/candidates/presentation/routes/candidates_routes.dart';
+part '../../features/offers/presentation/routes/offers_routes.dart';
+part '../../features/session/presentation/routes/session_routes.dart';
+part '../../features/design_gallery/presentation/routes/design_gallery_routes.dart';
 part 'app_router.g.dart';
 part 'route_guard.dart';
 

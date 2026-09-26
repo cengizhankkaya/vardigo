@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:vardigo/core/presentation/widgets/app_icon.dart';
 import 'package:vardigo/gen/assets.gen.dart';
 import 'package:vardigo/gen/colors.gen.dart';
-import 'package:vardigo/shared/design_system/components/app_icon.dart';
 
 void main() {
   test('generated icon list matches the files on disk', () {

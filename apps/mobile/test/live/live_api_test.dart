@@ -6,11 +6,12 @@ import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:vardigo/app/providers.dart';
-import 'package:vardigo/core/config/api_config.dart';
-import 'package:vardigo/features/candidates/domain/candidate.dart';
-import 'package:vardigo/features/offers/domain/offer.dart';
-import 'package:vardigo/features/session/application/session_controller.dart';
-import 'package:vardigo/features/session/domain/session.dart';
+import 'package:vardigo/core/api/api_config.dart';
+import 'package:vardigo/features/candidates/domain/entities/candidate_tab.dart';
+import 'package:vardigo/features/offers/domain/entities/offer_status.dart';
+import 'package:vardigo/features/offers/domain/entities/offer_tab.dart';
+import 'package:vardigo/features/session/domain/entities/role.dart';
+import 'package:vardigo/features/session/presentation/controllers/session_controller.dart';
 
 /// Runs the case flow through the app's repositories against a real server:
 /// LIVE_API_ORIGIN=http://127.0.0.1:3000 flutter test test/live

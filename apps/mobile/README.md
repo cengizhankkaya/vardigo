@@ -51,7 +51,7 @@ Kodda dosya yolu, hex renk, font adı veya Türkçe metin elle yazılmaz; hepsi 
 | İkonlar | `assets/icons/*.svg` | `lib/gen/assets.gen.dart` | `AppIcon(Assets.icons.star, color: ColorName.warning)` |
 | Renkler | `assets/colors/colors.xml` | `lib/gen/colors.gen.dart` | `ColorName.primary`, `ColorName.errorSoft` |
 | Font | `pubspec.yaml` → `fonts` | `lib/gen/fonts.gen.dart` | `FontFamily.urbanist` |
-| Metinler | `lib/l10n/app_tr.arb` | `lib/l10n/gen/` | `context.l10n.sendRequest(2)` |
+| Metinler | `lib/core/l10n/app_tr.arb` | `lib/core/l10n/gen/` | `context.l10n.sendRequest(2)` |
 
 Kaynak dosyayı değiştirdikten sonra:
 
@@ -67,30 +67,30 @@ flutter gen-l10n                                           # metinler (flutter r
 
 ## Tema ve token'lar
 
-Uygulamanın açık (referans tasarım) ve koyu teması vardır. Seçim rol ekranındaki **Görünüm: Sistem / Açık / Koyu** ile yapılır, cihazda saklanır ve uygulama yeniden açıldığında korunur.
+Uygulamanın açık (referans tasarım) ve koyu teması vardır. Seçim rol ekranındaki **Görünüm: Sistem / Açık / Koyu** ile yapılır, cihazda saklanır ve uygulama yeniden açıldığında korunur. Varsayılan **Açık**tır: cihaz koyu moddayken de case ekranları referansla aynı açılır; koyu tema yalnız seçilince devreye girer.
 
 ### Yapı
 
 ```text
-lib/shared/design_system/
-├── tokens/                 # renksiz ölçüler: yazı boyutları, boşluk, köşe, gölge
-│   ├── app_text_styles.dart
-│   ├── app_dimens.dart
+lib/core/theme/                # tema yapılandırması (yalnız veri, durum yok)
+├── tokens/                    # renksiz ölçüler
+│   ├── app_text_styles.dart   # yazı boyutları
+│   ├── app_spacing.dart, app_radius.dart, app_sizes.dart, app_frame.dart
 │   └── app_shadows.dart
-└── theme/                  # tema yapılandırması (yalnız veri, durum yok)
-    ├── app_palette.dart      # açık/koyu renk setleri; yalnız case paleti (ColorName)
-    ├── app_colors.dart       # ThemeExtension: metin seviyeleri, yüzeyler, kenarlıklar
-    ├── semantic_colors.dart  # ThemeExtension: success, warning, info
-    ├── app_text_theme.dart   # ThemeExtension: case'in 10 yazı stili, temanın renkleriyle
-    ├── app_theme.dart        # AppTheme.light() / AppTheme.dark()
-    ├── theme_context.dart    # context.appColors / semanticColors / textStyles
-    └── theme.dart            # barrel
+├── app_palette.dart           # açık/koyu renk setleri; yalnız case paleti (ColorName)
+├── app_colors.dart            # ThemeExtension: metin seviyeleri, yüzeyler, kenarlıklar
+├── semantic_colors.dart       # ThemeExtension: success, warning, info
+├── app_text_theme.dart        # ThemeExtension: case'in 10 yazı stili, temanın renkleriyle
+├── app_theme.dart             # AppTheme.light() / AppTheme.dark()
+├── theme_context.dart         # context.appColors / semanticColors / textStyles
+└── theme.dart                 # barrel
 
-lib/features/appearance/    # tema durumu (Riverpod)
-├── domain/app_theme_mode.dart              # AppThemeMode { system, light, dark }
-├── data/prefs_theme_mode_repository.dart   # shared_preferences ile saklama
-├── application/theme_mode_controller.dart  # themeModeControllerProvider
-└── presentation/theme_mode_picker.dart     # Görünüm seçici
+lib/features/appearance/                       # tema durumu (Riverpod)
+├── domain/entities/app_theme_mode.dart        # AppThemeMode { system, light, dark }
+├── domain/repositories/theme_mode_repository.dart
+├── infrastructure/repositories/               # shared_preferences ve bellek içi
+├── presentation/controllers/theme_mode_controller.dart  # themeModeControllerProvider
+└── presentation/widgets/theme_mode_picker.dart          # Görünüm seçici
 ```
 
 ### Kurallar
@@ -122,10 +122,10 @@ lib/features/appearance/    # tema durumu (Riverpod)
 
 | Dosya | İçerik |
 |---|---|
-| [tokens/app_text_styles.dart](lib/shared/design_system/tokens/app_text_styles.dart) | Case'in 10 yazı stili: boyut / ağırlık / satır yüksekliği, harf aralığı; renksiz |
-| [theme/app_text_theme.dart](lib/shared/design_system/theme/app_text_theme.dart) | Aynı stiller, temanın varsayılan renkleriyle (`context.textStyles`) |
-| [tokens/app_dimens.dart](lib/shared/design_system/tokens/app_dimens.dart) | Boşluk, köşe yarıçapı ve boyutlar: `AppSpacing.page`, `AppRadius.card` |
-| [tokens/app_shadows.dart](lib/shared/design_system/tokens/app_shadows.dart) | Kart, buton, sekme ve telefon çerçevesi gölgeleri |
+| [tokens/app_text_styles.dart](lib/core/theme/tokens/app_text_styles.dart) | Case'in 10 yazı stili: boyut / ağırlık / satır yüksekliği, harf aralığı; renksiz |
+| [app_text_theme.dart](lib/core/theme/app_text_theme.dart) | Aynı stiller, temanın varsayılan renkleriyle (`context.textStyles`) |
+| [tokens/](lib/core/theme/tokens/) `app_spacing`, `app_radius`, `app_sizes` | Boşluk, köşe yarıçapı ve boyutlar: `AppSpacing.page`, `AppRadius.card`, `AppSizes.avatar` |
+| [tokens/app_shadows.dart](lib/core/theme/tokens/app_shadows.dart) | Kart, buton, sekme ve telefon çerçevesi gölgeleri |
 
 - Satır yüksekliği case'teki piksel değerinden çevrilir (18/24 → `height: 24 / 18`).
 - Farklı kullanım için yalnız renk değiştirilir: `text.title16Semibold.copyWith(color: semantic.success)`.
@@ -133,23 +133,23 @@ lib/features/appearance/    # tema durumu (Riverpod)
 
 ## Görseller ve font
 
-- `assets/icons/`: case paketindeki 15 SVG ikon, değiştirilmeden. [AppIcon](lib/shared/design_system/components/app_icon.dart) ikonu orijinal renginde veya tek renge boyanmış çizer; star, check, send gibi beyaz maske ikonlar kullanıldıkları yerde boyanır.
+- `assets/icons/`: case paketindeki 15 SVG ikon, değiştirilmeden. [AppIcon](lib/core/presentation/widgets/app_icon.dart) ikonu orijinal renginde veya tek renge boyanmış çizer; star, check, send gibi beyaz maske ikonlar kullanıldıkları yerde boyanır.
 - `assets/fonts/urbanist/`: Urbanist 400, 500, 600, 700 (sürüm 1.3, [github.com/coreyhu/Urbanist](https://github.com/coreyhu/Urbanist)); lisans [OFL.txt](assets/fonts/urbanist/OFL.txt). Font uygulamayla birlikte gelir, internetten indirilmez. `liga` ve `calt` kapalı kullanılır.
 - Urbanist'te ₺ işareti yok; bu karakter sistem fontuyla çizilir.
 - `online.svg` içindeki çok hafif gölge (filtre) flutter_svg tarafından çizilmez; beyaz halka ve yeşil nokta görünür.
 - Aday fotoğrafları ve işletme logoları uygulamaya gömülmez; API'nin `/assets/...` adreslerinden yüklenir.
 
-[Tasarım galerisi](lib/preview/design_preview_screen.dart) (debug derlemede rol ekranından açılır): font ağırlıkları, Türkçe karakterler, 10 yazı stili, ana renkler, tüm ikonlar ve referanstaki kullanım örnekleri.
+[Tasarım galerisi](lib/features/design_gallery/presentation/pages/design_preview_screen.dart) (debug derlemede rol ekranından açılır): font ağırlıkları, Türkçe karakterler, 10 yazı stili, ana renkler, tüm ikonlar ve referanstaki kullanım örnekleri.
 
 ## Telefon çerçevesi
 
-Case, referanstaki gibi siyah bezel ve Dynamic Island'lı bir telefon çerçevesi istiyor. `REFERENCE_FRAME=true` ile uygulama [PhoneFrame](lib/preview/phone_frame.dart) içinde açılır:
+Case, referanstaki gibi siyah bezel ve Dynamic Island'lı bir telefon çerçevesi istiyor. `REFERENCE_FRAME=true` ile uygulama [PhoneFrame](lib/app/reference_frame/phone_frame.dart) içinde açılır:
 
 - Dış kutu 390×844, bezel 11 px, köşe yarıçapı 54 / 44, gölge ve 1 px iç çizgi.
 - Status bar: solda 9:41, ortada 126×37 Dynamic Island ve lens, sağda sinyal/Wi-Fi/batarya (`levels.svg`). En altta 135×5 home pill.
 - Ekranlar 368×822 iç alanda çizilir. Status bar (54) ve home alanı (30) ekranlara güvenli alan olarak verilir; ekranlar `SafeArea` ile referanstaki yerleşime oturur, çerçeve için ayrı kod içermez.
 - Ekran çerçeveden küçükse çerçeve tek oranla küçültülür.
-- Ölçüler `AppFrame` token'larındadır ([app_dimens.dart](lib/shared/design_system/tokens/app_dimens.dart)).
+- Ölçüler `AppFrame` token'larındadır ([app_frame.dart](lib/core/theme/tokens/app_frame.dart)).
 
 Bayrak olmadan uygulama cihazın kendi ekran kenarlarını ve güvenli alanını kullanır; sahte saat veya çentik çizilmez.
 
@@ -157,30 +157,60 @@ Referansta Dynamic Island yerine çentik görünür; case metni Dynamic Island i
 
 ## Klasörler
 
-- `lib/main.dart`: giriş noktası.
-- `lib/app/`: uygulama kökü; yönlendirme ve bağımlılık bağlantıları.
-- `lib/core/`: ağ, hata ve saat gibi ortak altyapı.
-- `lib/shared/design_system/`: renk, tipografi, tema ve ortak bileşenler (buton, sekme, checkbox, boş/yükleniyor/hata görünümleri).
-- `lib/shared/widgets/`: ekranlara ortak, Riverpod bilen parçalar: `AsyncListView` (yenilenebilir liste + yükleniyor/boş/hata) ve `showAppSnackBar`.
-- `lib/features/`: session, candidates ve offers.
-- `lib/preview/`: tasarım galerisi ve case'in 390×844 telefon çerçevesi görünümü.
-
-Feature'lar presentation/application/domain/data sınırlarıyla büyür. Domain Flutter UI, Dio veya Riverpod bilmez; widget HTTP isteği yapmaz.
-
-Presentation katmanı ekran ve widget olarak ayrılır:
+Kod teknik katmana göre değil, iş alanına (feature) göre düzenlenir; her feature kendi katmanlarını içinde taşır.
 
 ```text
-features/offers/presentation/
-├── offers_screen.dart          # provider'ları okur, parçaları birleştirir
-├── offer_labels.dart           # enum → Türkçe metin (sekme, sıralama, boş liste)
-└── widgets/
-    ├── offers_header.dart, offer_tabs.dart, offer_sort_row.dart
-    └── card/                   # offer_card.dart ve parçaları: özet, butonlar,
-                                # detay, durum etiketi, geri sayım
+lib/
+├── main.dart                  # yalnız bootstrap() çağırır
+├── bootstrap.dart             # ilk kareden önceki kurulum (shared_preferences, ProviderScope)
+├── app/                       # uygulama seviyesi: feature'ları birbirine bağlar
+│   ├── app.dart               # MaterialApp.router, tema modu
+│   ├── providers.dart         # composition root: repository ve API provider'ları
+│   ├── router/                # go_router hub'ı (aşağıda)
+│   └── reference_frame/       # 390×844 telefon çerçevesi
+├── core/                      # feature bilmeyen ortak altyapı
+│   ├── api/                   # ApiClient (Dio), ApiConfig, JSON okuma
+│   ├── error/exceptions/      # ApiException
+│   ├── l10n/                  # app_tr.arb, üretilen AppLocalizations, context.l10n
+│   ├── theme/                 # tema, palet, ThemeExtension'lar, tokens/
+│   └── presentation/
+│       ├── widgets/           # PrimaryButton, PillTabs, AsyncListView, ErrorView ...
+│       ├── pages/             # RouteErrorScreen (bilinmeyen adres)
+│       ├── extensions/        # context.showAppSnackBar
+│       └── failure_message/   # errorText: hata → Türkçe mesaj
+├── features/
+│   ├── session/               # demo giriş, rol seçimi
+│   ├── candidates/            # eşleşen personeller (işveren)
+│   ├── offers/                # görüşme talepleri (iş arayan)
+│   ├── appearance/            # tema seçimi
+│   └── design_gallery/        # yalnız presentation: debug tasarım galerisi
+└── gen/                       # FlutterGen çıktısı (asset, renk, font)
 ```
 
-- Provider'ları ekran okur; `widgets/` altındakiler değer ve callback alır. İstisnalar yalnız sunucu adresinden görsel URL'si kuran avatar/logo ve açılınca yüklenen talep detayıdır.
-- Bir parça iki feature'da kullanılıyorsa `shared/` altına taşınır; iki ekranın sekme tasarımı aynı `PillTabs` bileşenini farklı `PillTabsStyle` ile kullanır.
+Bir feature'ın içi:
+
+```text
+features/offers/
+├── domain/
+│   ├── entities/              # Offer, OfferList, OfferStatus, OfferTab, OfferSort
+│   └── repositories/          # OffersRepository (arayüz)
+├── infrastructure/
+│   └── repositories/          # ApiOffersRepository (Dio + JSON → entity)
+└── presentation/
+    ├── controllers/           # Riverpod: OffersController, OffersState, OfferQuery, RespondResult
+    ├── pages/                 # OffersScreen: provider'ları okur, parçaları birleştirir
+    ├── routes/                # offers_routes.dart (part of app_router.dart)
+    ├── extensions/            # enum → Türkçe metin (sekme, sıralama, boş liste)
+    └── widgets/               # başlık, sekmeler, card/ (özet, butonlar, detay, geri sayım)
+```
+
+Kurallar:
+
+- **Bağımlılık yönü:** feature → core serbesttir; `core/` hiçbir feature'ı ve `app/`'i import etmez. Feature'ları birbirine bağlayan her şey (router, composition root, telefon çerçevesi) `app/`'tedir.
+- **Dosya başına bir public tip**, dosya adı sınıf adının snake_case hâli. İstisna: `SubmitResult` ve `RespondResult` `sealed` aileleri; Dart alt sınıfların aynı dosyada olmasını şart koşar.
+- Domain Flutter UI, Dio veya Riverpod bilmez; widget HTTP isteği yapmaz. Provider'ları sayfa okur; `widgets/` altındakiler değer ve callback alır. İstisnalar: sunucu adresinden görsel URL'si kuran avatar/logo ve açılınca yüklenen talep detayı.
+- Bir parça yalnız bir feature'da kullanılıyorsa o feature'da kalır; iki feature kullanıyorsa `core/presentation/widgets/`'e taşınır. İki ekranın sekme tasarımı aynı `PillTabs` bileşenini farklı `PillTabsStyle` ile kullanır.
+- Kurallardan bilerek alınmayanlar: Bloc ve getIt/injectable (proje Riverpod kullanır), `application/usecases` (controller'lar repository'yi doğrudan çağırır; iki ekranlık akış için ayrı use case katmanı gereksiz), DTO/mapper ve Failure tipleri (repository'ler JSON'u doğrudan entity'ye çevirir, hatalar `ApiException`), build flavor'ları (tek ortam).
 
 ## Gezinme (go_router)
 
@@ -192,9 +222,8 @@ lib/app/router/
 ├── app_router.g.dart        # üretilen: $appRoutes, route mixin'leri (depoya dahil)
 ├── route_definitions.dart   # yol ve ad sabitleri
 ├── route_guard.dart         # guardRedirect, requiredRoleFor, homeLocationFor
-└── route_error_screen.dart  # bilinmeyen adres sayfası
-features/*/presentation/routes/*_route.dart   # route sınıfları (part of app_router.dart)
-preview/gallery_route.dart
+features/*/presentation/routes/*_routes.dart  # route sınıfları (part of app_router.dart)
+core/presentation/pages/route_error_screen.dart  # bilinmeyen adres sayfası
 ```
 
 | Adres | Ekran | Kim açabilir |

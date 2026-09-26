@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../core/l10n/l10n.dart';
+import '../../../../../core/presentation/widgets/app_icon.dart';
+import '../../../../../core/theme/theme.dart';
+import '../../../../../core/theme/tokens/app_spacing.dart';
 import '../../../../../gen/assets.gen.dart';
-import '../../../../../l10n/l10n.dart';
-import '../../../../../shared/design_system/components/app_icon.dart';
-import '../../../../../shared/design_system/theme/theme.dart';
-import '../../../../../shared/design_system/tokens/app_dimens.dart';
-import '../../../domain/offer.dart';
+import '../../../domain/entities/offer.dart';
 
 /// "Teklifin sonlanmasına 21 saat 32 dakika kaldı." with the time in bold;
 /// red when little time is left.

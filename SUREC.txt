@@ -22,9 +22,11 @@ Mobil
   15. Eşleşen Personeller: sekme, sıralama, sekmeler arası seçim, gönderim
   16. Görüşme Talepleri: sekmeler, kabul/ret, detay, geri sayım, sıralama
   17. 390×844 telefon çerçevesi (REFERENCE_FRAME) ve tek komutluk demo.sh
-  18. Koyu tema: renkler ThemeExtension'larla temadan okunur, yalnız case paleti;
-      seçim Riverpod + shared_preferences ile saklanır
+  18. Koyu tema (case dışı ek, varsayılan Açık; case ekranları her cihazda referansla aynı):
+      renkler ThemeExtension'larla temadan okunur, yalnız case paleti; seçim cihazda saklanır
   19. go_router: tip güvenli route'lar, rol koruması, vardigo:// deep link, hata sayfası
+  20. Feature-first yapı: core/ (api, theme, l10n, ortak widget'lar) ve feature başına
+      domain / infrastructure / presentation; dosya başına bir public tip
 Sonuç: 144 backend + 88 mobil test; her ekran referans PNG ile simülatörde yan yana karşılaştırıldı.
 
 TAKILDIĞIM NOKTALAR

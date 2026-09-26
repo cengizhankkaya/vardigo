@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../app/providers.dart';
+import '../../../../../core/presentation/widgets/app_icon.dart';
+import '../../../../../core/theme/theme.dart';
+import '../../../../../core/theme/tokens/app_sizes.dart';
 import '../../../../../gen/assets.gen.dart';
-import '../../../../../shared/design_system/components/app_icon.dart';
-import '../../../../../shared/design_system/theme/theme.dart';
-import '../../../../../shared/design_system/tokens/app_dimens.dart';
-import '../../../domain/candidate.dart';
+import '../../../domain/entities/candidate.dart';
 
 /// Round photo from the API, with the green badge when online.
 class CandidateAvatar extends ConsumerWidget {

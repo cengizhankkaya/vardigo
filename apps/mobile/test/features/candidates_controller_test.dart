@@ -3,11 +3,17 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:vardigo/app/providers.dart';
-import 'package:vardigo/core/network/api_exception.dart';
-import 'package:vardigo/features/candidates/application/candidates_controller.dart';
-import 'package:vardigo/features/candidates/domain/candidate.dart';
+import 'package:vardigo/core/error/exceptions/api_exception.dart';
+import 'package:vardigo/features/candidates/presentation/controllers/candidates_controller.dart';
 
 import '../support/fake_repositories.dart';
+
+import 'package:vardigo/features/candidates/domain/entities/candidate_tab.dart';
+import 'package:vardigo/features/candidates/domain/entities/candidate_sort.dart';
+import 'package:vardigo/features/candidates/domain/entities/candidate_list.dart';
+import 'package:vardigo/features/candidates/presentation/controllers/candidate_query.dart';
+import 'package:vardigo/features/candidates/presentation/controllers/candidates_state.dart';
+import 'package:vardigo/features/candidates/presentation/controllers/submit_result.dart';
 
 void main() {
   late FakeCandidatesRepository repo;

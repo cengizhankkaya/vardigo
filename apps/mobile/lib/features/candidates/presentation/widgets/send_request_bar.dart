@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/l10n/l10n.dart';
+import '../../../../core/presentation/widgets/primary_button.dart';
+import '../../../../core/theme/theme.dart';
 import '../../../../gen/assets.gen.dart';
-import '../../../../l10n/l10n.dart';
-import '../../../../shared/design_system/components/primary_button.dart';
-import '../../../../shared/design_system/theme/theme.dart';
 
 /// Bottom bar with "Görüşme Talebi Gönder (N)"; disabled with no selection.
 class SendRequestBar extends StatelessWidget {

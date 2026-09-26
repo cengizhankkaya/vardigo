@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:vardigo/core/config/api_config.dart';
-import 'package:vardigo/core/network/api_client.dart';
-import 'package:vardigo/core/network/api_exception.dart';
+import 'package:vardigo/core/api/api_client.dart';
+import 'package:vardigo/core/api/api_config.dart';
+import 'package:vardigo/core/error/exceptions/api_exception.dart';
 
 import '../support/fake_adapter.dart';
 

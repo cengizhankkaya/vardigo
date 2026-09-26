@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:vardigo/l10n/l10n.dart';
+import 'package:vardigo/core/l10n/l10n.dart';
 
 void main() {
   test('Turkish is the only and default locale', () {

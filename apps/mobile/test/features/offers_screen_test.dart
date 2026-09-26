@@ -4,12 +4,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:vardigo/app/providers.dart';
-import 'package:vardigo/core/network/api_exception.dart';
-import 'package:vardigo/features/offers/application/offers_controller.dart';
-import 'package:vardigo/features/offers/presentation/offers_screen.dart';
+import 'package:vardigo/core/error/exceptions/api_exception.dart';
+import 'package:vardigo/core/l10n/l10n.dart';
+import 'package:vardigo/core/theme/app_theme.dart';
+import 'package:vardigo/features/offers/presentation/controllers/offers_controller.dart';
+import 'package:vardigo/features/offers/presentation/pages/offers_screen.dart';
 import 'package:vardigo/gen/colors.gen.dart';
-import 'package:vardigo/l10n/l10n.dart';
-import 'package:vardigo/shared/design_system/theme/app_theme.dart';
 
 import '../support/fake_repositories.dart';
 

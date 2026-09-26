@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../../l10n/l10n.dart';
-import '../../../../shared/design_system/theme/theme.dart';
+import '../../../../core/l10n/l10n.dart';
+import '../../../../core/theme/theme.dart';
 
 /// Bottom sheet behind the "?" button: what the tabs and selection mean.
 Future<void> showCandidatesHelp(BuildContext context) =>

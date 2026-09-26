@@ -4,30 +4,31 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vardigo/app/app.dart';
 import 'package:vardigo/app/providers.dart';
-import 'package:vardigo/features/appearance/application/theme_mode_controller.dart';
-import 'package:vardigo/features/appearance/data/prefs_theme_mode_repository.dart';
-import 'package:vardigo/features/appearance/domain/app_theme_mode.dart';
-import 'package:vardigo/features/session/presentation/role_select_screen.dart';
+import 'package:vardigo/features/appearance/domain/entities/app_theme_mode.dart';
+import 'package:vardigo/features/appearance/infrastructure/repositories/in_memory_theme_mode_repository.dart';
+import 'package:vardigo/features/appearance/infrastructure/repositories/prefs_theme_mode_repository.dart';
+import 'package:vardigo/features/appearance/presentation/controllers/theme_mode_controller.dart';
+import 'package:vardigo/features/session/presentation/pages/role_select_screen.dart';
 import 'package:vardigo/gen/colors.gen.dart';
 
 void main() {
   group('PrefsThemeModeRepository', () {
-    test('starts on system and keeps what is written', () async {
+    test('starts on light and keeps what is written', () async {
       SharedPreferences.setMockInitialValues({});
       final prefs = await SharedPreferences.getInstance();
       final repo = PrefsThemeModeRepository(prefs);
-      expect(repo.read(), AppThemeMode.system);
+      expect(repo.read(), AppThemeMode.light);
 
       await repo.write(AppThemeMode.dark);
       expect(PrefsThemeModeRepository(prefs).read(), AppThemeMode.dark);
     });
 
-    test('an unknown saved value falls back to system', () async {
+    test('an unknown saved value falls back to light', () async {
       SharedPreferences.setMockInitialValues({'theme_mode': 'sepia'});
       final repo = PrefsThemeModeRepository(
         await SharedPreferences.getInstance(),
       );
-      expect(repo.read(), AppThemeMode.system);
+      expect(repo.read(), AppThemeMode.light);
     });
   });
 

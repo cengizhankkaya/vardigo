@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/l10n/l10n.dart';
+import '../../../../core/presentation/widgets/square_icon_button.dart';
+import '../../../../core/theme/theme.dart';
+import '../../../../core/theme/tokens/app_spacing.dart';
 import '../../../../gen/assets.gen.dart';
-import '../../../../l10n/l10n.dart';
-import '../../../../shared/design_system/components/square_icon_button.dart';
-import '../../../../shared/design_system/theme/theme.dart';
-import '../../../../shared/design_system/tokens/app_dimens.dart';
-import '../../domain/candidate.dart';
+import '../../domain/entities/candidate_tab.dart';
 import 'candidate_tabs.dart';
 import 'candidates_help_sheet.dart';
 

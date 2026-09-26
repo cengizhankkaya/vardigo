@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../../../l10n/l10n.dart';
-import '../../../../shared/design_system/components/sort_chip.dart';
-import '../../../../shared/design_system/theme/theme.dart';
-import '../../domain/candidate.dart';
-import '../candidate_labels.dart';
+import '../../../../core/l10n/l10n.dart';
+import '../../../../core/presentation/widgets/sort_chip.dart';
+import '../../../../core/theme/theme.dart';
+import '../../domain/entities/candidate_sort.dart';
+import '../extensions/candidate_sort_label.dart';
 
 /// "2 kişi seçildi" and the sort chip. [onSort] is null while sending.
 class SelectionRow extends StatelessWidget {

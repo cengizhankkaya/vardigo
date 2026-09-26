@@ -1,16 +1,19 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:vardigo/core/config/api_config.dart';
-import 'package:vardigo/core/network/api_client.dart';
-import 'package:vardigo/core/network/api_exception.dart';
-import 'package:vardigo/features/candidates/data/api_candidates_repository.dart';
-import 'package:vardigo/features/candidates/domain/candidate.dart';
-import 'package:vardigo/features/offers/data/api_offers_repository.dart';
-import 'package:vardigo/features/offers/domain/offer.dart';
-import 'package:vardigo/features/session/data/api_session_repository.dart';
-import 'package:vardigo/features/session/domain/session.dart';
+import 'package:vardigo/core/api/api_config.dart';
+import 'package:vardigo/core/api/api_client.dart';
+import 'package:vardigo/core/error/exceptions/api_exception.dart';
+import 'package:vardigo/features/candidates/infrastructure/repositories/api_candidates_repository.dart';
+import 'package:vardigo/features/offers/infrastructure/repositories/api_offers_repository.dart';
+import 'package:vardigo/features/session/infrastructure/repositories/api_session_repository.dart';
 
 import '../support/fake_adapter.dart';
+
+import 'package:vardigo/features/candidates/domain/entities/candidate_tab.dart';
+import 'package:vardigo/features/candidates/domain/entities/candidate_sort.dart';
+import 'package:vardigo/features/offers/domain/entities/offer_status.dart';
+import 'package:vardigo/features/offers/domain/entities/offer_sort.dart';
+import 'package:vardigo/features/session/domain/entities/role.dart';
 
 /// Parses responses captured from the real backend, so the Dart models and
 /// the API contract cannot drift apart silently.
