@@ -118,6 +118,18 @@ abstract class AppLocalizations {
   /// **'Eşleşen Personeller · ğüşıöç İŞĞ ₺25.000'**
   String get galleryFontSample;
 
+  /// No description provided for @galleryTextStyleSection.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yazı stilleri'**
+  String get galleryTextStyleSection;
+
+  /// No description provided for @galleryColorSection.
+  ///
+  /// In tr, this message translates to:
+  /// **'Renkler'**
+  String get galleryColorSection;
+
   /// No description provided for @galleryIconSection.
   ///
   /// In tr, this message translates to:

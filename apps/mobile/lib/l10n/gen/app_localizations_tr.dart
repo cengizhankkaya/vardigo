@@ -22,6 +22,12 @@ class AppLocalizationsTr extends AppLocalizations {
   String get galleryFontSample => 'Eşleşen Personeller · ğüşıöç İŞĞ ₺25.000';
 
   @override
+  String get galleryTextStyleSection => 'Yazı stilleri';
+
+  @override
+  String get galleryColorSection => 'Renkler';
+
+  @override
   String get galleryIconSection => 'İkonlar (orijinal renk, 24)';
 
   @override
