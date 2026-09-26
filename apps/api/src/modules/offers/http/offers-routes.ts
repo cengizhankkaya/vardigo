@@ -4,6 +4,7 @@ import { HttpError, sendOk } from "../../../platform/http/response.js";
 import { currentUser } from "../../auth/http/require-role.js";
 import { createOffers, type CreateOffersDeps } from "../application/create-offers.js";
 import { getOffer, listOffers, type ListOffersDeps } from "../application/list-offers.js";
+import { type Decision, respondToOffer, type RespondToOfferDeps } from "../application/respond-to-offer.js";
 import { formatRemain, type Offer, OFFER_STATUS_FILTERS } from "../domain/offer.js";
 
 const MAX_WORKER_IDS = 100;
@@ -11,6 +12,7 @@ const MAX_WORKER_IDS = 100;
 export interface OffersRoutesDeps {
   create: CreateOffersDeps;
   list: ListOffersDeps;
+  respond: RespondToOfferDeps;
   pendingCountLabel: number;
   detailExtras: { city: string; note: string };
   employerOnly: RequestHandler;
@@ -35,6 +37,15 @@ function parseWorkerIds(body: unknown): string[] {
     throw new HttpError(400, "DUPLICATE_WORKER_IDS", "Aynı personel birden fazla kez seçilemez");
   }
   return workerIds;
+}
+
+/** Accept/reject take no input; an empty body or `{}` is fine, anything else is a mistake. */
+function assertNoBody(body: unknown): void {
+  const isEmptyObject =
+    typeof body === "object" && body !== null && !Array.isArray(body) && Object.keys(body).length === 0;
+  if (body !== undefined && !isEmptyObject) {
+    throw new HttpError(400, "VALIDATION_ERROR", "Bu istek gövde almaz");
+  }
 }
 
 function toDto(offer: Offer, now: number) {
@@ -89,6 +100,25 @@ export function offersRoutes(deps: OffersRoutesDeps): Router {
     }
     sendOk(res, { ...toDto(offer, now), ...deps.detailExtras });
   });
+
+  const respond = (decision: Decision): RequestHandler => (req, res) => {
+    assertNoBody(req.body);
+    const result = respondToOffer(deps.respond, currentUser(res).id, req.params.id as string, decision);
+    switch (result.kind) {
+      case "responded":
+        sendOk(res, toDto(result.offer, result.now));
+        return;
+      case "not_found":
+        throw new HttpError(404, "OFFER_NOT_FOUND", "Teklif bulunamadı");
+      case "expired":
+        throw new HttpError(409, "OFFER_EXPIRED", "Teklifin süresi doldu");
+      case "already_answered":
+        throw new HttpError(409, "OFFER_STATE", "Bu teklif daha önce yanıtlandı");
+    }
+  };
+
+  router.post("/:id/accept", deps.workerOnly, respond("accepted"));
+  router.post("/:id/reject", deps.workerOnly, respond("rejected"));
 
   return router;
 }

@@ -39,6 +39,25 @@ const offerExample = {
   expiresAt: "2026-09-27T07:03:00.000Z",
 };
 
+const respondOperation = (decision: "accepted" | "rejected", summary: string) => ({
+  tags: ["Talepler"],
+  summary,
+  description: "Gövde almaz. Yalnız bekleyen ve süresi dolmamış talep yanıtlanabilir; karar kalıcıdır.",
+  security: [{ bearer: [] }],
+  parameters: [{ name: "id", in: "path", required: true, schema: { type: "string" }, example: "o_garson" }],
+  responses: {
+    200: ok("Güncel talep", { $ref: "#/components/schemas/Offer" }, { ...offerExample, status: decision }),
+    400: errorResponse("Gövde gönderildi", "VALIDATION_ERROR", "Bu istek gövde almaz"),
+    401: unauthorized,
+    404: errorResponse("Talep yok", "OFFER_NOT_FOUND", "Teklif bulunamadı"),
+    409: errorResponse(
+      "Daha önce yanıtlandı (OFFER_STATE) veya süresi doldu (OFFER_EXPIRED)",
+      "OFFER_EXPIRED",
+      "Teklifin süresi doldu",
+    ),
+  },
+});
+
 export const openApiDocument = {
   openapi: "3.1.0",
   info: {
@@ -283,6 +302,12 @@ export const openApiDocument = {
           404: errorResponse("Talep yok", "OFFER_NOT_FOUND", "Teklif bulunamadı"),
         },
       },
+    },
+    "/offers/{id}/accept": {
+      post: respondOperation("accepted", "İlgileniyorum (iş arayan)"),
+    },
+    "/offers/{id}/reject": {
+      post: respondOperation("rejected", "İlgilenmiyorum (iş arayan)"),
     },
   },
 };

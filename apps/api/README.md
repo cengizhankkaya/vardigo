@@ -56,6 +56,8 @@ Token tarayıcıda hatırlanır; rol değiştirmek için Authorize'dan çıkış
 | POST | `/api/offers` | İşveren: seçilen adaylara görüşme talebi |
 | GET | `/api/offers` | İş arayan: talepler (sekmeye göre) |
 | GET | `/api/offers/:id` | İş arayan: talep detayı |
+| POST | `/api/offers/:id/accept` | İş arayan: ilgileniyorum |
+| POST | `/api/offers/:id/reject` | İş arayan: ilgilenmiyorum |
 
 ## Giriş
 
@@ -152,6 +154,44 @@ curl "http://localhost:3000/api/offers?status=pending" -H "Authorization: Bearer
 
 `GET /api/offers/:id` aynı alanlara ek olarak `city` ve `note` döner; bulunamazsa `404 OFFER_NOT_FOUND`.
 
+## Talebi yanıtlama (iş arayan)
+
+```bash
+curl -X POST http://localhost:3000/api/offers/o_garson/accept -H "Authorization: Bearer dev-worker"
+curl -X POST http://localhost:3000/api/offers/o_barista/reject -H "Authorization: Bearer dev-worker"
+```
+
+Başarıda `200` ve güncel talep döner (`status: "accepted"` veya `"rejected"`). Karar veritabanına yazılır; sayfa yenilense veya sunucu yeniden başlasa da korunur ve sonradan değiştirilemez.
+
+| Durum | Yanıt |
+|---|---|
+| Talep daha önce kabul/ret edilmiş | `409 OFFER_STATE` |
+| Süresi dolmuş (`expiresAt` anı dahil) | `409 OFFER_EXPIRED` "Teklifin süresi doldu"; talep `expired` olur |
+| Talep yok veya başkasının | `404 OFFER_NOT_FOUND` |
+| İşveren token'ı | `401 ROLE_NOT_ALLOWED` |
+| Dolu gövde gönderildi | `400 VALIDATION_ERROR` |
+
+## Case minimum testi
+
+Case'teki altı adımlık akış [test/minimum-flow.test.ts](test/minimum-flow.test.ts) içinde otomatik çalışır (sunucu yeniden başlatma dahil). Elle denemek için:
+
+```bash
+npm run db:reset && npm run dev
+# 1. işveren: 4 aday
+curl http://localhost:3000/api/candidates -H "Authorization: Bearer dev-employer"
+# 2. Merve + Derya'ya talep
+curl -X POST http://localhost:3000/api/offers -H "Authorization: Bearer dev-employer" \
+  -H "Content-Type: application/json" -d '{"workerIds":["w_merve","w_derya"]}'
+# 3. iş arayan: yeni iki talep + seed'deki üç talep
+curl "http://localhost:3000/api/offers?status=pending" -H "Authorization: Bearer dev-worker"
+# 4. birini kabul, birini ret (id'leri 2. adımın yanıtından alın)
+curl -X POST http://localhost:3000/api/offers/<merve-id>/accept -H "Authorization: Bearer dev-worker"
+curl -X POST http://localhost:3000/api/offers/<derya-id>/reject -H "Authorization: Bearer dev-worker"
+# 5. cevaplananlar: 2 kayıt
+curl "http://localhost:3000/api/offers?status=answered" -H "Authorization: Bearer dev-worker"
+# 6. sunucuyu durdurup başlatın, 5. adımı tekrarlayın: aynı sonuç
+```
+
 ## Klasörler
 
 - `src/app.ts`: Express uygulaması ve route bağlantıları.
@@ -161,6 +201,6 @@ curl "http://localhost:3000/api/offers?status=pending" -H "Authorization: Bearer
 - `src/platform/`: HTTP yanıtları, SQLite bağlantısı ve migration'lar.
 - `src/modules/auth/`: demo login ve Bearer token rol kontrolü.
 - `src/modules/candidates/`: aday listeleme, sekme filtresi ve sıralama.
-- `src/modules/offers/`: talep oluşturma, listeleme, detay ve süre dolumu. Kabul/ret sonraki adımda eklenecek.
+- `src/modules/offers/`: talep oluşturma, listeleme, detay, kabul/ret ve süre dolumu.
 - `src/demo/`: case seed verisi, seed yükleyici ve reset komutu.
 - `test/`: Vitest + Supertest testleri.
