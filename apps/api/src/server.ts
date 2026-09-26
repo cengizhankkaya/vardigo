@@ -1,9 +1,5 @@
-import { createApp } from "./app.js";
-import { config } from "./bootstrap/config.js";
-import { prepareDatabase } from "./bootstrap/database.js";
+import { exitOnOldNode } from "./bootstrap/node-version.js";
 
-const db = prepareDatabase(config.databasePath);
-
-createApp({ db }).listen(config.port, config.host, () => {
-  console.log(`API http://${config.host}:${config.port}/api`);
-});
+exitOnOldNode();
+// Loaded after the check: older Node has no node:sqlite and would fail with an unclear error.
+await import("./bootstrap/start.js");

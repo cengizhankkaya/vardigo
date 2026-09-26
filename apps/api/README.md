@@ -4,8 +4,10 @@ Node.js + TypeScript + Express REST API. Veri Node'un yerleşik SQLite modülüy
 
 ## Gereksinim
 
-- Node.js 24 veya üstü
+- Node.js 24 veya üstü (`nvm use` ile [.nvmrc](.nvmrc) sürümü seçilebilir)
 - npm
+
+Daha eski Node'da `npm install` ve sunucu açık bir mesajla durur.
 
 ## Komutlar
 
