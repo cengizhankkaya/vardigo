@@ -197,7 +197,8 @@ features/offers/
 │   └── repositories/          # IOffersRepository (port)
 ├── application/
 │   ├── offers_repository_provider.dart   # port provider'ı; composition root bağlar
-│   └── usecases/              # GetOffers, GetOfferDetail, AcceptOffer, RejectOffer
+│   ├── offers_revision.dart   # her yanıttan sonra artar; listeler bunu izleyip yenilenir
+│   └── usecases/              # GetOffers, GetOfferDetail, RespondToOffer
 ├── infrastructure/
 │   └── repositories/          # OffersRepositoryImpl (adaptör: Dio + JSON → entity)
 └── presentation/
@@ -212,7 +213,7 @@ Kurallar:
 
 - **Bağımlılık yönü (hexagonal):** `presentation → application → domain ← infrastructure`. Oklar yalnız içeri bakar:
   - `domain`: entity'ler ve `I…Repository` port'ları; yalnız kendi domain'ini, Dart'ı ve `flutter/foundation`'ı import eder. Serileştirme yoktur.
-  - `application`: use case sınıfları (`GetCandidates`, `SendInterviewRequests`, `AcceptOffer`, `Login`...) ve port provider'ları. Yalnız domain'i import eder; Riverpod burada bağımlılık bağlama aracıdır (kurallardaki `@injectable`'ın karşılığı).
+  - `application`: use case sınıfları (`GetCandidates`, `SendInterviewRequests`, `RespondToOffer`, `Login`...) ve port provider'ları. Yalnız domain'i import eder; Riverpod burada bağımlılık bağlama aracıdır (kurallardaki `@injectable`'ın karşılığı).
   - `infrastructure`: `…RepositoryImpl` adaptörleri port'ları uygular, JSON'u okur. Application, presentation ve `app/`'i bilmez.
   - `presentation`: controller'lar use case çağırır; infrastructure'a ve composition root'a dokunmaz.
   - Port provider'ları varsayılan olarak hata fırlatır; somut adaptörleri yalnız `app/composition_root.dart` bağlar (`appAdapters`, testlerde sahteler). `core/` hiçbir feature'ı ve `app/`'i import etmez.
