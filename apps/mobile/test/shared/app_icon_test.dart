@@ -3,24 +3,29 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:vardigo/shared/design_system/assets/app_icons.dart';
+import 'package:vardigo/gen/assets.gen.dart';
+import 'package:vardigo/gen/colors.gen.dart';
 import 'package:vardigo/shared/design_system/components/app_icon.dart';
 
 void main() {
-  test('every icon has a bundled SVG file', () {
-    for (final icon in AppIcons.values) {
-      expect(File(icon.path).existsSync(), isTrue, reason: icon.path);
-    }
+  test('generated icon list matches the files on disk', () {
+    final onDisk = Directory('assets/icons')
+        .listSync()
+        .map((f) => f.path.replaceAll(r'\', '/'))
+        .where((p) => p.endsWith('.svg'))
+        .toSet();
+    expect(Assets.icons.values.map((i) => i.path).toSet(), onDisk);
+    expect(onDisk, hasLength(15));
   });
 
   testWidgets('tints only when a colour is given', (tester) async {
     await tester.pumpWidget(
-      const Directionality(
+      Directionality(
         textDirection: TextDirection.ltr,
         child: Row(
           children: [
-            AppIcon(AppIcons.shield, size: 16),
-            AppIcon(AppIcons.star, size: 16, color: Color(0xFFFA7319)),
+            AppIcon(Assets.icons.shield),
+            AppIcon(Assets.icons.star, color: ColorName.warning),
           ],
         ),
       ),
@@ -29,7 +34,7 @@ void main() {
     expect(pictures.first.colorFilter, isNull);
     expect(
       pictures.last.colorFilter,
-      const ColorFilter.mode(Color(0xFFFA7319), BlendMode.srcIn),
+      const ColorFilter.mode(ColorName.warning, BlendMode.srcIn),
     );
   });
 }
