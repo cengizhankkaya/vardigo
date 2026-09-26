@@ -112,12 +112,12 @@ lib/features/appearance/                       # tema durumu (Riverpod)
 - Hata rengi `scheme.error` / `errorContainer`'dan gelir; `SemanticColors`'ta hata yoktur.
 - Yeni bir rol gerekiyorsa `AppColors`'a eklenir ve iki temada da `AppPalette`'te değer alır.
 - Tema değiştirme: `ref.read(themeModeControllerProvider.notifier).setMode(AppThemeMode.dark)`.
-- Koyu temanın referans tasarımı yoktur; renkleri case paletindeki koyu token'lardan seçilmiştir (zemin `strong`, kart `slate-700`, kenarlık `slate-600`, vurgu metni `primary-light`, seçili kart `primary-darkest`). Case dışında renk eklenmez; testler iki temanın da yalnız `colors.xml` renklerini kullandığını doğrular.
+- Koyu temanın referans tasarımı yoktur; renkleri case paletindeki koyu token'lardan seçilmiştir (zemin `strong`, kart `slate-700`, kenarlık `slate-600`, vurgu metni `primary-light`, seçili kart `primary-darkest`). Case dışında renk eklenmez; testler iki temanın da yalnız `colors.xml` renklerini kullandığını doğrular. Tek istisna koyu temanın kırmızısıdır (`AppPalette.errorOnDark`, case kırmızısının %30 beyaza karıştırılmış hâli); test bu türetmeyi de doğrular.
 
 ### Kontrast (WCAG 2.1 AA)
 
-- Koyu temada metin/zemin çiftleri 4,5:1'i sağlar ve bu testle korunur. Tek istisna kırmızı: acil geri sayım ve detay hatası 3,6:1'dir (paletten daha açık kırmızı yok); bu, kalın/büyük metin için AA sınırı olan 3:1'in üzerindedir.
-- Açık tema referansla birebir kalır; case renklerinin bazıları 4,5:1'in altındadır ve değiştirilmedi: beyaz üzerinde yeşil ücret (2,9), pasif talep sekmesi `soft` (2,4), ücret satırındaki turuncu (2,6), `gray-500` açıklamalar (4,2), `errorSoft` üzerinde kırmızı (3,2).
+- Koyu temada metin/zemin çiftlerinin hepsi 4,5:1'i sağlar ve bu testle korunur. Acil geri sayım ve detay hatası 12 px olduğundan kalın olmaları onları "büyük metin" yapmaz; case kırmızısı koyu kartta 3,6:1 kaldığı için koyu tema açık kırmızı `errorOnDark` kullanır (5,0:1).
+- Açık tema referansla birebir kalır; case renklerinin bazıları 4,5:1'in altındadır ve değiştirilmedi: beyaz üzerinde yeşil ücret (2,9), pasif talep sekmesi `soft` (2,4), ücret satırındaki turuncu (2,6), `gray-500` açıklamalar (4,2), `errorSoft` üzerinde kırmızı (3,2), beyaz kartta kırmızı acil geri sayım (3,7).
 
 ### Yazı
 
