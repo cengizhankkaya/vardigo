@@ -8,9 +8,7 @@ class VardigoApp extends StatelessWidget {
     return const MaterialApp(
       title: 'Vardigo',
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: Center(child: Text('Vardigo')),
-      ),
+      home: Scaffold(body: Center(child: Text('Vardigo'))),
     );
   }
 }
