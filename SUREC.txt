@@ -1,39 +1,46 @@
-VARDIGO — SÜREÇ NOTU (geliştikçe güncellenecek, en fazla 1 sayfa)
+VARDIGO — SÜREÇ NOTU (en fazla 1 sayfa)
 
 ARAÇLAR
-Codex (ilk iskelet), Claude Code / Claude Opus 5.5 (backend), terminal, Git, GitHub Desktop.
-Node.js 25, Express 5, TypeScript 7, node:sqlite, Vitest + Supertest, Swagger UI.
+Codex (ilk iskelet), Claude Code / Claude Opus 5.5 (backend ve mobil), terminal, Git, GitHub Actions,
+Xcode iOS simülatörü. Backend: Node.js 24+, Express 5, TypeScript, node:sqlite, Vitest + Supertest,
+Swagger UI. Mobil: Flutter 3.47, Riverpod, Dio, flutter_svg, FlutterGen, gen-l10n.
 
-SIRA
-26 Eylül 2026 — İskelet: apps/api ve apps/mobile klasörleri, README, ignore kuralları.
-26 Eylül 2026 — Backend; her adım ayrı branch ve PR:
-  1. Express + TypeScript iskeleti ve case'in { ok, data | error } cevap zarfı
-  2. SQLite tabloları, migration ve seed.json'un bir kez yüklenmesi
-  3. Demo login ve Bearer token rol kontrolü
-  4. GET /candidates: score >= 80 sekmeleri ve sıralama
-  5. POST /offers: hepsi-ya-hiçbiri oluşturma, 400/404/409 kuralları
-  6. GET /offers ve detay: sekmeler, sunucuda hesaplanan kalan süre
-  7. Swagger (/api/docs): API'yi tarayıcıdan görerek ilerlemek için
-  8. Kabul/ret: kalıcı karar, süre dolunca 409
-  9. Fotoğraf/logo servisi ve yalnız localhost'a açık CORS
-  10. npm run smoke: case minimum testini çalışan sunucuya karşı koşturur
-Her adımda testler aynı commit'lerde yazıldı (125 test) ve sunucu elle denendi.
+SIRA (26 Eylül 2026; her adım ayrı branch, küçük commit'ler, CI yeşilken main'e merge)
+Backend
+  1. İskelet ve { ok, data | error } cevap zarfı          6. GET /offers ve detay, kalan süre
+  2. SQLite, migration, seed.json'un bir kez yüklenmesi   7. Swagger (/api/docs)
+  3. Demo login ve Bearer token rol kontrolü              8. Kabul/ret; süre dolunca 409
+  4. GET /candidates: score >= 80 sekmeleri, sıralama     9. Fotoğraf/logo servisi, localhost CORS
+  5. POST /offers: hepsi-ya-hiçbiri, 400/404/409         10. npm run smoke: minimum akış
+  Sonra: aday ücret satırı, talep sıralaması, hata yanıtlarının sertleştirilmesi
+  (413/415/bozuk JSON), Node sürüm kontrolü ve CI.
+Mobil
+  11. Flutter iskeleti ve CI (kod üretimi, format, analiz, test, canlı API testi)
+  12. Case ikonları ve Urbanist fontu (OFL lisansıyla); FlutterGen ve gen-l10n
+  13. Tema ve token'lar, tasarım galerisi
+  14. API katmanı: Dio, hata modeli, repository'ler, gerçek yanıtlardan fixture'lar
+  15. Eşleşen Personeller: sekme, sıralama, sekmeler arası seçim, gönderim
+  16. Görüşme Talepleri: sekmeler, kabul/ret, detay, geri sayım, sıralama
+  17. 390×844 telefon çerçevesi (REFERENCE_FRAME) ve tek komutluk demo.sh
+Sonuç: 139 backend + 65 mobil test; her ekran referans PNG ile simülatörde yan yana karşılaştırıldı.
 
 TAKILDIĞIM NOKTALAR
 - Case paketi kendi içinde çelişiyor (Benzer sekmesi "ters sıra" mı score filtresi mi,
   4 aday ama başlıkta 26/16, 3 teklif ama 12). API spesifikasyonu esas alındı;
   tasarımdaki sayılar ayrı etiket alanlarında döndürüldü. README'de yazılı.
-- Süresi dolan teklif: hata dönerken transaction geri alınırsa teklif tekrar
-  "pending" kalıyordu. Kullanım senaryosu hata fırlatmak yerine sonuç döndürüyor;
-  "expired" güncellemesi kaydediliyor, 409 sonra üretiliyor. Testle doğrulandı.
-- .gitignore'daki "docs/" kuralı her docs klasörünü dışlıyordu; Swagger dosyası
-  Git'e girmiyordu. Kural "/docs/" yapıldı, klasör "swagger" olarak adlandırıldı.
+- Süresi dolan teklif: hata dönerken transaction geri alınırsa teklif tekrar "pending"
+  kalıyordu. Kullanım senaryosu sonuç döndürüyor; "expired" kaydediliyor, 409 sonra üretiliyor.
+- .gitignore'daki "docs/" kuralı her docs klasörünü dışlıyordu; Swagger dosyası Git'e
+  girmiyordu. Kural "/docs/" yapıldı, klasör "swagger" olarak adlandırıldı.
+- Urbanist'te ₺ yok; işaret sistem fontuyla çiziliyor. online.svg'deki gölge filtresini
+  flutter_svg çizmiyor. İkisi de README'de.
+- Case fotoğrafları referanstaki kişilerle eşleşmiyor; seed eşlemesi korundu.
+- Telefon çerçevesinin durum çubuğu Navigator'ın üstünde, Material dışında kaldığı için
+  9:41 varsayılan sarı alt çizgiyle çiziliyordu; stil açıkça verildi, testle korunuyor.
 
 BİLEREK YAPILMAYANLAR
 - Gerçek kimlik doğrulama: case sabit demo token istiyor.
-- Docker: case "Docker veya tek komut" diyor; npm install && npm run dev yeterli.
-- pnpm workspace ve ayrı sözleşme paketi: tek paket için gereksiz bulundu.
-- Sayfalama, arama, yeni eşleştirme algoritması: case kapsamında değil.
-
-SIRADAKİ
-Flutter: tema/tokenlar, Eşleşen Personeller ekranı, Görüşme Talepleri ekranı, API bağlantısı.
+- Docker: case "Docker veya tek komut" diyor; ./demo.sh yeterli.
+- pnpm workspace ve ayrı sözleşme paketi: tek backend paketi için gereksiz bulundu.
+- Sayfalama, arama, yeni eşleştirme algoritması, İngilizce metinler: case kapsamında değil.
+- Android emülatörde deneme: makinede emülatör yok; debug APK derlemesi ve izinler doğrulandı.
