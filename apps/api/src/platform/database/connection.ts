@@ -1,6 +1,7 @@
 import { mkdirSync } from "node:fs";
 import { dirname } from "node:path";
 import { DatabaseSync } from "node:sqlite";
+import type { UnitOfWork } from "../unit-of-work.js";
 
 export type Database = DatabaseSync;
 
@@ -27,4 +28,9 @@ export function transaction<T>(db: Database, work: () => T): T {
     db.exec("ROLLBACK");
     throw error;
   }
+}
+
+/** The [UnitOfWork] port over one SQLite connection. */
+export function sqliteUnitOfWork(db: Database): UnitOfWork {
+  return (work) => transaction(db, work);
 }

@@ -1,10 +1,10 @@
-import { type Database, transaction } from "../../../platform/database/connection.js";
+import type { UnitOfWork } from "../../../platform/unit-of-work.js";
 import type { Offer } from "../domain/offer.js";
-import type { SqliteOffersRepository } from "../infrastructure/sqlite-offers-repository.js";
+import type { OffersRepository } from "../domain/offers-repository.js";
 
 export interface RespondToOfferDeps {
-  db: Database;
-  offers: SqliteOffersRepository;
+  unitOfWork: UnitOfWork;
+  offers: OffersRepository;
   now: () => number;
 }
 
@@ -26,7 +26,7 @@ export function respondToOffer(
   offerId: string,
   decision: Decision,
 ): RespondResult {
-  return transaction(deps.db, (): RespondResult => {
+  return deps.unitOfWork((): RespondResult => {
     const now = deps.now();
     deps.offers.expireDue(now);
     const offer = deps.offers.findForRecipient(offerId, recipientUserId);

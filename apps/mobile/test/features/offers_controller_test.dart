@@ -129,24 +129,38 @@ void main() {
     });
   });
 
-  test('an answer after leaving the screen is dropped quietly', () async {
-    final local = ProviderContainer(
-      overrides: [offersRepositoryProvider.overrideWithValue(repo)],
-    );
-    addTearDown(local.dispose);
-    final sub = local.listen(
-      offersControllerProvider(defaultOfferQuery),
-      (_, _) {},
-    );
-    repo.pendingRespond = Completer();
-    final result = local
-        .read(offersControllerProvider(defaultOfferQuery).notifier)
-        .respond(repo.offers['o_garson']!, accept: true);
+  test(
+    'an answer after leaving the screen still reloads the next visit',
+    () async {
+      final local = ProviderContainer(
+        overrides: [offersRepositoryProvider.overrideWithValue(repo)],
+      );
+      addTearDown(local.dispose);
+      final sub = local.listen(
+        offersControllerProvider(defaultOfferQuery),
+        (_, _) {},
+      );
+      repo.pendingRespond = Completer();
+      final result = local
+          .read(offersControllerProvider(defaultOfferQuery).notifier)
+          .respond(repo.offers['o_garson']!, accept: true);
 
-    sub.close();
-    await Future<void>.delayed(Duration.zero);
-    repo.pendingRespond!.complete();
+      // Leave, then open the screen again while the answer is on its way.
+      sub.close();
+      await Future<void>.delayed(Duration.zero);
+      local.listen(offersControllerProvider(defaultOfferQuery), (_, _) {});
+      local.listen(offerListProvider(defaultOfferQuery), (_, _) {});
+      Future<List<String>> ids() async => [
+        for (final o in (await local.read(
+          offerListProvider(defaultOfferQuery).future,
+        )).offers)
+          o.id,
+      ];
+      expect(await ids(), ['o_garson', 'o_barista']);
 
-    expect(await result, isA<Responded>());
-  });
+      repo.pendingRespond!.complete();
+      expect(await result, isA<Responded>());
+      expect(await ids(), ['o_barista']);
+    },
+  );
 }

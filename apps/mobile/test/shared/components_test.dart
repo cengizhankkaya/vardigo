@@ -6,6 +6,7 @@ import 'package:vardigo/core/presentation/failure_message/error_text.dart';
 import 'package:vardigo/core/presentation/widgets/primary_button.dart';
 import 'package:vardigo/core/presentation/widgets/square_icon_button.dart';
 import 'package:vardigo/core/theme/app_theme.dart';
+import 'package:vardigo/core/theme/tokens/app_sizes.dart';
 import 'package:vardigo/gen/assets.gen.dart';
 
 Widget _wrap(Widget child) => MaterialApp(
@@ -32,6 +33,40 @@ void main() {
     );
     await tester.tap(find.text('Gönder'));
     expect(taps, 1);
+  });
+
+  testWidgets('primary button wraps its label under large system text', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      MediaQuery(
+        data: const MediaQueryData(textScaler: TextScaler.linear(2)),
+        child: _wrap(
+          SizedBox(
+            width: 368,
+            child: PrimaryButton(
+              icon: Assets.icons.send,
+              label: 'Görüşme Talebi Gönder (3)',
+              onPressed: () {},
+            ),
+          ),
+        ),
+      ),
+    );
+    expect(tester.takeException(), isNull);
+    expect(
+      tester.getSize(find.byType(PrimaryButton)).height,
+      greaterThan(AppSizes.cta),
+    );
+  });
+
+  testWidgets('primary button keeps its height at normal text size', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      _wrap(PrimaryButton(label: 'Gönder', onPressed: () {})),
+    );
+    expect(tester.getSize(find.byType(PrimaryButton)).height, AppSizes.cta);
   });
 
   testWidgets('square button exposes its label to screen readers', (

@@ -3,6 +3,7 @@ import { demoJob, DEMO_RECIPIENT_USER_ID } from "../src/demo/demo-job.js";
 import { SqliteCandidatesRepository } from "../src/modules/candidates/infrastructure/sqlite-candidates-repository.js";
 import { createOffers, type CreateOffersDeps } from "../src/modules/offers/application/create-offers.js";
 import { SqliteOffersRepository } from "../src/modules/offers/infrastructure/sqlite-offers-repository.js";
+import { sqliteUnitOfWork } from "../src/platform/database/connection.js";
 import { createTestApp, TEST_NOW } from "./support/test-app.js";
 
 describe("createOffers", () => {
@@ -16,7 +17,7 @@ describe("createOffers", () => {
     now = TEST_NOW;
     seq = 0;
     deps = {
-      db,
+      unitOfWork: sqliteUnitOfWork(db),
       offers: new SqliteOffersRepository(db),
       candidates: new SqliteCandidatesRepository(db),
       job: demoJob,

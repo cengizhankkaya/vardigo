@@ -3,7 +3,7 @@ import { optionalQuery } from "../../../platform/http/query.js";
 import { sendOk } from "../../../platform/http/response.js";
 import { listCandidates } from "../application/list-candidates.js";
 import { type Candidate, type CandidatePay, CANDIDATE_SORTS, CANDIDATE_TABS, isPerfect } from "../domain/candidate.js";
-import type { SqliteCandidatesRepository } from "../infrastructure/sqlite-candidates-repository.js";
+import type { CandidatesRepository } from "../domain/candidates-repository.js";
 
 export interface CandidateLabels {
   totalPerfect: number;
@@ -33,7 +33,7 @@ function toDto(candidate: Candidate, pay: CandidatePay | undefined) {
 }
 
 export function candidatesRoutes(
-  candidates: SqliteCandidatesRepository,
+  candidates: CandidatesRepository,
   labels: CandidateLabels,
   pay: Record<string, CandidatePay>,
   guard: RequestHandler,

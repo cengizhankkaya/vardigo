@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../application/usecases/accept_offer.dart';
+import '../../application/offers_revision.dart';
 import '../../application/usecases/get_offer_detail.dart';
 import '../../application/usecases/get_offers.dart';
-import '../../application/usecases/reject_offer.dart';
+import '../../application/usecases/respond_to_offer.dart';
 import '../../../../core/error/exceptions/api_exception.dart';
 import '../../domain/entities/offer.dart';
 import '../../domain/entities/offer_list.dart';
@@ -22,11 +22,12 @@ final countdownTickProvider = StreamProvider.autoDispose<DateTime>((ref) {
   return Stream.periodic(const Duration(seconds: 30), (_) => now());
 });
 
+/// Reloads after every answer ([offersRevisionProvider]).
 final offerListProvider = FutureProvider.autoDispose
-    .family<OfferList, OfferQuery>(
-      (ref, query) =>
-          ref.watch(getOffersProvider)(tab: query.tab, sort: query.sort),
-    );
+    .family<OfferList, OfferQuery>((ref, query) {
+      ref.watch(offersRevisionProvider);
+      return ref.watch(getOffersProvider)(tab: query.tab, sort: query.sort);
+    });
 
 /// City and branch note shown under "Detayları Gör".
 final offerDetailProvider = FutureProvider.autoDispose.family<Offer, String>(
@@ -62,23 +63,23 @@ class OffersController extends Notifier<OffersState> {
     state = state.copyWith(expanded: expanded);
   }
 
-  /// "İlgileniyorum" ([accept] true) or "İlgilenmiyorum". Either way the
-  /// lists are reloaded: the offer moved tabs, or the server says why not.
+  /// "İlgileniyorum" ([accept] true) or "İlgilenmiyorum". [RespondToOffer]
+  /// reloads the lists, even when this screen has closed by then.
   Future<RespondResult> respond(Offer offer, {required bool accept}) async {
     if (state.busy.contains(offer.id)) return RespondFailed(_busy);
     state = state.copyWith(busy: {...state.busy, offer.id});
     try {
-      final updated = accept
-          ? await ref.read(acceptOfferProvider)(offer.id)
-          : await ref.read(rejectOfferProvider)(offer.id);
+      final updated = await ref.read(respondToOfferProvider)(
+        offer.id,
+        accept: accept,
+      );
       return Responded(updated);
     } on ApiException catch (error) {
       return RespondFailed(error);
     } finally {
-      // The screen may have closed while waiting; then there is nothing to update.
+      // The screen may have closed while waiting; its busy mark went with it.
       if (ref.mounted) {
         state = state.copyWith(busy: {...state.busy}..remove(offer.id));
-        ref.invalidate(offerListProvider);
       }
     }
   }

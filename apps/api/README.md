@@ -43,6 +43,8 @@ Sunucu çalışırken tarayıcıda **http://localhost:3000/api/docs** açılır.
 
 Token tarayıcıda hatırlanır; rol değiştirmek için Authorize'dan çıkış yapıp diğer token'ı girin. Ham OpenAPI belgesi: `/api/openapi.json` ([src/swagger/openapi.ts](src/swagger/openapi.ts)).
 
+Belge testle korunur ([test/openapi.test.ts](test/openapi.test.ts)): belgelenen her yanıt kodu için uygulamaya gerçek bir istek atılır ve gövde o yanıtın şemasıyla (Ajv, JSON Schema 2020-12) doğrulanır. Şemalar kapalıdır; belgede olmayan bir alan, eksik zorunlu alan veya yanlış tip testi düşürür. Belgeye yeni bir yanıt eklenip testi yazılmazsa da test düşer.
+
 ## Cevap zarfı
 
 ```json
@@ -235,10 +237,22 @@ curl "http://localhost:3000/api/offers?status=answered" -H "Authorization: Beare
 - `src/server.ts`: HTTP sunucusunu başlatır.
 - `src/swagger/`: OpenAPI belgesi (Swagger arayüzünün kaynağı).
 - `src/bootstrap/`: ayarlar ve açılışta veritabanı hazırlığı.
-- `src/platform/`: HTTP yanıtları, SQLite bağlantısı ve migration'lar.
+- `src/platform/`: HTTP yanıtları, SQLite bağlantısı, migration'lar ve `UnitOfWork` port'u.
 - `src/modules/auth/`: demo login ve Bearer token rol kontrolü.
 - `src/modules/candidates/`: aday listeleme, sekme filtresi ve sıralama.
 - `src/modules/offers/`: talep oluşturma, listeleme, detay, kabul/ret ve süre dolumu.
 - `src/demo/`: case seed verisi, seed yükleyici ve reset komutu.
 - `public/assets/`: case fotoğrafları ve logoları.
 - `test/`: Vitest + Supertest testleri.
+
+### Katmanlar
+
+Her modül `domain`, `application`, `infrastructure` ve `http` klasörlerine ayrılır; bağımlılıklar içeri bakar: `http → application → domain ← infrastructure`.
+
+- `domain`: tipler, kurallar ve port'lar (`OffersRepository`, `CandidatesRepository`, `UsersRepository`). Yalnız kendi domain'ini import eder.
+- `application`: use case'ler (`createOffers`, `listOffers`, `respondToOffer`). Yalnız domain port'larını ve `platform/unit-of-work.ts`'i bilir; SQLite'ı, bağlantıyı veya başka modülün adaptörünü bilmez. İşlem sınırı (`BEGIN IMMEDIATE … COMMIT`) `UnitOfWork` port'u ile istenir.
+- `infrastructure`: `Sqlite…Repository` adaptörleri port'ları uygular.
+- `http`: Express route'ları; port tiplerini alır, adaptörü bilmez.
+- Somut adaptörleri ve `sqliteUnitOfWork`'ü yalnız `src/app.ts` (composition root) bağlar.
+- Denetim: [test/architecture.test.ts](test/architecture.test.ts) `src/` altındaki her import'u bu kurallara göre kontrol eder. [test/offers-use-cases.test.ts](test/offers-use-cases.test.ts) talep kurallarını veritabanı olmadan, bellek içi port'larla çalıştırır.
+- Port'lar senkrondur, çünkü `node:sqlite` senkrondur. Asenkron bir sürücüye (ör. Postgres) geçişte port imzaları `Promise` döndürecek şekilde değişir; bu değişiklik use case'lerle adaptörler arasında kalır, route'lara ve iş kurallarına dokunmaz.

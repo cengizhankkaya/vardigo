@@ -1,5 +1,6 @@
 import type { Database } from "../../../platform/database/connection.js";
 import type { NewOffer, Offer, OfferSort, OfferStatus } from "../domain/offer.js";
+import type { OffersRepository } from "../domain/offers-repository.js";
 
 const OFFER_COLUMNS = "id, title, place, pay, logo, district, when_label, status, expires_at_ms";
 
@@ -24,7 +25,7 @@ function toOffer(row: Record<string, unknown>): Offer {
   };
 }
 
-export class SqliteOffersRepository {
+export class SqliteOffersRepository implements OffersRepository {
   constructor(private readonly db: Database) {}
 
   /** Marks pending offers whose time is up as expired. */

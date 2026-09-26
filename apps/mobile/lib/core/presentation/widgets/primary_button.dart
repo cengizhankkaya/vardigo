@@ -7,7 +7,8 @@ import '../../theme/tokens/app_sizes.dart';
 import 'app_icon.dart';
 
 /// Full-width blue call to action (44 high, radius 10). Disabled at 45%
-/// opacity; shows a spinner while [loading].
+/// opacity; shows a spinner while [loading]. Under large system text the
+/// label wraps and the button grows taller.
 class PrimaryButton extends StatelessWidget {
   const PrimaryButton({
     super.key,
@@ -38,35 +39,40 @@ class PrimaryButton extends StatelessWidget {
           behavior: HitTestBehavior.opaque,
           onTap: enabled ? onPressed : null,
           child: Container(
-            height: AppSizes.cta,
-            alignment: Alignment.center,
+            constraints: const BoxConstraints(minHeight: AppSizes.cta),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: BoxDecoration(
               color: scheme.primary,
               borderRadius: BorderRadius.circular(AppRadius.cta),
             ),
-            child: loading
-                ? SizedBox.square(
-                    dimension: 20,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      color: scheme.onPrimary,
-                    ),
-                  )
-                : Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: loading
+                  ? [
+                      SizedBox.square(
+                        dimension: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: scheme.onPrimary,
+                        ),
+                      ),
+                    ]
+                  : [
                       if (icon != null) ...[
                         AppIcon(icon, size: 20, color: scheme.onPrimary),
                         const SizedBox(width: 8),
                       ],
-                      Text(
-                        label,
-                        style: context.textStyles.label14.copyWith(
-                          color: scheme.onPrimary,
+                      Flexible(
+                        child: Text(
+                          label,
+                          textAlign: TextAlign.center,
+                          style: context.textStyles.label14.copyWith(
+                            color: scheme.onPrimary,
+                          ),
                         ),
                       ),
                     ],
-                  ),
+            ),
           ),
         ),
       ),

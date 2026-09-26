@@ -66,6 +66,7 @@ void main() {
     final palette = _casePalette();
     // The case gives this one as slate-500 at 80% rather than as a token.
     final allowed = {...palette, ColorName.slate500.withValues(alpha: 0.8)};
+    final darkOnly = {AppPalette.errorOnDark};
     for (final (name, colors, semantic, scheme) in [
       (
         'light',
@@ -123,8 +124,24 @@ void main() {
         scheme.outlineVariant,
       ];
       for (final color in used) {
-        expect(allowed, contains(color), reason: '$name uses $color');
+        expect(
+          {...allowed, if (name == 'dark') ...darkOnly},
+          contains(color),
+          reason: '$name uses $color',
+        );
       }
+    }
+  });
+
+  test('the dark red is the case red mixed 30% toward white', () {
+    final mixed = Color.lerp(ColorName.error, ColorName.white, 0.3)!;
+    const red = AppPalette.errorOnDark;
+    for (final (a, b) in [
+      (red.r, mixed.r),
+      (red.g, mixed.g),
+      (red.b, mixed.b),
+    ]) {
+      expect(a, closeTo(b, 1 / 255));
     }
   });
 
@@ -156,12 +173,12 @@ void main() {
       ),
       'expired label': (c.textSecondary, c.fillSubtle),
       'countdown': (c.textStrong, c.card),
+      // 12 px, so bold does not make it large text: 4.5:1 applies.
+      'urgent countdown and detail error': (scheme.error, c.card),
+      'on error': (scheme.onError, scheme.error),
     };
     for (final MapEntry(key: name, value: (fg, bg)) in pairs.entries) {
       expect(_contrast(fg, bg), greaterThanOrEqualTo(4.5), reason: name);
     }
-    // The palette has no lighter red: urgent countdown and detail errors
-    // stay at 3:1, the AA level for bold and large text.
-    expect(_contrast(scheme.error, c.card), greaterThanOrEqualTo(3));
   });
 }

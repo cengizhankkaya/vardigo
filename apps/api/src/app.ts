@@ -12,7 +12,7 @@ import { candidatesRoutes } from "./modules/candidates/http/candidates-routes.js
 import { SqliteCandidatesRepository } from "./modules/candidates/infrastructure/sqlite-candidates-repository.js";
 import { offersRoutes } from "./modules/offers/http/offers-routes.js";
 import { SqliteOffersRepository } from "./modules/offers/infrastructure/sqlite-offers-repository.js";
-import type { Database } from "./platform/database/connection.js";
+import { type Database, sqliteUnitOfWork } from "./platform/database/connection.js";
 import { localhostCors } from "./platform/http/cors.js";
 import { errorHandler, notFoundHandler, requireJsonBody } from "./platform/http/error-handler.js";
 import { sendOk } from "./platform/http/response.js";
@@ -29,6 +29,7 @@ export function createApp({ db, now = Date.now }: AppDeps) {
   const users = new SqliteUsersRepository(db);
   const candidates = new SqliteCandidatesRepository(db);
   const offers = new SqliteOffersRepository(db);
+  const unitOfWork = sqliteUnitOfWork(db);
   const employerOnly = requireRole(users, "employer");
   const workerOnly = requireRole(users, "worker");
 
@@ -59,9 +60,9 @@ export function createApp({ db, now = Date.now }: AppDeps) {
   api.use(
     "/offers",
     offersRoutes({
-      create: { db, offers, candidates, job: demoJob, recipientUserId: DEMO_RECIPIENT_USER_ID, now },
-      list: { db, offers, now },
-      respond: { db, offers, now },
+      create: { unitOfWork, offers, candidates, job: demoJob, recipientUserId: DEMO_RECIPIENT_USER_ID, now },
+      list: { unitOfWork, offers, now },
+      respond: { unitOfWork, offers, now },
       pendingCountLabel,
       detailExtras: demoOfferDetails,
       employerOnly,

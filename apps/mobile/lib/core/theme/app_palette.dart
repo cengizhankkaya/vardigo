@@ -10,8 +10,12 @@ import 'semantic_colors.dart';
 ///
 /// Light is the reference design. Dark has no reference; it reuses the
 /// case's darkest tokens (strong, slate-700, slate-600) as surfaces and keeps
-/// text at WCAG AA contrast where the palette allows it.
+/// all text at WCAG AA contrast (4.5:1).
 abstract final class AppPalette {
+  /// The case's error mixed 30% toward white: the case has no red light
+  /// enough for 12 px text on dark cards. Dark theme only.
+  static const errorOnDark = Color(0xFFFC737F);
+
   static const lightScheme = ColorScheme(
     brightness: Brightness.light,
     primary: ColorName.primary,
@@ -39,8 +43,8 @@ abstract final class AppPalette {
     onPrimaryContainer: ColorName.white,
     secondary: ColorName.primary,
     onSecondary: ColorName.white,
-    error: ColorName.error,
-    onError: ColorName.white,
+    error: errorOnDark,
+    onError: ColorName.strong,
     errorContainer: ColorName.errorSoft,
     onErrorContainer: ColorName.white,
     surface: ColorName.strong,

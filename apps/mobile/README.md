@@ -19,6 +19,7 @@ flutter run --dart-define=START_AS=employer   # rol ekranını atlayıp işveren
 flutter run --dart-define=REFERENCE_FRAME=true   # uygulamayı 390×844 telefon çerçevesinde gösterir
 flutter analyze
 flutter test
+flutter test --update-goldens test/goldens   # bilerek yapılan görsel değişiklikten sonra
 ```
 
 ## Backend bağlantısı
@@ -112,12 +113,12 @@ lib/features/appearance/                       # tema durumu (Riverpod)
 - Hata rengi `scheme.error` / `errorContainer`'dan gelir; `SemanticColors`'ta hata yoktur.
 - Yeni bir rol gerekiyorsa `AppColors`'a eklenir ve iki temada da `AppPalette`'te değer alır.
 - Tema değiştirme: `ref.read(themeModeControllerProvider.notifier).setMode(AppThemeMode.dark)`.
-- Koyu temanın referans tasarımı yoktur; renkleri case paletindeki koyu token'lardan seçilmiştir (zemin `strong`, kart `slate-700`, kenarlık `slate-600`, vurgu metni `primary-light`, seçili kart `primary-darkest`). Case dışında renk eklenmez; testler iki temanın da yalnız `colors.xml` renklerini kullandığını doğrular.
+- Koyu temanın referans tasarımı yoktur; renkleri case paletindeki koyu token'lardan seçilmiştir (zemin `strong`, kart `slate-700`, kenarlık `slate-600`, vurgu metni `primary-light`, seçili kart `primary-darkest`). Case dışında renk eklenmez; testler iki temanın da yalnız `colors.xml` renklerini kullandığını doğrular. Tek istisna koyu temanın kırmızısıdır (`AppPalette.errorOnDark`, case kırmızısının %30 beyaza karıştırılmış hâli); test bu türetmeyi de doğrular.
 
 ### Kontrast (WCAG 2.1 AA)
 
-- Koyu temada metin/zemin çiftleri 4,5:1'i sağlar ve bu testle korunur. Tek istisna kırmızı: acil geri sayım ve detay hatası 3,6:1'dir (paletten daha açık kırmızı yok); bu, kalın/büyük metin için AA sınırı olan 3:1'in üzerindedir.
-- Açık tema referansla birebir kalır; case renklerinin bazıları 4,5:1'in altındadır ve değiştirilmedi: beyaz üzerinde yeşil ücret (2,9), pasif talep sekmesi `soft` (2,4), ücret satırındaki turuncu (2,6), `gray-500` açıklamalar (4,2), `errorSoft` üzerinde kırmızı (3,2).
+- Koyu temada metin/zemin çiftlerinin hepsi 4,5:1'i sağlar ve bu testle korunur. Acil geri sayım ve detay hatası 12 px olduğundan kalın olmaları onları "büyük metin" yapmaz; case kırmızısı koyu kartta 3,6:1 kaldığı için koyu tema açık kırmızı `errorOnDark` kullanır (5,0:1).
+- Açık tema referansla birebir kalır; case renklerinin bazıları 4,5:1'in altındadır ve değiştirilmedi: beyaz üzerinde yeşil ücret (2,9), pasif talep sekmesi `soft` (2,4), ücret satırındaki turuncu (2,6), `gray-500` açıklamalar (4,2), `errorSoft` üzerinde kırmızı (3,2), beyaz kartta kırmızı acil geri sayım (3,7).
 
 ### Yazı
 
@@ -197,7 +198,8 @@ features/offers/
 │   └── repositories/          # IOffersRepository (port)
 ├── application/
 │   ├── offers_repository_provider.dart   # port provider'ı; composition root bağlar
-│   └── usecases/              # GetOffers, GetOfferDetail, AcceptOffer, RejectOffer
+│   ├── offers_revision.dart   # her yanıttan sonra artar; listeler bunu izleyip yenilenir
+│   └── usecases/              # GetOffers, GetOfferDetail, RespondToOffer
 ├── infrastructure/
 │   └── repositories/          # OffersRepositoryImpl (adaptör: Dio + JSON → entity)
 └── presentation/
@@ -212,7 +214,7 @@ Kurallar:
 
 - **Bağımlılık yönü (hexagonal):** `presentation → application → domain ← infrastructure`. Oklar yalnız içeri bakar:
   - `domain`: entity'ler ve `I…Repository` port'ları; yalnız kendi domain'ini, Dart'ı ve `flutter/foundation`'ı import eder. Serileştirme yoktur.
-  - `application`: use case sınıfları (`GetCandidates`, `SendInterviewRequests`, `AcceptOffer`, `Login`...) ve port provider'ları. Yalnız domain'i import eder; Riverpod burada bağımlılık bağlama aracıdır (kurallardaki `@injectable`'ın karşılığı).
+  - `application`: use case sınıfları (`GetCandidates`, `SendInterviewRequests`, `RespondToOffer`, `Login`...) ve port provider'ları. Yalnız domain'i import eder; Riverpod burada bağımlılık bağlama aracıdır (kurallardaki `@injectable`'ın karşılığı).
   - `infrastructure`: `…RepositoryImpl` adaptörleri port'ları uygular, JSON'u okur. Application, presentation ve `app/`'i bilmez.
   - `presentation`: controller'lar use case çağırır; infrastructure'a ve composition root'a dokunmaz.
   - Port provider'ları varsayılan olarak hata fırlatır; somut adaptörleri yalnız `app/composition_root.dart` bağlar (`appAdapters`, testlerde sahteler). `core/` hiçbir feature'ı ve `app/`'i import etmez.
@@ -273,6 +275,16 @@ core/presentation/pages/route_error_screen.dart  # bilinmeyen adres sayfası
    - "Detayları Gör" kartın altında detay endpoint'inden gelen şehir ve şube notunu, ücret ve saati gösterir.
    - Geri sayım `expiresAt` ile cihazda hesaplanır ve 30 saniyede bir güncellenir; 6 saatten az kalınca kırmızıya döner (referanstaki ilk kart). Sayaç sıfırlanınca ve uygulama arka plandan dönünce liste sunucudan yenilenir.
    - Cevaplanan ve süresi dolan kartlarda buton ve sayaç yerine durum etiketi vardır.
+
+### Görsel testler (golden)
+
+[test/goldens/](test/goldens/) iki case ekranını açık ve koyu temada 390×844'te (iPhone güvenli alanıyla, 2× piksel) çizer ve kayıtlı PNG'lerle karşılaştırır:
+
+- Veri temiz seed'den alınmış gerçek yanıtlardır (`candidates.json`, `offers_seed.json`); saat seed anına sabittir, sayaçlar 21 sa 32 dk / 18 sa 0 dk okur.
+- Fotoğraf ve logolar backend'in kendi dosyalarıdır (`apps/api/public/assets`), ağ kullanılmaz.
+- Yazı gerçek Urbanist'tir; Urbanist'te olmayan ₺ için Flutter SDK'daki Roboto yedek font olarak yüklenir (cihazda sistem fontu bu işi görür). Font yükleme yalnız bu klasörü etkiler (`test/goldens/flutter_test_config.dart`); diğer testler Flutter'ın test fontuyla çalışır.
+- macOS ile CI (Linux) arasındaki yazı yumuşatma farkları için piksellerin %0,5'ine kadar fark kabul edilir; 2 px'lik bir boşluk değişikliği bile ~%6 fark verir.
+- Goldenlar referans PNG'lerin kopyası değildir; aşağıdaki farklar bilerek korunur. Görevleri, onaylanmış görünümün sonradan bozulmasını yakalamaktır.
 
 ### Referansla farklar
 
