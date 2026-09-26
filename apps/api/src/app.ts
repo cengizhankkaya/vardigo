@@ -13,6 +13,7 @@ export function createApp({ db }: AppDeps) {
   const users = new SqliteUsersRepository(db);
 
   const app = express();
+  app.disable("x-powered-by");
   app.use(express.json());
 
   const api = express.Router();

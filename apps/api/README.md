@@ -22,6 +22,7 @@ npm run db:reset   # veritabanını silip seed verisiyle yeniden kurar
 | Ortam değişkeni | Varsayılan |
 |---|---|
 | `PORT` | `3000` |
+| `HOST` | `127.0.0.1` (yalnız bu bilgisayar; aynı ağdaki telefondan erişim için `0.0.0.0`) |
 | `DATABASE_PATH` | `apps/api/data/vardigo.db` |
 
 ## Veritabanı

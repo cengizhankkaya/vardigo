@@ -12,6 +12,7 @@ describe("app", () => {
     const res = await request(app).get("/api/health");
     expect(res.status).toBe(200);
     expect(res.body).toEqual({ ok: true, data: { status: "up" } });
+    expect(res.headers["x-powered-by"]).toBeUndefined();
   });
 
   it("returns the error envelope for unknown routes", async () => {

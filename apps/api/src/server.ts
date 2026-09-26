@@ -4,6 +4,6 @@ import { prepareDatabase } from "./bootstrap/database.js";
 
 const db = prepareDatabase(config.databasePath);
 
-createApp({ db }).listen(config.port, () => {
-  console.log(`API http://localhost:${config.port}/api`);
+createApp({ db }).listen(config.port, config.host, () => {
+  console.log(`API http://${config.host}:${config.port}/api`);
 });
