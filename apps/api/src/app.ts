@@ -2,6 +2,7 @@ import { fileURLToPath } from "node:url";
 import express from "express";
 import swaggerUi from "swagger-ui-express";
 import { openApiDocument } from "./swagger/openapi.js";
+import { candidatePay } from "./demo/candidate-pay.js";
 import { DEMO_RECIPIENT_USER_ID, demoJob, demoOfferDetails } from "./demo/demo-job.js";
 import { candidateLabels, pendingCountLabel } from "./demo/labels.js";
 import { authRoutes } from "./modules/auth/http/auth-routes.js";
@@ -53,7 +54,7 @@ export function createApp({ db, now = Date.now }: AppDeps) {
   const api = express.Router();
   api.get("/health", (_req, res) => sendOk(res, { status: "up" }));
   api.use("/auth", authRoutes(users));
-  api.use("/candidates", candidatesRoutes(candidates, candidateLabels, employerOnly));
+  api.use("/candidates", candidatesRoutes(candidates, candidateLabels, candidatePay, employerOnly));
   api.use(
     "/offers",
     offersRoutes({

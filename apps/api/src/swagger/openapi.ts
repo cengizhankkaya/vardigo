@@ -100,7 +100,9 @@ export const openApiDocument = {
       },
       Candidate: {
         type: "object",
-        required: ["id", "name", "rating", "attend", "km", "photo", "online", "perfect", "score"],
+        required: [
+          "id", "name", "rating", "attend", "km", "photo", "online", "perfect", "score", "expectedPay", "payCompatible",
+        ],
         properties: {
           id: { type: "string", example: "w_merve" },
           name: { type: "string", example: "Merve Y." },
@@ -111,6 +113,8 @@ export const openApiDocument = {
           online: { type: "boolean" },
           perfect: { type: "boolean", description: "score >= 80" },
           score: { type: "integer", example: 92 },
+          expectedPay: { type: ["string", "null"], example: "25.000", description: "Aylık ücret beklentisi (₺)" },
+          payCompatible: { type: ["boolean", "null"], description: "Ücret beklentisi işe uyuyor mu" },
         },
       },
       Offer: {
@@ -208,6 +212,8 @@ export const openApiDocument = {
                   online: true,
                   perfect: true,
                   score: 92,
+                  expectedPay: "25.000",
+                  payCompatible: true,
                 },
               ],
             },

@@ -28,7 +28,17 @@ describe("GET /api/candidates", () => {
       online: true,
       perfect: true,
       score: 92,
+      expectedPay: "25.000",
+      payCompatible: true,
     });
+  });
+
+  it("returns the pay line from the reference design", async () => {
+    const res = await get();
+    const pay = Object.fromEntries(
+      res.body.data.candidates.map((c: { id: string; payCompatible: boolean }) => [c.id, c.payCompatible]),
+    );
+    expect(pay).toEqual({ w_merve: true, w_ferhat: false, w_derya: false, w_ayse: true });
   });
 
   it("filters by tab", async () => {

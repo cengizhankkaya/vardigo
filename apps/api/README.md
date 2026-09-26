@@ -84,6 +84,8 @@ curl "http://localhost:3000/api/candidates?tab=perfect&sort=near" \
 | `tab` | `perfect` (score ≥ 80), `similar` (score < 80) | yok: tüm adaylar |
 | `sort` | `recommended` (score azalan), `near` (km artan), `rating` (puan azalan) | `recommended` |
 
+`expectedPay` ("25.000", aylık ₺) ve `payCompatible` kartlardaki "Ücret beklentisi uyuşuyor / uyuşmuyor" satırını besler. Case seed'inde ücret bilgisi olmadığı için değerler referans tasarımdan alınmıştır ([src/demo/candidate-pay.ts](src/demo/candidate-pay.ts)).
+
 Geçersiz değer `400 VALIDATION_ERROR` döner. `totalPerfect` (26), `totalSimilar` (16) ve `selectedHint` (1) referans tasarımdaki sabit etiketlerdir; listedeki gerçek aday sayısı 4'tür. Eşit değerlerde seed sırası korunur.
 
 ## Görüşme talebi gönderme (işveren)
