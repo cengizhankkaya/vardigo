@@ -89,6 +89,9 @@ class FakeOffersRepository implements OffersRepository {
   final fetches = <(OfferTab, OfferSort?)>[];
   Object? respondError;
 
+  /// When set, accept/reject wait for it before answering.
+  Completer<void>? pendingRespond;
+
   @override
   Future<OfferList> fetch({
     OfferTab tab = OfferTab.pending,
@@ -118,6 +121,8 @@ class FakeOffersRepository implements OffersRepository {
   Future<Offer> reject(String id) => _answer(id, OfferStatus.rejected);
 
   Future<Offer> _answer(String id, OfferStatus status) async {
+    final pending = pendingRespond;
+    if (pending != null) await pending.future;
     final error = respondError;
     if (error != null) throw error;
     final old = offers[id]!;

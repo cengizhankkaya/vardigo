@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:vardigo/app/providers.dart';
@@ -117,5 +119,23 @@ void main() {
         isFalse,
       );
     });
+  });
+
+  test('an answer after leaving the screen is dropped quietly', () async {
+    final local = ProviderContainer(
+      overrides: [offersRepositoryProvider.overrideWithValue(repo)],
+    );
+    addTearDown(local.dispose);
+    final sub = local.listen(offersControllerProvider, (_, _) {});
+    repo.pendingRespond = Completer();
+    final result = local
+        .read(offersControllerProvider.notifier)
+        .respond(repo.offers['o_garson']!, accept: true);
+
+    sub.close();
+    await Future<void>.delayed(Duration.zero);
+    repo.pendingRespond!.complete();
+
+    expect(await result, isA<Responded>());
   });
 }
