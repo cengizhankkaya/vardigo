@@ -16,6 +16,7 @@ export function requireRole(users: SqliteUsersRepository, role: Role): RequestHa
       throw new HttpError(401, "INVALID_TOKEN", "Oturum bilgisi geçersiz");
     }
     if (user.role !== role) {
+      // 401 rather than the usual 403: the case contract asks for it (BACKEND_PLANI D16).
       throw new HttpError(401, "ROLE_NOT_ALLOWED", "Bu işlem için yetkiniz yok");
     }
     res.locals.user = user;
