@@ -19,6 +19,7 @@ flutter run --dart-define=START_AS=employer   # rol ekranını atlayıp işveren
 flutter run --dart-define=REFERENCE_FRAME=true   # uygulamayı 390×844 telefon çerçevesinde gösterir
 flutter analyze
 flutter test
+flutter test --update-goldens test/goldens   # bilerek yapılan görsel değişiklikten sonra
 ```
 
 ## Backend bağlantısı
@@ -274,6 +275,16 @@ core/presentation/pages/route_error_screen.dart  # bilinmeyen adres sayfası
    - "Detayları Gör" kartın altında detay endpoint'inden gelen şehir ve şube notunu, ücret ve saati gösterir.
    - Geri sayım `expiresAt` ile cihazda hesaplanır ve 30 saniyede bir güncellenir; 6 saatten az kalınca kırmızıya döner (referanstaki ilk kart). Sayaç sıfırlanınca ve uygulama arka plandan dönünce liste sunucudan yenilenir.
    - Cevaplanan ve süresi dolan kartlarda buton ve sayaç yerine durum etiketi vardır.
+
+### Görsel testler (golden)
+
+[test/goldens/](test/goldens/) iki case ekranını açık ve koyu temada 390×844'te (iPhone güvenli alanıyla, 2× piksel) çizer ve kayıtlı PNG'lerle karşılaştırır:
+
+- Veri temiz seed'den alınmış gerçek yanıtlardır (`candidates.json`, `offers_seed.json`); saat seed anına sabittir, sayaçlar 21 sa 32 dk / 18 sa 0 dk okur.
+- Fotoğraf ve logolar backend'in kendi dosyalarıdır (`apps/api/public/assets`), ağ kullanılmaz.
+- Yazı gerçek Urbanist'tir; Urbanist'te olmayan ₺ için Flutter SDK'daki Roboto yedek font olarak yüklenir (cihazda sistem fontu bu işi görür). Font yükleme yalnız bu klasörü etkiler (`test/goldens/flutter_test_config.dart`); diğer testler Flutter'ın test fontuyla çalışır.
+- macOS ile CI (Linux) arasındaki yazı yumuşatma farkları için piksellerin %0,5'ine kadar fark kabul edilir; 2 px'lik bir boşluk değişikliği bile ~%6 fark verir.
+- Goldenlar referans PNG'lerin kopyası değildir; aşağıdaki farklar bilerek korunur. Görevleri, onaylanmış görünümün sonradan bozulmasını yakalamaktır.
 
 ### Referansla farklar
 
