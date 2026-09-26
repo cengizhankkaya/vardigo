@@ -6,10 +6,10 @@ import '../../domain/entities/offer_list.dart';
 import '../../domain/entities/offer_sort.dart';
 import '../../domain/entities/offer_status.dart';
 import '../../domain/entities/offer_tab.dart';
-import '../../domain/repositories/offers_repository.dart';
+import '../../domain/repositories/i_offers_repository.dart';
 
-class ApiOffersRepository implements OffersRepository {
-  ApiOffersRepository(this._api);
+class OffersRepositoryImpl implements IOffersRepository {
+  OffersRepositoryImpl(this._api);
 
   final ApiClient _api;
 

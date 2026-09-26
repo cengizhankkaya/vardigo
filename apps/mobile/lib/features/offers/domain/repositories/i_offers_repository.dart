@@ -3,7 +3,7 @@ import '../entities/offer_list.dart';
 import '../entities/offer_sort.dart';
 import '../entities/offer_tab.dart';
 
-abstract interface class OffersRepository {
+abstract interface class IOffersRepository {
   Future<OfferList> fetch({OfferTab tab = OfferTab.pending, OfferSort? sort});
 
   Future<Offer> detail(String id);

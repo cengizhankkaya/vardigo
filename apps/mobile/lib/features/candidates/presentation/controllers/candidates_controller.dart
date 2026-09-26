@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../app/providers.dart';
+import '../../application/usecases/get_candidates.dart';
+import '../../application/usecases/send_interview_requests.dart';
 import '../../../../core/error/exceptions/api_exception.dart';
 import '../../domain/entities/candidate_list.dart';
 import '../../domain/entities/candidate_sort.dart';
@@ -13,9 +14,8 @@ import 'submit_result.dart';
 /// an answer for an old tab never shows up under the current one.
 final candidateListProvider = FutureProvider.autoDispose
     .family<CandidateList, CandidateQuery>(
-      (ref, query) => ref
-          .watch(candidatesRepositoryProvider)
-          .fetch(tab: query.tab, sort: query.sort),
+      (ref, query) =>
+          ref.watch(getCandidatesProvider)(tab: query.tab, sort: query.sort),
     );
 
 /// One controller per screen visit, keyed by the tab and sort it opens with
@@ -76,9 +76,7 @@ class CandidatesController extends Notifier<CandidatesState> {
     final ids = state.selected.toList();
     state = state.copyWith(submitting: true);
     try {
-      final created = await ref
-          .read(candidatesRepositoryProvider)
-          .sendInterviewRequests(ids);
+      final created = await ref.read(sendInterviewRequestsProvider)(ids);
       // The screen may have closed while waiting; the result still goes back.
       if (ref.mounted) {
         state = state.copyWith(

@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../app/providers.dart';
+import '../../application/usecases/login.dart';
 import '../../domain/entities/role.dart';
 import '../../domain/entities/session.dart';
 
@@ -16,7 +16,7 @@ class SessionController extends Notifier<Session?> {
   /// Logs in with the demo account of [role]. Throws ApiException on failure
   /// and keeps the previous session.
   Future<Session> login(Role role) async {
-    final session = await ref.read(sessionRepositoryProvider).login(role);
+    final session = await ref.read(loginProvider)(role);
     state = session;
     return session;
   }

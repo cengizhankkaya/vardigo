@@ -5,9 +5,12 @@ import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:vardigo/app/providers.dart';
+import 'package:vardigo/app/composition_root.dart';
 import 'package:vardigo/core/api/api_config.dart';
+import 'package:vardigo/core/api/api_providers.dart';
+import 'package:vardigo/features/candidates/application/candidates_repository_provider.dart';
 import 'package:vardigo/features/candidates/domain/entities/candidate_tab.dart';
+import 'package:vardigo/features/offers/application/offers_repository_provider.dart';
 import 'package:vardigo/features/offers/domain/entities/offer_status.dart';
 import 'package:vardigo/features/offers/domain/entities/offer_tab.dart';
 import 'package:vardigo/features/session/domain/entities/role.dart';
@@ -23,7 +26,10 @@ void main() {
     'employer sends, worker answers',
     () async {
       final container = ProviderContainer(
-        overrides: [apiConfigProvider.overrideWithValue(ApiConfig(origin!))],
+        overrides: [
+          ...apiAdapters,
+          apiConfigProvider.overrideWithValue(ApiConfig(origin!)),
+        ],
       );
       addTearDown(container.dispose);
       final session = container.read(sessionProvider.notifier);

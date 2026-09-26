@@ -7,7 +7,7 @@
 | Parça | Durum |
 |---|---|
 | Backend | Tamamlandı: case'teki tüm endpoint'ler, SQLite kalıcılığı, Swagger, 144 test |
-| Mobil | Tamamlandı: iki case ekranı (Eşleşen Personeller, Görüşme Talepleri), demo rol seçimi, 390×844 telefon çerçevesi, 88 test |
+| Mobil | Tamamlandı: iki case ekranı (Eşleşen Personeller, Görüşme Talepleri), demo rol seçimi, 390×844 telefon çerçevesi, 95 test |
 
 ## 5 dakikada çalışan demo
 
@@ -90,7 +90,7 @@ npm test           # 144 test; her test kendi geçici veritabanını kullanır
 npm run typecheck
 
 cd apps/mobile
-flutter test       # 88 test; canlı API testi için apps/mobile/README.md
+flutter test       # 95 test; canlı API testi için apps/mobile/README.md
 ```
 
 CI her push'ta backend testlerini, derleme ve smoke testini, mobil kod üretimi/format/analiz/testlerini ve uygulamanın repository'lerini gerçek sunucuya karşı çalıştırır.

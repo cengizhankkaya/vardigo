@@ -1,6 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../app/providers.dart';
+import '../../application/usecases/accept_offer.dart';
+import '../../application/usecases/get_offer_detail.dart';
+import '../../application/usecases/get_offers.dart';
+import '../../application/usecases/reject_offer.dart';
 import '../../../../core/error/exceptions/api_exception.dart';
 import '../../domain/entities/offer.dart';
 import '../../domain/entities/offer_list.dart';
@@ -21,14 +24,13 @@ final countdownTickProvider = StreamProvider.autoDispose<DateTime>((ref) {
 
 final offerListProvider = FutureProvider.autoDispose
     .family<OfferList, OfferQuery>(
-      (ref, query) => ref
-          .watch(offersRepositoryProvider)
-          .fetch(tab: query.tab, sort: query.sort),
+      (ref, query) =>
+          ref.watch(getOffersProvider)(tab: query.tab, sort: query.sort),
     );
 
 /// City and branch note shown under "Detayları Gör".
 final offerDetailProvider = FutureProvider.autoDispose.family<Offer, String>(
-  (ref, id) => ref.watch(offersRepositoryProvider).detail(id),
+  (ref, id) => ref.watch(getOfferDetailProvider)(id),
 );
 
 /// One controller per screen visit, keyed by the tab and sort it opens with
@@ -66,10 +68,9 @@ class OffersController extends Notifier<OffersState> {
     if (state.busy.contains(offer.id)) return RespondFailed(_busy);
     state = state.copyWith(busy: {...state.busy, offer.id});
     try {
-      final repository = ref.read(offersRepositoryProvider);
       final updated = accept
-          ? await repository.accept(offer.id)
-          : await repository.reject(offer.id);
+          ? await ref.read(acceptOfferProvider)(offer.id)
+          : await ref.read(rejectOfferProvider)(offer.id);
       return Responded(updated);
     } on ApiException catch (error) {
       return RespondFailed(error);

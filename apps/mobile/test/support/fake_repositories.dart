@@ -1,20 +1,22 @@
 import 'dart:async';
 
 import 'package:vardigo/core/error/exceptions/api_exception.dart';
+import 'package:vardigo/features/appearance/domain/entities/app_theme_mode.dart';
+import 'package:vardigo/features/appearance/domain/repositories/i_theme_mode_repository.dart';
 import 'package:vardigo/features/candidates/domain/entities/candidate.dart';
 import 'package:vardigo/features/candidates/domain/entities/candidate_list.dart';
 import 'package:vardigo/features/candidates/domain/entities/candidate_sort.dart';
 import 'package:vardigo/features/candidates/domain/entities/candidate_tab.dart';
-import 'package:vardigo/features/candidates/domain/repositories/candidates_repository.dart';
+import 'package:vardigo/features/candidates/domain/repositories/i_candidates_repository.dart';
 import 'package:vardigo/features/offers/domain/entities/offer.dart';
 import 'package:vardigo/features/offers/domain/entities/offer_list.dart';
 import 'package:vardigo/features/offers/domain/entities/offer_sort.dart';
 import 'package:vardigo/features/offers/domain/entities/offer_status.dart';
 import 'package:vardigo/features/offers/domain/entities/offer_tab.dart';
-import 'package:vardigo/features/offers/domain/repositories/offers_repository.dart';
+import 'package:vardigo/features/offers/domain/repositories/i_offers_repository.dart';
 import 'package:vardigo/features/session/domain/entities/role.dart';
 import 'package:vardigo/features/session/domain/entities/session.dart';
-import 'package:vardigo/features/session/domain/repositories/session_repository.dart';
+import 'package:vardigo/features/session/domain/repositories/i_session_repository.dart';
 
 Candidate candidate(String id, {bool perfect = true}) => Candidate(
   id: id,
@@ -32,7 +34,7 @@ Candidate candidate(String id, {bool perfect = true}) => Candidate(
 
 /// In-memory candidates: w_merve and w_ferhat are perfect, w_derya and
 /// w_ayse similar. [sendResult] decides how sending ends.
-class FakeCandidatesRepository implements CandidatesRepository {
+class FakeCandidatesRepository implements ICandidatesRepository {
   final fetches = <(CandidateTab?, CandidateSort?)>[];
   final sent = <List<String>>[];
   Completer<List<String>>? pendingSend;
@@ -93,7 +95,7 @@ Offer offer(
 );
 
 /// In-memory inbox. Answering moves an offer to the answered tab.
-class FakeOffersRepository implements OffersRepository {
+class FakeOffersRepository implements IOffersRepository {
   final offers = <String, Offer>{
     'o_garson': offer('o_garson', left: const Duration(hours: 5, minutes: 32)),
     'o_barista': offer('o_barista', pay: '38.000'),
@@ -156,7 +158,7 @@ class FakeOffersRepository implements OffersRepository {
 
 /// Demo login that fails the first [failures] times with a connection
 /// problem, then hands out `dev-<role>` tokens.
-class FakeSessionRepository implements SessionRepository {
+class FakeSessionRepository implements ISessionRepository {
   FakeSessionRepository({this.failures = 0});
 
   int failures;
@@ -171,4 +173,15 @@ class FakeSessionRepository implements SessionRepository {
     }
     return Session(token: 'dev-${role.name}', role: role);
   }
+}
+
+/// Theme choice kept in memory; starts on light like the real store.
+class FakeThemeModeRepository implements IThemeModeRepository {
+  AppThemeMode _mode = AppThemeMode.light;
+
+  @override
+  AppThemeMode read() => _mode;
+
+  @override
+  Future<void> write(AppThemeMode mode) async => _mode = mode;
 }

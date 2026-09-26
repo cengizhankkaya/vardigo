@@ -3,9 +3,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:vardigo/core/api/api_config.dart';
 import 'package:vardigo/core/api/api_client.dart';
 import 'package:vardigo/core/error/exceptions/api_exception.dart';
-import 'package:vardigo/features/candidates/infrastructure/repositories/api_candidates_repository.dart';
-import 'package:vardigo/features/offers/infrastructure/repositories/api_offers_repository.dart';
-import 'package:vardigo/features/session/infrastructure/repositories/api_session_repository.dart';
+import 'package:vardigo/features/candidates/infrastructure/repositories/candidates_repository_impl.dart';
+import 'package:vardigo/features/offers/infrastructure/repositories/offers_repository_impl.dart';
+import 'package:vardigo/features/session/infrastructure/repositories/session_repository_impl.dart';
 
 import '../support/fake_adapter.dart';
 
@@ -35,7 +35,7 @@ void main() {
   }
 
   test('login returns the demo session', () async {
-    final repo = ApiSessionRepository(
+    final repo = SessionRepositoryImpl(
       api({'POST /api/auth/login': () => fixture('login_worker')}),
     );
     final session = await repo.login(Role.worker);
@@ -45,7 +45,7 @@ void main() {
   });
 
   test('candidates map every field', () async {
-    final repo = ApiCandidatesRepository(
+    final repo = CandidatesRepositoryImpl(
       api({'GET /api/candidates': () => fixture('candidates')}),
     );
     final list = await repo.fetch(
@@ -66,7 +66,7 @@ void main() {
   });
 
   test('omits empty query parameters', () async {
-    final repo = ApiCandidatesRepository(
+    final repo = CandidatesRepositoryImpl(
       api({'GET /api/candidates': () => fixture('candidates')}),
     );
     await repo.fetch();
@@ -74,7 +74,7 @@ void main() {
   });
 
   test('sending requests returns the created offer ids', () async {
-    final repo = ApiCandidatesRepository(
+    final repo = CandidatesRepositoryImpl(
       api({'POST /api/offers': () => fixture('offers_created', status: 201)}),
     );
     final ids = await repo.sendInterviewRequests(['w_merve', 'w_derya']);
@@ -86,7 +86,7 @@ void main() {
   });
 
   test('offer list, detail and answer map every field', () async {
-    final repo = ApiOffersRepository(
+    final repo = OffersRepositoryImpl(
       api({
         'GET /api/offers': () => fixture('offers_pending'),
         'GET /api/offers/o_barista': () => fixture('offer_detail'),
@@ -114,7 +114,7 @@ void main() {
   });
 
   test('a rule error keeps the backend code and message', () async {
-    final repo = ApiOffersRepository(
+    final repo = OffersRepositoryImpl(
       api({
         'POST /api/offers/o_garson/reject': () =>
             fixture('error_offer_state', status: 409),
@@ -136,7 +136,7 @@ void main() {
   });
 
   test('an unknown status is reported as a bad response', () async {
-    final repo = ApiOffersRepository(
+    final repo = OffersRepositoryImpl(
       api({
         'GET /api/offers/o_x': () => FakeAdapter.json({
           'ok': true,

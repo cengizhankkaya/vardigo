@@ -5,6 +5,9 @@ import 'package:vardigo/app/app.dart';
 import 'package:vardigo/app/reference_frame/phone_frame.dart';
 import 'package:vardigo/app/reference_frame/reference_frame_view.dart';
 import 'package:vardigo/core/theme/app_theme.dart';
+import 'package:vardigo/features/appearance/application/theme_mode_repository_provider.dart';
+
+import '../support/fake_repositories.dart';
 
 void main() {
   testWidgets('frame is 390×844 and gives the screen the reference insets', (
@@ -81,7 +84,14 @@ void main() {
     addTearDown(tester.view.reset);
 
     await tester.pumpWidget(
-      const ProviderScope(child: VardigoApp(referenceFrame: true)),
+      ProviderScope(
+        overrides: [
+          themeModeRepositoryProvider.overrideWithValue(
+            FakeThemeModeRepository(),
+          ),
+        ],
+        child: const VardigoApp(referenceFrame: true),
+      ),
     );
     await tester.pumpAndSettle();
 
@@ -96,7 +106,16 @@ void main() {
   });
 
   testWidgets('app uses the device edges by default', (tester) async {
-    await tester.pumpWidget(const ProviderScope(child: VardigoApp()));
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          themeModeRepositoryProvider.overrideWithValue(
+            FakeThemeModeRepository(),
+          ),
+        ],
+        child: const VardigoApp(),
+      ),
+    );
     await tester.pumpAndSettle();
     expect(find.byType(PhoneFrame), findsNothing);
   });

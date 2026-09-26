@@ -1,11 +1,11 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../domain/entities/app_theme_mode.dart';
-import '../../domain/repositories/theme_mode_repository.dart';
+import '../../domain/repositories/i_theme_mode_repository.dart';
 
 /// Keeps the choice in the device's key-value store.
-class PrefsThemeModeRepository implements ThemeModeRepository {
-  PrefsThemeModeRepository(this._prefs);
+class ThemeModeRepositoryImpl implements IThemeModeRepository {
+  ThemeModeRepositoryImpl(this._prefs);
 
   final SharedPreferences _prefs;
 

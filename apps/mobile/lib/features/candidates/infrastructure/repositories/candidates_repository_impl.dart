@@ -4,10 +4,10 @@ import '../../domain/entities/candidate.dart';
 import '../../domain/entities/candidate_list.dart';
 import '../../domain/entities/candidate_sort.dart';
 import '../../domain/entities/candidate_tab.dart';
-import '../../domain/repositories/candidates_repository.dart';
+import '../../domain/repositories/i_candidates_repository.dart';
 
-class ApiCandidatesRepository implements CandidatesRepository {
-  ApiCandidatesRepository(this._api);
+class CandidatesRepositoryImpl implements ICandidatesRepository {
+  CandidatesRepositoryImpl(this._api);
 
   final ApiClient _api;
 

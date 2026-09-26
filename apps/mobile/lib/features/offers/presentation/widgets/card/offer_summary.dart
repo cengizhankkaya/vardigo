@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../../../../app/providers.dart';
+import '../../../../../core/api/api_providers.dart';
 import '../../../../../core/l10n/l10n.dart';
 import '../../../../../core/presentation/widgets/app_icon.dart';
 import '../../../../../core/presentation/widgets/inline_divider.dart';
