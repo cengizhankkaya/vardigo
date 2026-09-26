@@ -1,0 +1,63 @@
+# Local files
+.DS_Store
+Thumbs.db
+.idea/
+*.log
+
+# Secrets and local environment
+.env
+.env.*
+!.env.example
+!.env.*.example
+*.pem
+*.key
+*.p12
+*.jks
+*.keystore
+key.properties
+
+# Node.js / TypeScript
+node_modules/
+.pnpm-store/
+dist/
+coverage/
+*.tsbuildinfo
+
+# Runtime SQLite data
+*.sqlite
+*.sqlite-*
+*.sqlite3
+*.sqlite3-*
+*.db
+*.db-*
+apps/api/data/
+
+# Flutter / Dart generated files
+.dart_tool/
+.pub/
+.pub-cache/
+.packages
+.flutter-plugins
+.flutter-plugins-dependencies
+build/
+**/doc/api/
+**/test/**/failures/
+
+# Native generated files and local settings
+.gradle/
+.cxx/
+**/android/local.properties
+**/android/captures/
+Pods/
+.symlinks/
+**/ios/Flutter/ephemeral/
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/flutter_export_environment.sh
+**/ios/Runner/GeneratedPluginRegistrant.*
+**/xcuserdata/
+*.xcuserstate
+
+# Track actual dependency lockfiles and Flutter metadata when generated.
+
+# Internal docs stay local; never pushed
+docs/

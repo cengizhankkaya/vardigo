@@ -1,0 +1,10 @@
+VARDIGO — SÜREÇ NOTU (geliştikçe güncellenecek, en fazla 1 sayfa)
+
+26 Eylül 2026 — İlk adım
+Araçlar: Codex, terminal, Python ve Git.
+Kullanıcıyla belirlenen kapsam: Flutter mobil + Node.js/TypeScript/Express API + SQLite.
+Yapılanlar: apps/api ve apps/mobile başlangıç klasörleri, ortak sözleşme/kaynak
+alanları, README, mimari sınırlar, commit sırası ve ignore kuralları hazırlandı.
+Bu aşamada uygulama kodu, paket kurulumu, API veya ekran geliştirilmedi.
+Doğrulama: klasörler, yerel belge bağlantıları ve ilk commitin Git kapsamı.
+Uygulama build, cihaz ve API testleri henüz yapılmadı.
