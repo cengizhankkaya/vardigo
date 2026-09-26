@@ -25,6 +25,10 @@
   "roleWorker": "İş arayan",
   "roleWorkerHint": "Gelen görüşme taleplerini gör, yanıtla",
   "openGallery": "Tasarım galerisi",
+  "appearance": "Görünüm",
+  "themeSystem": "Sistem",
+  "themeLight": "Açık",
+  "themeDark": "Koyu",
   "candidatesTitle": "Eşleşen Personeller",
   "candidatesFound": "{count} personel bulundu",
   "@candidatesFound": {

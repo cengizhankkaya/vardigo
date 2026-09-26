@@ -202,6 +202,30 @@ abstract class AppLocalizations {
   /// **'Tasarım galerisi'**
   String get openGallery;
 
+  /// No description provided for @appearance.
+  ///
+  /// In tr, this message translates to:
+  /// **'Görünüm'**
+  String get appearance;
+
+  /// No description provided for @themeSystem.
+  ///
+  /// In tr, this message translates to:
+  /// **'Sistem'**
+  String get themeSystem;
+
+  /// No description provided for @themeLight.
+  ///
+  /// In tr, this message translates to:
+  /// **'Açık'**
+  String get themeLight;
+
+  /// No description provided for @themeDark.
+  ///
+  /// In tr, this message translates to:
+  /// **'Koyu'**
+  String get themeDark;
+
   /// No description provided for @candidatesTitle.
   ///
   /// In tr, this message translates to:

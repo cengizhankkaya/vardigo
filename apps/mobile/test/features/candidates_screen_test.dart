@@ -12,13 +12,13 @@ import '../support/fake_repositories.dart';
 void main() {
   late FakeCandidatesRepository repo;
 
-  Future<void> pumpScreen(WidgetTester tester) async {
+  Future<void> pumpScreen(WidgetTester tester, {ThemeData? theme}) async {
     repo = FakeCandidatesRepository();
     await tester.pumpWidget(
       ProviderScope(
         overrides: [candidatesRepositoryProvider.overrideWithValue(repo)],
         child: MaterialApp(
-          theme: AppTheme.light(),
+          theme: theme ?? AppTheme.light(),
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
           home: const CandidatesScreen(),
@@ -93,5 +93,15 @@ void main() {
       findsOneWidget,
     );
     expect(find.text('1 kişi seçildi'), findsOneWidget);
+  });
+
+  testWidgets('renders in the dark theme', (tester) async {
+    await pumpScreen(tester, theme: AppTheme.dark());
+    expect(tester.takeException(), isNull);
+    expect(find.text('Görüşme Talebi Gönder (1)'), findsWidgets);
+    expect(
+      Theme.of(tester.element(find.byType(CandidatesScreen))).brightness,
+      Brightness.dark,
+    );
   });
 }

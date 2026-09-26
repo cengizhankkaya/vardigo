@@ -67,18 +67,69 @@ flutter gen-l10n                                           # metinler (flutter r
 
 ## Tema ve token'lar
 
-Kod üretimiyle gelmeyen tasarım değerleri `lib/shared/design_system/` altında elle yazılmış sabitlerdir:
+Uygulamanın açık (referans tasarım) ve koyu teması vardır. Seçim rol ekranındaki **Görünüm: Sistem / Açık / Koyu** ile yapılır, cihazda saklanır ve uygulama yeniden açıldığında korunur.
 
-| Dosya | İçerik | Kullanım |
-|---|---|---|
-| [tokens/app_text_styles.dart](lib/shared/design_system/tokens/app_text_styles.dart) | Case'in 10 yazı stili (boyut / ağırlık / satır yüksekliği, harf aralığı, varsayılan renk) | `Text('...', style: AppTextStyles.title18)` |
-| [tokens/app_dimens.dart](lib/shared/design_system/tokens/app_dimens.dart) | Boşluk, köşe yarıçapı ve boyutlar | `AppSpacing.page`, `AppRadius.card`, `AppSizes.avatar` |
-| [tokens/app_shadows.dart](lib/shared/design_system/tokens/app_shadows.dart) | Kart, buton, sekme ve telefon çerçevesi gölgeleri | `BoxDecoration(boxShadow: AppShadows.card)` |
-| [theme/app_theme.dart](lib/shared/design_system/theme/app_theme.dart) | Uygulama teması | `MaterialApp(theme: AppTheme.light())` |
+### Yapı
+
+```text
+lib/shared/design_system/
+├── tokens/                 # renksiz ölçüler: yazı boyutları, boşluk, köşe, gölge
+│   ├── app_text_styles.dart
+│   ├── app_dimens.dart
+│   └── app_shadows.dart
+└── theme/                  # tema yapılandırması (yalnız veri, durum yok)
+    ├── app_palette.dart      # açık/koyu renk setleri; yalnız case paleti (ColorName)
+    ├── app_colors.dart       # ThemeExtension: metin seviyeleri, yüzeyler, kenarlıklar
+    ├── semantic_colors.dart  # ThemeExtension: success, warning, info
+    ├── app_text_theme.dart   # ThemeExtension: case'in 10 yazı stili, temanın renkleriyle
+    ├── app_theme.dart        # AppTheme.light() / AppTheme.dark()
+    ├── theme_context.dart    # context.appColors / semanticColors / textStyles
+    └── theme.dart            # barrel
+
+lib/features/appearance/    # tema durumu (Riverpod)
+├── domain/app_theme_mode.dart              # AppThemeMode { system, light, dark }
+├── data/prefs_theme_mode_repository.dart   # shared_preferences ile saklama
+├── application/theme_mode_controller.dart  # themeModeControllerProvider
+└── presentation/theme_mode_picker.dart     # Görünüm seçici
+```
+
+### Kurallar
+
+- Widget'ta renk yazılmaz; `ColorName` yalnız `app_palette.dart`'ta, telefon çerçevesinin cihaz parçalarında (bezel, island) ve tasarım galerisinin palet örneklerinde geçer.
+- Renk ve yazı temadan okunur:
+
+  ```dart
+  final scheme = ColorScheme.of(context);   // primary, onPrimary, error, errorContainer, primaryContainer, surface
+  final colors = context.appColors;         // textTitle, textSecondary, card, border, accent ...
+  final semantic = context.semanticColors;  // success, warning, info
+  final text = context.textStyles;          // title18, caption12, label14 ...
+
+  Text(name, style: text.title18);
+  Text(pay, style: text.title18.copyWith(color: semantic.success));
+  ```
+
+- Hata rengi `scheme.error` / `errorContainer`'dan gelir; `SemanticColors`'ta hata yoktur.
+- Yeni bir rol gerekiyorsa `AppColors`'a eklenir ve iki temada da `AppPalette`'te değer alır.
+- Tema değiştirme: `ref.read(themeModeControllerProvider.notifier).setMode(AppThemeMode.dark)`.
+- Koyu temanın referans tasarımı yoktur; renkleri case paletindeki koyu token'lardan seçilmiştir (zemin `strong`, kart `slate-700`, kenarlık `slate-600`, vurgu metni `primary-light`, seçili kart `primary-darkest`). Case dışında renk eklenmez; testler iki temanın da yalnız `colors.xml` renklerini kullandığını doğrular.
+
+### Kontrast (WCAG 2.1 AA)
+
+- Koyu temada metin/zemin çiftleri 4,5:1'i sağlar ve bu testle korunur. Tek istisna kırmızı: acil geri sayım ve detay hatası 3,6:1'dir (paletten daha açık kırmızı yok); bu, kalın/büyük metin için AA sınırı olan 3:1'in üzerindedir.
+- Açık tema referansla birebir kalır; case renklerinin bazıları 4,5:1'in altındadır ve değiştirilmedi: beyaz üzerinde yeşil ücret (2,9), pasif talep sekmesi `soft` (2,4), ücret satırındaki turuncu (2,6), `gray-500` açıklamalar (4,2), `errorSoft` üzerinde kırmızı (3,2).
+
+### Yazı
+
+| Dosya | İçerik |
+|---|---|
+| [tokens/app_text_styles.dart](lib/shared/design_system/tokens/app_text_styles.dart) | Case'in 10 yazı stili: boyut / ağırlık / satır yüksekliği, harf aralığı; renksiz |
+| [theme/app_text_theme.dart](lib/shared/design_system/theme/app_text_theme.dart) | Aynı stiller, temanın varsayılan renkleriyle (`context.textStyles`) |
+| [tokens/app_dimens.dart](lib/shared/design_system/tokens/app_dimens.dart) | Boşluk, köşe yarıçapı ve boyutlar: `AppSpacing.page`, `AppRadius.card` |
+| [tokens/app_shadows.dart](lib/shared/design_system/tokens/app_shadows.dart) | Kart, buton, sekme ve telefon çerçevesi gölgeleri |
 
 - Satır yüksekliği case'teki piksel değerinden çevrilir (18/24 → `height: 24 / 18`).
-- Rengi farklı kullanım için yalnız renk değiştirilir: `AppTextStyles.title16Semibold.copyWith(color: ColorName.green)`.
-- Tema varsayılan fontu Urbanist yapar, tüm metinlerde `liga`/`calt` kapalıdır ve Material dalga efekti kapalıdır.
+- Farklı kullanım için yalnız renk değiştirilir: `text.title16Semibold.copyWith(color: semantic.success)`.
+- İki tema da varsayılan fontu Urbanist yapar; tüm metinlerde `liga`/`calt` ve Material dalga efekti kapalıdır.
 
 ## Görseller ve font
 
@@ -133,7 +184,7 @@ features/offers/presentation/
 
 ## Ekranlar
 
-1. **Demo hesabı seç:** İşveren veya İş arayan; seçilen rolle `POST /auth/login` yapılır. Geri dönünce oturum kapanır. Debug derlemede buradan tasarım galerisi de açılır.
+1. **Demo hesabı seç:** İşveren veya İş arayan; seçilen rolle `POST /auth/login` yapılır. Geri dönünce oturum kapanır. Görünüm (Sistem / Açık / Koyu) buradan seçilir. Debug derlemede buradan tasarım galerisi de açılır.
 2. **Eşleşen Personeller (işveren):** sekmeler (`tab=perfect|similar`), sıralama düğmesi (Önerilen → En Yakın → Puan), çoklu seçim ve "Görüşme Talebi Gönder (N)".
    - İlk açılışta API'nin `selectedHint` değeri kadar ilk aday (Merve) seçili gelir; bu bir kez uygulanır.
    - Seçim sekmeler arasında korunur; sayı iki sekmedeki seçimlerin toplamıdır.

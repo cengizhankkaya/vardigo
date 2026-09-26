@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../l10n/l10n.dart';
+import '../features/appearance/application/theme_mode_controller.dart';
+import '../features/appearance/domain/app_theme_mode.dart';
 import '../features/session/presentation/role_select_screen.dart';
+import '../l10n/l10n.dart';
 import '../preview/phone_frame.dart';
 import '../shared/design_system/theme/app_theme.dart';
 
-class VardigoApp extends StatelessWidget {
+class VardigoApp extends ConsumerWidget {
   const VardigoApp({
     super.key,
     this.referenceFrame = ReferenceFrameView.enabled,
@@ -16,11 +19,17 @@ class VardigoApp extends StatelessWidget {
   final bool referenceFrame;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp(
       onGenerateTitle: (context) => context.l10n.appTitle,
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light(),
+      darkTheme: AppTheme.dark(),
+      themeMode: switch (ref.watch(themeModeControllerProvider)) {
+        AppThemeMode.system => ThemeMode.system,
+        AppThemeMode.light => ThemeMode.light,
+        AppThemeMode.dark => ThemeMode.dark,
+      },
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       builder: referenceFrame

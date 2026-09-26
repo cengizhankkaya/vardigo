@@ -16,7 +16,7 @@ import '../support/fake_repositories.dart';
 void main() {
   late FakeOffersRepository repo;
 
-  Future<void> pumpScreen(WidgetTester tester) async {
+  Future<void> pumpScreen(WidgetTester tester, {ThemeData? theme}) async {
     tester.view.physicalSize = const Size(390, 1600);
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.reset);
@@ -38,7 +38,7 @@ void main() {
           countdownTickProvider.overrideWith((ref) => Stream.value(testNow)),
         ],
         child: MaterialApp(
-          theme: AppTheme.light(),
+          theme: theme ?? AppTheme.light(),
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
           home: const OffersScreen(),
@@ -137,6 +137,16 @@ void main() {
     expect(
       find.text('Kabul veya red ettiğin talepler burada listelenir'),
       findsOneWidget,
+    );
+  });
+
+  testWidgets('renders in the dark theme', (tester) async {
+    await pumpScreen(tester, theme: AppTheme.dark());
+    expect(tester.takeException(), isNull);
+    expect(find.text('İlgileniyorum'), findsWidgets);
+    expect(
+      Theme.of(tester.element(find.byType(OffersScreen))).brightness,
+      Brightness.dark,
     );
   });
 }
