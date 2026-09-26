@@ -1,8 +1,13 @@
 import express from "express";
+import type { Database } from "./platform/database/connection.js";
 import { errorHandler, notFoundHandler } from "./platform/http/error-handler.js";
 import { sendOk } from "./platform/http/response.js";
 
-export function createApp() {
+export interface AppDeps {
+  db: Database;
+}
+
+export function createApp(_deps: AppDeps) {
   const app = express();
   app.use(express.json());
 
