@@ -1,3 +1,4 @@
+import { fileURLToPath } from "node:url";
 import express from "express";
 import swaggerUi from "swagger-ui-express";
 import { openApiDocument } from "./swagger/openapi.js";
@@ -11,6 +12,7 @@ import { SqliteCandidatesRepository } from "./modules/candidates/infrastructure/
 import { offersRoutes } from "./modules/offers/http/offers-routes.js";
 import { SqliteOffersRepository } from "./modules/offers/infrastructure/sqlite-offers-repository.js";
 import type { Database } from "./platform/database/connection.js";
+import { localhostCors } from "./platform/http/cors.js";
 import { errorHandler, notFoundHandler } from "./platform/http/error-handler.js";
 import { sendOk } from "./platform/http/response.js";
 
@@ -18,6 +20,9 @@ export interface AppDeps {
   db: Database;
   now?: () => number;
 }
+
+/** Case photos and logos; the API returns them as /assets/photos/... and /assets/logos/... */
+export const ASSETS_DIR = fileURLToPath(new URL("../public/assets", import.meta.url));
 
 export function createApp({ db, now = Date.now }: AppDeps) {
   const users = new SqliteUsersRepository(db);
@@ -28,7 +33,10 @@ export function createApp({ db, now = Date.now }: AppDeps) {
 
   const app = express();
   app.disable("x-powered-by");
+  app.use(localhostCors);
   app.use(express.json());
+
+  app.use("/assets", express.static(ASSETS_DIR, { index: false, dotfiles: "ignore", maxAge: "1h" }));
 
   app.get("/api/openapi.json", (_req, res) => {
     res.json(openApiDocument);
