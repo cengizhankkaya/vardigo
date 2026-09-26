@@ -32,7 +32,7 @@ Uygulama backend'e `http` ile bağlanır. Varsayılan adres platforma göre seç
 | Gerçek telefon (aynı Wi-Fi) | `flutter run --dart-define=API_ORIGIN=http://<bilgisayar-IP>:3000` | `HOST=0.0.0.0 npm run dev` |
 
 - iOS'ta yalnız yerel ağ için `http` izni açıktır (`NSAllowsLocalNetworking`); Android'de şifresiz trafik yalnız debug derlemede açıktır.
-- Katmanlar: `domain` (model + repository arayüzü) → `data` (JSON okuma + Dio ile API) → `app/providers.dart` (Riverpod ile bağlama). Ekranlar yalnız repository arayüzlerini kullanır.
+- Katmanlar: ekranlar use case'leri çağırır, use case'ler `I…Repository` port'larını kullanır, `…RepositoryImpl` adaptörleri JSON'u okuyup Dio ile API'ye gider. Adaptörleri yalnız `app/composition_root.dart` bağlar (ayrıntı: [Klasörler](#klasörler)).
 - Hatalar `ApiException` olarak gelir: backend kodu (`OFFER_EXPIRED`...) ve Türkçe mesajı ya da istemci kodu (`NETWORK_ERROR`, `TIMEOUT`, `BAD_RESPONSE`).
 - [test/fixtures/](test/fixtures/) backend'in gerçek yanıtlarıdır; repository testleri bunları okur. Backend yanıtı değişirse fixture'lar yeniden alınmalıdır.
 - Canlı test, case akışını uygulamanın repository'leri üzerinden gerçek sunucuya karşı çalıştırır (CI'da her push'ta da çalışır):
@@ -88,7 +88,8 @@ lib/core/theme/                # tema yapılandırması (yalnız veri, durum yok
 lib/features/appearance/                       # tema durumu (Riverpod)
 ├── domain/entities/app_theme_mode.dart        # AppThemeMode { system, light, dark }
 ├── domain/repositories/theme_mode_repository.dart
-├── infrastructure/repositories/               # shared_preferences ve bellek içi
+├── application/                               # port provider'ı, GetThemeMode / SaveThemeMode
+├── infrastructure/repositories/               # ThemeModeRepositoryImpl (shared_preferences)
 ├── presentation/controllers/theme_mode_controller.dart  # themeModeControllerProvider
 └── presentation/widgets/theme_mode_picker.dart          # Görünüm seçici
 ```
@@ -165,7 +166,7 @@ lib/
 ├── bootstrap.dart             # ilk kareden önceki kurulum (shared_preferences, ProviderScope)
 ├── app/                       # uygulama seviyesi: feature'ları birbirine bağlar
 │   ├── app.dart               # MaterialApp.router, tema modu
-│   ├── providers.dart         # composition root: repository ve API provider'ları
+│   ├── composition_root.dart  # adaptörleri port'lara bağlayan tek yer; apiClientProvider
 │   ├── router/                # go_router hub'ı (aşağıda)
 │   └── reference_frame/       # 390×844 telefon çerçevesi
 ├── core/                      # feature bilmeyen ortak altyapı
@@ -193,11 +194,14 @@ Bir feature'ın içi:
 features/offers/
 ├── domain/
 │   ├── entities/              # Offer, OfferList, OfferStatus, OfferTab, OfferSort
-│   └── repositories/          # OffersRepository (arayüz)
+│   └── repositories/          # IOffersRepository (port)
+├── application/
+│   ├── offers_repository_provider.dart   # port provider'ı; composition root bağlar
+│   └── usecases/              # GetOffers, GetOfferDetail, AcceptOffer, RejectOffer
 ├── infrastructure/
-│   └── repositories/          # ApiOffersRepository (Dio + JSON → entity)
+│   └── repositories/          # OffersRepositoryImpl (adaptör: Dio + JSON → entity)
 └── presentation/
-    ├── controllers/           # Riverpod: OffersController, OffersState, OfferQuery, RespondResult
+    ├── controllers/           # Riverpod: OffersController (use case'leri çağırır), OffersState, OfferQuery, RespondResult
     ├── pages/                 # OffersScreen: provider'ları okur, parçaları birleştirir
     ├── routes/                # offers_routes.dart (part of app_router.dart)
     ├── extensions/            # enum → Türkçe metin (sekme, sıralama, boş liste)
@@ -206,11 +210,18 @@ features/offers/
 
 Kurallar:
 
-- **Bağımlılık yönü:** feature → core serbesttir; `core/` hiçbir feature'ı ve `app/`'i import etmez. Feature'ları birbirine bağlayan her şey (router, composition root, telefon çerçevesi) `app/`'tedir.
+- **Bağımlılık yönü (hexagonal):** `presentation → application → domain ← infrastructure`. Oklar yalnız içeri bakar:
+  - `domain`: entity'ler ve `I…Repository` port'ları; yalnız kendi domain'ini, Dart'ı ve `flutter/foundation`'ı import eder. Serileştirme yoktur.
+  - `application`: use case sınıfları (`GetCandidates`, `SendInterviewRequests`, `AcceptOffer`, `Login`...) ve port provider'ları. Yalnız domain'i import eder; Riverpod burada bağımlılık bağlama aracıdır (kurallardaki `@injectable`'ın karşılığı).
+  - `infrastructure`: `…RepositoryImpl` adaptörleri port'ları uygular, JSON'u okur. Application, presentation ve `app/`'i bilmez.
+  - `presentation`: controller'lar use case çağırır; infrastructure'a ve composition root'a dokunmaz.
+  - Port provider'ları varsayılan olarak hata fırlatır; somut adaptörleri yalnız `app/composition_root.dart` bağlar (`appAdapters`, testlerde sahteler). `core/` hiçbir feature'ı ve `app/`'i import etmez.
+- **Denetim:** [test/architecture/layer_rules_test.dart](test/architecture/layer_rules_test.dart) `lib/` altındaki her import'u bu kurallara göre kontrol eder ve CI'da çalışır; ihlalde dosyayı, import'u ve kuralı yazar.
+- **Adlar:** port'lar `I` önekiyle (`IOffersRepository`, `i_offers_repository.dart`), adaptörler `Impl` sonekiyle (`OffersRepositoryImpl`).
 - **Dosya başına bir public tip**, dosya adı sınıf adının snake_case hâli. İstisna: `SubmitResult` ve `RespondResult` `sealed` aileleri; Dart alt sınıfların aynı dosyada olmasını şart koşar.
 - Domain Flutter UI, Dio veya Riverpod bilmez; widget HTTP isteği yapmaz. Provider'ları sayfa okur; `widgets/` altındakiler değer ve callback alır. İstisnalar: sunucu adresinden görsel URL'si kuran avatar/logo ve açılınca yüklenen talep detayı.
 - Bir parça yalnız bir feature'da kullanılıyorsa o feature'da kalır; iki feature kullanıyorsa `core/presentation/widgets/`'e taşınır. İki ekranın sekme tasarımı aynı `PillTabs` bileşenini farklı `PillTabsStyle` ile kullanır.
-- Kurallardan bilerek alınmayanlar: Bloc ve getIt/injectable (proje Riverpod kullanır), `application/usecases` (controller'lar repository'yi doğrudan çağırır; iki ekranlık akış için ayrı use case katmanı gereksiz), DTO/mapper ve Failure tipleri (repository'ler JSON'u doğrudan entity'ye çevirir, hatalar `ApiException`), build flavor'ları (tek ortam).
+- Kurallardan bilerek alınmayanlar: Bloc ve getIt/injectable (proje Riverpod kullanır), `fpdart` `Either`/`FutureResult`, Failure tipleri ve DTO/mapper'lar (repository'ler JSON'u doğrudan entity'ye çevirir, hatalar `ApiException` olarak taşınır), build flavor'ları (tek ortam).
 
 ## Gezinme (go_router)
 

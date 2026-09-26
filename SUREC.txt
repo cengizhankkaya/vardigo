@@ -26,8 +26,9 @@ Mobil
       renkler ThemeExtension'larla temadan okunur, yalnız case paleti; seçim cihazda saklanır
   19. go_router: tip güvenli route'lar, rol koruması, vardigo:// deep link, hata sayfası
   20. Feature-first yapı: core/ (api, theme, l10n, ortak widget'lar) ve feature başına
-      domain / infrastructure / presentation; dosya başına bir public tip
-Sonuç: 144 backend + 88 mobil test; her ekran referans PNG ile simülatörde yan yana karşılaştırıldı.
+      domain / application / infrastructure / presentation; dosya başına bir public tip;
+      use case'ler, I…/…Impl adları, katman kurallarını CI'da denetleyen mimari testi
+Sonuç: 144 backend + 95 mobil test; her ekran referans PNG ile simülatörde yan yana karşılaştırıldı.
 
 TAKILDIĞIM NOKTALAR
 - Case paketi kendi içinde çelişiyor (Benzer sekmesi "ters sıra" mı score filtresi mi,
