@@ -1,0 +1,15 @@
+{
+  "ok": true,
+  "data": {
+    "id": "o_garson",
+    "title": "Garson",
+    "place": "Zarif Cheff Restaurant",
+    "pay": "45.000",
+    "logo": "/assets/logos/zarif.svg",
+    "district": "Kadıköy",
+    "when": "16 Ağu · 12:00 - 16:00",
+    "status": "accepted",
+    "remain": "21 saat 31 dakika",
+    "expiresAt": "2026-09-27T08:48:32.977Z"
+  }
+}

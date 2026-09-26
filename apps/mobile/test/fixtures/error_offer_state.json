@@ -1,0 +1,7 @@
+{
+  "ok": false,
+  "error": {
+    "code": "OFFER_STATE",
+    "message": "Bu teklif daha önce yanıtlandı"
+  }
+}

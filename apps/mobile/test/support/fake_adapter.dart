@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
@@ -32,3 +33,13 @@ class FakeAdapter implements HttpClientAdapter {
   @override
   void close({bool force = false}) {}
 }
+
+/// A response captured from the real backend (test/fixtures/, see README).
+ResponseBody fixture(String name, {int status = 200}) =>
+    ResponseBody.fromString(
+      File('test/fixtures/$name.json').readAsStringSync(),
+      status,
+      headers: {
+        Headers.contentTypeHeader: [Headers.jsonContentType],
+      },
+    );
