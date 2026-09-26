@@ -1,4 +1,9 @@
-/** OpenAPI description served by Swagger UI at /api/docs. Keep it in step with the routes. */
+/**
+ * OpenAPI description served by Swagger UI at /api/docs. Keep it in step with the routes:
+ * test/openapi.test.ts checks every documented response of the real app against these schemas.
+ * Objects are closed (`additionalProperties` / `unevaluatedProperties: false`), so an
+ * undocumented field fails the test too.
+ */
 
 const errorResponse = (description: string, code: string, message: string) => ({
   description,
@@ -24,11 +29,15 @@ const ok = (description: string, data: object, example: unknown) => ({
         type: "object",
         required: ["ok", "data"],
         properties: { ok: { type: "boolean", const: true }, data },
+        additionalProperties: false,
       },
       example: { ok: true, data: example },
     },
   },
 });
+
+/** An offer as the list and the answers return it; the detail adds fields, so Offer stays open. */
+const offer = { $ref: "#/components/schemas/Offer", unevaluatedProperties: false };
 
 const offerExample = {
   id: "o_garson",
@@ -50,7 +59,7 @@ const respondOperation = (decision: "accepted" | "rejected", summary: string) =>
   security: [{ bearer: [] }],
   parameters: [{ name: "id", in: "path", required: true, schema: { type: "string" }, example: "o_garson" }],
   responses: {
-    200: ok("Güncel talep", { $ref: "#/components/schemas/Offer" }, { ...offerExample, status: decision }),
+    200: ok("Güncel talep", offer, { ...offerExample, status: decision }),
     400: errorResponse("Gövde gönderildi", "VALIDATION_ERROR", "Bu istek gövde almaz"),
     401: unauthorized,
     404: errorResponse("Talep yok", "OFFER_NOT_FOUND", "Teklif bulunamadı"),
@@ -99,8 +108,10 @@ export const openApiDocument = {
             type: "object",
             required: ["code", "message"],
             properties: { code: { type: "string" }, message: { type: "string" } },
+            additionalProperties: false,
           },
         },
+        additionalProperties: false,
       },
       Candidate: {
         type: "object",
@@ -120,6 +131,7 @@ export const openApiDocument = {
           expectedPay: { type: ["string", "null"], example: "25.000", description: "Aylık ücret beklentisi (₺)" },
           payCompatible: { type: ["boolean", "null"], description: "Ücret beklentisi işe uyuyor mu" },
         },
+        additionalProperties: false,
       },
       Offer: {
         type: "object",
@@ -144,7 +156,18 @@ export const openApiDocument = {
       get: {
         tags: ["Sistem"],
         summary: "Sunucu ayakta mı",
-        responses: { 200: ok("Çalışıyor", { type: "object" }, { status: "up" }) },
+        responses: {
+          200: ok(
+            "Çalışıyor",
+            {
+              type: "object",
+              required: ["status"],
+              properties: { status: { type: "string", const: "up" } },
+              additionalProperties: false,
+            },
+            { status: "up" },
+          ),
+        },
       },
     },
     "/auth/login": {
@@ -165,7 +188,19 @@ export const openApiDocument = {
           },
         },
         responses: {
-          200: ok("Token", { type: "object" }, { token: "dev-employer", role: "employer" }),
+          200: ok(
+            "Token",
+            {
+              type: "object",
+              required: ["token", "role"],
+              properties: {
+                token: { type: "string", description: "Sonraki isteklerde `Authorization: Bearer <token>`" },
+                role: { type: "string", enum: ["employer", "worker"] },
+              },
+              additionalProperties: false,
+            },
+            { token: "dev-employer", role: "employer" },
+          ),
           400: errorResponse("role geçersiz", "VALIDATION_ERROR", "role alanı 'employer' veya 'worker' olmalı"),
         },
       },
@@ -194,12 +229,14 @@ export const openApiDocument = {
             "Aday listesi",
             {
               type: "object",
+              required: ["totalPerfect", "totalSimilar", "selectedHint", "candidates"],
               properties: {
                 totalPerfect: { type: "integer", description: "Tasarımdaki sabit etiket" },
                 totalSimilar: { type: "integer", description: "Tasarımdaki sabit etiket" },
-                selectedHint: { type: "integer" },
+                selectedHint: { type: "integer", description: "İlk açılışta seçili gelecek aday sayısı" },
                 candidates: { type: "array", items: { $ref: "#/components/schemas/Candidate" } },
               },
+              additionalProperties: false,
             },
             {
               totalPerfect: 26,
@@ -247,12 +284,36 @@ export const openApiDocument = {
           },
         },
         responses: {
-          201: ok("Oluşturuldu", { type: "object" }, {
-            created: [
-              { id: "o_…", workerId: "w_merve", status: "pending" },
-              { id: "o_…", workerId: "w_derya", status: "pending" },
-            ],
-          }),
+          201: ok(
+            "Oluşturuldu",
+            {
+              type: "object",
+              required: ["created"],
+              properties: {
+                created: {
+                  type: "array",
+                  description: "Gönderilen sırayla, her aday için bir talep",
+                  items: {
+                    type: "object",
+                    required: ["id", "workerId", "status"],
+                    properties: {
+                      id: { type: "string" },
+                      workerId: { type: "string" },
+                      status: { type: "string", const: "pending" },
+                    },
+                    additionalProperties: false,
+                  },
+                },
+              },
+              additionalProperties: false,
+            },
+            {
+              created: [
+                { id: "o_…", workerId: "w_merve", status: "pending" },
+                { id: "o_…", workerId: "w_derya", status: "pending" },
+              ],
+            },
+          ),
           400: errorResponse(
             "Boş seçim (EMPTY_SELECTION), tekrar eden id (DUPLICATE_WORKER_IDS) veya bozuk gövde (VALIDATION_ERROR)",
             "EMPTY_SELECTION",
@@ -286,11 +347,13 @@ export const openApiDocument = {
             "Talep listesi",
             {
               type: "object",
+              required: ["pendingCount", "pendingCountLabel", "offers"],
               properties: {
                 pendingCount: { type: "integer", description: "Gerçek bekleyen sayısı" },
                 pendingCountLabel: { type: "integer", description: "Tasarımdaki sabit etiket" },
-                offers: { type: "array", items: { $ref: "#/components/schemas/Offer" } },
+                offers: { type: "array", items: offer },
               },
+              additionalProperties: false,
             },
             { pendingCount: 3, pendingCountLabel: 12, offers: [offerExample] },
           ),
@@ -311,8 +374,13 @@ export const openApiDocument = {
             {
               allOf: [
                 { $ref: "#/components/schemas/Offer" },
-                { type: "object", properties: { city: { type: "string" }, note: { type: "string" } } },
+                {
+                  type: "object",
+                  required: ["city", "note"],
+                  properties: { city: { type: "string" }, note: { type: "string" } },
+                },
               ],
+              unevaluatedProperties: false,
             },
             { ...offerExample, city: "İstanbul", note: "Şube: Sinanpaşa Mah." },
           ),

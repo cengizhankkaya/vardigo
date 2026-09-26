@@ -43,6 +43,8 @@ Sunucu çalışırken tarayıcıda **http://localhost:3000/api/docs** açılır.
 
 Token tarayıcıda hatırlanır; rol değiştirmek için Authorize'dan çıkış yapıp diğer token'ı girin. Ham OpenAPI belgesi: `/api/openapi.json` ([src/swagger/openapi.ts](src/swagger/openapi.ts)).
 
+Belge testle korunur ([test/openapi.test.ts](test/openapi.test.ts)): belgelenen her yanıt kodu için uygulamaya gerçek bir istek atılır ve gövde o yanıtın şemasıyla (Ajv, JSON Schema 2020-12) doğrulanır. Şemalar kapalıdır; belgede olmayan bir alan, eksik zorunlu alan veya yanlış tip testi düşürür. Belgeye yeni bir yanıt eklenip testi yazılmazsa da test düşer.
+
 ## Cevap zarfı
 
 ```json
