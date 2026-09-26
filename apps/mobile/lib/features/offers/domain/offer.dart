@@ -45,6 +45,17 @@ class Offer {
   final String? note;
 
   bool get isPending => status == OfferStatus.pending;
+
+  /// Time left at [now]; never negative.
+  Duration remainingAt(DateTime now) {
+    final left = expiresAt.difference(now);
+    return left.isNegative ? Duration.zero : left;
+  }
+
+  /// Less than [urgentBelow] left: the countdown turns red (reference card 1).
+  bool isUrgentAt(DateTime now) => isPending && remainingAt(now) < urgentBelow;
+
+  static const urgentBelow = Duration(hours: 6);
 }
 
 class OfferList {

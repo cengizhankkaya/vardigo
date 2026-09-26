@@ -159,6 +159,99 @@ class AppLocalizationsTr extends AppLocalizations {
   String get errorUnexpected => 'Beklenmeyen bir hata oluştu. Tekrar dene.';
 
   @override
+  String get offersTitle => 'Görüşme Talepleri';
+
+  @override
+  String offersPendingSubtitle(int count) {
+    return '$count talep yanıt bekliyor';
+  }
+
+  @override
+  String get offersAnsweredSubtitle => 'Cevaplanan talepler';
+
+  @override
+  String get offersExpiredSubtitle => 'Süresi dolan talepler';
+
+  @override
+  String get tabPending => 'Bekleyen';
+
+  @override
+  String get tabAnswered => 'Cevaplanan';
+
+  @override
+  String get tabExpired => 'Süresi Dolan';
+
+  @override
+  String get emptyPending => 'Bekleyen talep yok';
+
+  @override
+  String get emptyAnswered =>
+      'Kabul veya red ettiğin talepler burada listelenir';
+
+  @override
+  String get emptyExpired => 'Süresi dolan talep yok';
+
+  @override
+  String get sortExpiring => 'Süresi Yakın';
+
+  @override
+  String get sortPay => 'Ücret';
+
+  @override
+  String payAmount(String amount) {
+    return '₺$amount';
+  }
+
+  @override
+  String get viewDetails => 'Detayları Gör';
+
+  @override
+  String get hideDetails => 'Detayları Gizle';
+
+  @override
+  String countdown(String time) {
+    return 'Teklifin sonlanmasına $time kaldı.';
+  }
+
+  @override
+  String hoursMinutes(int hours, int minutes) {
+    return '$hours saat $minutes dakika';
+  }
+
+  @override
+  String get statusAccepted => 'İlgileniyorsun';
+
+  @override
+  String get statusRejected => 'İlgilenmiyorsun';
+
+  @override
+  String get statusExpired => 'Süresi doldu';
+
+  @override
+  String offerAccepted(String title) {
+    return '$title talebine ilgilendiğini bildirdin';
+  }
+
+  @override
+  String offerRejected(String title) {
+    return '$title talebini reddettin';
+  }
+
+  @override
+  String detailPlace(String district, String city, String note) {
+    return '$district, $city · $note';
+  }
+
+  @override
+  String detailPayWhen(String pay, String when) {
+    return '$pay · $when';
+  }
+
+  @override
+  String get offersHelp =>
+      'İşverenlerin sana gönderdiği görüşme talepleri burada. Süresi dolmadan İlgileniyorum veya İlgilenmiyorum diyebilirsin; kararın kaydedilir ve Cevaplanan sekmesine geçer.';
+
+  @override
   String get offersComingSoon =>
       'Görüşme Talepleri ekranı sonraki adımda eklenecek.';
 }
