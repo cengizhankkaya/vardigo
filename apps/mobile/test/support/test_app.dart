@@ -7,7 +7,7 @@ import 'package:http/testing.dart';
 import 'package:vardigo/app/app.dart';
 import 'package:vardigo/app/providers.dart';
 import 'package:vardigo/app/router/app_router.dart';
-import 'package:vardigo/features/offers/application/offers_controller.dart';
+import 'package:vardigo/features/offers/presentation/controllers/offers_controller.dart';
 
 import 'fake_repositories.dart';
 

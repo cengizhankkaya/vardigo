@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:vardigo/app/providers.dart';
-import 'package:vardigo/core/network/api_exception.dart';
-import 'package:vardigo/features/candidates/application/candidates_controller.dart';
-import 'package:vardigo/features/candidates/domain/candidate.dart';
+import 'package:vardigo/core/error/exceptions/api_exception.dart';
+import 'package:vardigo/features/candidates/presentation/controllers/candidates_controller.dart';
+import 'package:vardigo/features/candidates/domain/entities/candidate.dart';
 
 import '../support/fake_repositories.dart';
 

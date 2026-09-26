@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:vardigo/app/app.dart';
-import 'package:vardigo/preview/phone_frame.dart';
-import 'package:vardigo/shared/design_system/theme/app_theme.dart';
+import 'package:vardigo/app/reference_frame/phone_frame.dart';
+import 'package:vardigo/core/theme/app_theme.dart';
 
 void main() {
   testWidgets('frame is 390×844 and gives the screen the reference insets', (

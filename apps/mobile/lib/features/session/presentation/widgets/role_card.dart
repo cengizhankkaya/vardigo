@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../../shared/design_system/theme/theme.dart';
-import '../../../../shared/design_system/tokens/app_dimens.dart';
-import '../../../../shared/design_system/tokens/app_shadows.dart';
+import '../../../../core/theme/theme.dart';
+import '../../../../core/theme/tokens/app_dimens.dart';
+import '../../../../core/theme/tokens/app_shadows.dart';
 
 /// One demo account: title, hint and a chevron, or a spinner while logging in.
 class RoleCard extends StatelessWidget {

@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:vardigo/features/candidates/presentation/candidates_screen.dart';
-import 'package:vardigo/features/session/domain/session.dart';
+import 'package:vardigo/features/candidates/presentation/pages/candidates_screen.dart';
+import 'package:vardigo/features/session/domain/entities/session.dart';
 
 import '../support/test_app.dart';
 

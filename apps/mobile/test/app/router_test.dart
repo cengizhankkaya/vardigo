@@ -1,12 +1,12 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:vardigo/app/router/app_router.dart';
-import 'package:vardigo/features/candidates/domain/candidate.dart';
-import 'package:vardigo/features/candidates/presentation/candidates_screen.dart';
-import 'package:vardigo/features/offers/presentation/offers_screen.dart';
-import 'package:vardigo/features/session/application/session_controller.dart';
-import 'package:vardigo/features/session/domain/session.dart';
-import 'package:vardigo/features/session/presentation/role_select_screen.dart';
+import 'package:vardigo/features/candidates/domain/entities/candidate.dart';
+import 'package:vardigo/features/candidates/presentation/pages/candidates_screen.dart';
+import 'package:vardigo/features/offers/presentation/pages/offers_screen.dart';
+import 'package:vardigo/features/session/presentation/controllers/session_controller.dart';
+import 'package:vardigo/features/session/domain/entities/session.dart';
+import 'package:vardigo/features/session/presentation/pages/role_select_screen.dart';
 
 import '../support/test_app.dart';
 

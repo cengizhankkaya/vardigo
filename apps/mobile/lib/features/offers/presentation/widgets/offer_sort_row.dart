@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../../../l10n/l10n.dart';
-import '../../../../shared/design_system/components/sort_chip.dart';
-import '../../domain/offer.dart';
-import '../offer_labels.dart';
+import '../../../../core/l10n/l10n.dart';
+import '../../../../core/presentation/widgets/sort_chip.dart';
+import '../../domain/entities/offer.dart';
+import '../extensions/offer_labels.dart';
 
 /// Right-aligned "Sırala: Önerilen" chip above the list.
 class OfferSortRow extends StatelessWidget {

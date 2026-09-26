@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../features/appearance/application/theme_mode_controller.dart';
-import '../features/appearance/domain/app_theme_mode.dart';
-import '../l10n/l10n.dart';
-import '../preview/phone_frame.dart';
-import '../shared/design_system/theme/app_theme.dart';
+import '../features/appearance/presentation/controllers/theme_mode_controller.dart';
+import '../features/appearance/domain/entities/app_theme_mode.dart';
+import '../core/l10n/l10n.dart';
+import 'reference_frame/phone_frame.dart';
+import '../core/theme/app_theme.dart';
 import 'router/app_router.dart';
 
 class VardigoApp extends ConsumerWidget {

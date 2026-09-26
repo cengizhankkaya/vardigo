@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../l10n/l10n.dart';
-import '../../../../../shared/design_system/theme/theme.dart';
-import '../../../../../shared/design_system/tokens/app_dimens.dart';
-import '../../../domain/offer.dart';
+import '../../../../../core/l10n/l10n.dart';
+import '../../../../../core/theme/theme.dart';
+import '../../../../../core/theme/tokens/app_dimens.dart';
+import '../../../domain/entities/offer.dart';
 
 /// "İlgileniyorsun" / "İlgilenmiyorsun" / "Süresi doldu" in place of the
 /// buttons.

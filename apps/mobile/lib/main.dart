@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app/app.dart';
 import 'app/providers.dart';
-import 'features/appearance/data/prefs_theme_mode_repository.dart';
+import 'features/appearance/infrastructure/repositories/prefs_theme_mode_repository.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

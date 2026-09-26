@@ -2,11 +2,11 @@ import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:vardigo/app/providers.dart';
-import 'package:vardigo/core/config/api_config.dart';
-import 'package:vardigo/core/network/api_client.dart';
-import 'package:vardigo/core/network/api_exception.dart';
-import 'package:vardigo/features/session/application/session_controller.dart';
-import 'package:vardigo/features/session/domain/session.dart';
+import 'package:vardigo/core/api/api_config.dart';
+import 'package:vardigo/core/api/api_client.dart';
+import 'package:vardigo/core/error/exceptions/api_exception.dart';
+import 'package:vardigo/features/session/presentation/controllers/session_controller.dart';
+import 'package:vardigo/features/session/domain/entities/session.dart';
 
 import '../support/fake_adapter.dart';
 

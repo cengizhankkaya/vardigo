@@ -1,17 +1,17 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 
-import '../core/config/api_config.dart';
-import '../core/network/api_client.dart';
-import '../features/appearance/data/prefs_theme_mode_repository.dart';
-import '../features/appearance/domain/app_theme_mode.dart';
-import '../features/candidates/data/api_candidates_repository.dart';
-import '../features/candidates/domain/candidate.dart';
-import '../features/offers/data/api_offers_repository.dart';
-import '../features/offers/domain/offer.dart';
-import '../features/session/application/session_controller.dart';
-import '../features/session/data/api_session_repository.dart';
-import '../features/session/domain/session.dart';
+import '../core/api/api_config.dart';
+import '../core/api/api_client.dart';
+import '../features/appearance/infrastructure/repositories/prefs_theme_mode_repository.dart';
+import '../features/appearance/domain/entities/app_theme_mode.dart';
+import '../features/candidates/infrastructure/repositories/api_candidates_repository.dart';
+import '../features/candidates/domain/entities/candidate.dart';
+import '../features/offers/infrastructure/repositories/api_offers_repository.dart';
+import '../features/offers/domain/entities/offer.dart';
+import '../features/session/presentation/controllers/session_controller.dart';
+import '../features/session/infrastructure/repositories/api_session_repository.dart';
+import '../features/session/domain/entities/session.dart';
 
 /// Composition root: concrete implementations are chosen here only.
 /// Tests override these providers with fakes.

@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:vardigo/app/providers.dart';
-import 'package:vardigo/core/network/api_exception.dart';
-import 'package:vardigo/features/candidates/presentation/candidates_screen.dart';
-import 'package:vardigo/l10n/l10n.dart';
-import 'package:vardigo/shared/design_system/theme/app_theme.dart';
+import 'package:vardigo/core/error/exceptions/api_exception.dart';
+import 'package:vardigo/features/candidates/presentation/pages/candidates_screen.dart';
+import 'package:vardigo/core/l10n/l10n.dart';
+import 'package:vardigo/core/theme/app_theme.dart';
 
 import '../support/fake_repositories.dart';
 

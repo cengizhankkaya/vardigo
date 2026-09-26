@@ -4,12 +4,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../../app/providers.dart';
 import '../../../../../gen/assets.gen.dart';
-import '../../../../../l10n/l10n.dart';
-import '../../../../../shared/design_system/components/app_icon.dart';
-import '../../../../../shared/design_system/components/inline_divider.dart';
-import '../../../../../shared/design_system/theme/theme.dart';
-import '../../../../../shared/design_system/tokens/app_dimens.dart';
-import '../../../domain/offer.dart';
+import '../../../../../core/l10n/l10n.dart';
+import '../../../../../core/presentation/widgets/app_icon.dart';
+import '../../../../../core/presentation/widgets/inline_divider.dart';
+import '../../../../../core/theme/theme.dart';
+import '../../../../../core/theme/tokens/app_dimens.dart';
+import '../../../domain/entities/offer.dart';
 
 /// Logo, title and pay, place, then district | date.
 class OfferSummary extends StatelessWidget {

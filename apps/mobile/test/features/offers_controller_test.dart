@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:vardigo/app/providers.dart';
-import 'package:vardigo/core/network/api_exception.dart';
-import 'package:vardigo/features/offers/application/offers_controller.dart';
-import 'package:vardigo/features/offers/domain/offer.dart';
+import 'package:vardigo/core/error/exceptions/api_exception.dart';
+import 'package:vardigo/features/offers/presentation/controllers/offers_controller.dart';
+import 'package:vardigo/features/offers/domain/entities/offer.dart';
 
 import '../support/fake_repositories.dart';
 

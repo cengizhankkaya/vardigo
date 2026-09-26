@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../gen/assets.gen.dart';
-import '../../../../../l10n/l10n.dart';
-import '../../../../../shared/design_system/components/action_button.dart';
-import '../../../../../shared/design_system/components/error_view.dart';
-import '../../../../../shared/design_system/theme/theme.dart';
-import '../../../application/offers_controller.dart';
+import '../../../../../core/l10n/l10n.dart';
+import '../../../../../core/presentation/widgets/action_button.dart';
+import '../../../../../core/presentation/widgets/error_view.dart';
+import '../../../../../core/theme/theme.dart';
+import '../../controllers/offers_controller.dart';
 
 /// "Detayları Gör" / "Detayları Gizle".
 class OfferDetailsButton extends StatelessWidget {
