@@ -25,6 +25,8 @@ Mobil
   18. Koyu tema (case dışı ek, varsayılan Açık; case ekranları her cihazda referansla aynı):
       renkler ThemeExtension'larla temadan okunur, yalnız case paleti; seçim cihazda saklanır
   19. go_router: tip güvenli route'lar, rol koruması, vardigo:// deep link, hata sayfası
+  20. Feature-first yapı: core/ (api, theme, l10n, ortak widget'lar) ve feature başına
+      domain / infrastructure / presentation; dosya başına bir public tip
 Sonuç: 144 backend + 88 mobil test; her ekran referans PNG ile simülatörde yan yana karşılaştırıldı.
 
 TAKILDIĞIM NOKTALAR
