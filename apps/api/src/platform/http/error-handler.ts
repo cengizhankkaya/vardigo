@@ -33,7 +33,9 @@ export const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
 
 /** A body that is sent must be JSON; otherwise it would be silently ignored. */
 export const requireJsonBody: RequestHandler = (req, _res, next) => {
-  if (req.method === "POST" && Number(req.get("content-length") ?? 0) > 0 && !req.is("application/json")) {
+  // A chunked body has no Content-Length, so Transfer-Encoding counts as a body too.
+  const hasBody = req.get("transfer-encoding") !== undefined || Number(req.get("content-length") ?? 0) > 0;
+  if (req.method === "POST" && hasBody && !req.is("application/json")) {
     throw new HttpError(415, "UNSUPPORTED_MEDIA_TYPE", "İstek gövdesi JSON olmalı (Content-Type: application/json)");
   }
   next();
