@@ -32,6 +32,8 @@ npm run smoke      # case minimum testini çalışan sunucuya karşı koşturur
 
 Sunucu açılırken tabloları oluşturur ve veritabanı boşsa [src/demo/seed.json](src/demo/seed.json) verisini yükler (2 hesap, 4 aday, 3 teklif). Seed yalnız bir kez yüklenir; sonraki açılışlarda kabul/ret kararları ve süreler korunur. Seed'deki `USE_NOW_PLUS_21H32M` gibi süreler ilk yükleme anına göre hesaplanır. Temiz başlangıç için `npm run db:reset` kullanılır.
 
+Seed yüklenmeden önce doğrulanır: her adayın `perfect` alanı score ≥ 80 kuralıyla uyuşmalı, `rating` 0–5 arası `"4.9"` biçiminde olmalı (puan sıralaması bu değeri sayıya çevirir; `"4,8"` sıralamayı sessizce bozardı), tekliflerin `workerId` alanı bilinen bir hesaba ve `expiresAt` alanı çözümlenebilir bir süreye ait olmalı. Biri tutmazsa sunucu hata mesajıyla açılmaz ve veritabanına hiçbir şey yazılmaz.
+
 ## Swagger
 
 Sunucu çalışırken tarayıcıda **http://localhost:3000/api/docs** açılır.
@@ -98,7 +100,7 @@ curl -X POST http://localhost:3000/api/auth/login \
 # {"ok":true,"data":{"token":"dev-employer","role":"employer"}}
 ```
 
-`role` alanı `employer` (işveren) veya `worker` (iş arayan) olabilir. Korumalı isteklerde token `Authorization: Bearer dev-employer` başlığıyla gönderilir. Token yoksa `401 AUTH_REQUIRED`, geçersizse `401 INVALID_TOKEN`, başka rolün token'ı kullanılırsa `401 ROLE_NOT_ALLOWED` döner. `Bearer` kelimesi büyük/küçük harf duyarsızdır.
+`role` alanı `employer` (işveren) veya `worker` (iş arayan) olabilir. Korumalı isteklerde token `Authorization: Bearer dev-employer` başlığıyla gönderilir. Token yoksa `401 AUTH_REQUIRED`, geçersizse `401 INVALID_TOKEN`, başka rolün token'ı kullanılırsa `401 ROLE_NOT_ALLOWED` döner. Yanlış rol için alışılmış 403 yerine 401 case sözleşmesinin isteğidir. `Bearer` kelimesi büyük/küçük harf duyarsızdır.
 
 ## Adaylar (işveren)
 
