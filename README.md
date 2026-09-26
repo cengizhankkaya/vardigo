@@ -61,6 +61,7 @@ Case paketindeki bazı bilgiler birbiriyle çelişiyor; uygulanan kararlar:
 
 - **Sekmeler:** API spesifikasyonundaki score ≥ 80 kuralı esas alındı. "%100 Eşleşme" sekmesinde Merve ve Ferhat, "Benzer" sekmesinde Derya ve Ayşe görünür. Ekran spesifikasyonundaki "ikinci sekmede aynı kartlar ters sırada" ifadesi uygulanmadı.
 - **Başlık sayıları:** 26 / 16 ve bekleyen talep için 12, referans tasarımdaki sabit etiketlerdir (`totalPerfect`, `totalSimilar`, `pendingCountLabel`). Gerçek sayılar ayrı alanlarda döner: 4 aday, `pendingCount`.
+- **Aday ücret satırı:** Seed'de ücret bilgisi yok; kartlardaki "Ücret beklentisi uyuşuyor/uyuşmuyor · ₺25.000 / ay" değerleri referans tasarımdan alındı (Merve ve Ayşe uyuşuyor, Derya ve Ferhat uyuşmuyor).
 - **Tek iş arayan:** Case'te bir iş arayan hesabı olduğu için hangi adaya gönderilirse gönderilsin talepler o hesabın gelen kutusuna düşer.
 - **Süre:** Seed'deki `USE_NOW_PLUS_21H32M` gibi süreler ilk kurulum anından hesaplanır. Yanıtlanmış talepler süre geçince `expired` olmaz.
 - **Giriş:** `dev-employer` / `dev-worker` token'ları case gereği sabit ve herkese açıktır; gerçek bir kimlik doğrulama değildir. Sunucu varsayılan olarak yalnız bu bilgisayardan erişilebilir (`127.0.0.1`).
