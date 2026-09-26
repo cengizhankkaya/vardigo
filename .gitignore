@@ -60,4 +60,4 @@ Pods/
 # Track actual dependency lockfiles and Flutter metadata when generated.
 
 # Internal docs stay local; never pushed
-docs/
+/docs/

@@ -29,6 +29,15 @@ npm run db:reset   # veritabanını silip seed verisiyle yeniden kurar
 
 Sunucu açılırken tabloları oluşturur ve veritabanı boşsa [src/demo/seed.json](src/demo/seed.json) verisini yükler (2 hesap, 4 aday, 3 teklif). Seed yalnız bir kez yüklenir; sonraki açılışlarda kabul/ret kararları ve süreler korunur. Seed'deki `USE_NOW_PLUS_21H32M` gibi süreler ilk yükleme anına göre hesaplanır. Temiz başlangıç için `npm run db:reset` kullanılır.
 
+## Swagger
+
+Sunucu çalışırken tarayıcıda **http://localhost:3000/api/docs** açılır.
+
+1. Sağ üstteki **Authorize** düğmesine `dev-employer` (işveren) veya `dev-worker` (iş arayan) yazın.
+2. Bir endpoint'i açıp **Try it out**, ardından **Execute** deyin; gerçek yanıt sayfada görünür.
+
+Token tarayıcıda hatırlanır; rol değiştirmek için Authorize'dan çıkış yapıp diğer token'ı girin. Ham OpenAPI belgesi: `/api/openapi.json` ([src/swagger/openapi.ts](src/swagger/openapi.ts)).
+
 ## Cevap zarfı
 
 ```json
@@ -41,6 +50,7 @@ Sunucu açılırken tabloları oluşturur ve veritabanı boşsa [src/demo/seed.j
 | Metot | Yol | Açıklama |
 |---|---|---|
 | GET | `/api/health` | Sunucu ayakta mı |
+| GET | `/api/docs` | Swagger arayüzü |
 | POST | `/api/auth/login` | Demo hesabı için token döner |
 | GET | `/api/candidates` | İşveren: eşleşen adaylar |
 | POST | `/api/offers` | İşveren: seçilen adaylara görüşme talebi |
@@ -146,6 +156,7 @@ curl "http://localhost:3000/api/offers?status=pending" -H "Authorization: Bearer
 
 - `src/app.ts`: Express uygulaması ve route bağlantıları.
 - `src/server.ts`: HTTP sunucusunu başlatır.
+- `src/swagger/`: OpenAPI belgesi (Swagger arayüzünün kaynağı).
 - `src/bootstrap/`: ayarlar ve açılışta veritabanı hazırlığı.
 - `src/platform/`: HTTP yanıtları, SQLite bağlantısı ve migration'lar.
 - `src/modules/auth/`: demo login ve Bearer token rol kontrolü.
