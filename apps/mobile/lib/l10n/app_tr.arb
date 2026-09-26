@@ -4,6 +4,8 @@
   "galleryTitle": "Tasarım galerisi",
   "galleryFontSection": "Urbanist",
   "galleryFontSample": "Eşleşen Personeller · ğüşıöç İŞĞ ₺25.000",
+  "galleryTextStyleSection": "Yazı stilleri",
+  "galleryColorSection": "Renkler",
   "galleryIconSection": "İkonlar (orijinal renk, 24)",
   "galleryUsageSection": "Kullanım örnekleri",
   "notInterested": "İlgilenmiyorum",
@@ -11,7 +13,9 @@
   "sendRequest": "Görüşme Talebi Gönder ({count})",
   "@sendRequest": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   }
 }
