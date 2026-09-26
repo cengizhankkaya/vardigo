@@ -6,10 +6,36 @@
 
 | Parça | Durum |
 |---|---|
-| Backend | Tamamlandı: case'teki tüm endpoint'ler, SQLite kalıcılığı, Swagger, 131 test |
-| Mobil | İki case ekranı (Eşleşen Personeller, Görüşme Talepleri) ve demo rol seçimi gerçek API'yle çalışıyor |
+| Backend | Tamamlandı: case'teki tüm endpoint'ler, SQLite kalıcılığı, Swagger, 139 test |
+| Mobil | Tamamlandı: iki case ekranı (Eşleşen Personeller, Görüşme Talepleri), demo rol seçimi, 390×844 telefon çerçevesi, 65 test |
 
-## Hızlı başlangıç (backend)
+## 5 dakikada çalışan demo
+
+Gereksinim: Node.js 24 veya üstü, Flutter 3.47 ve açık bir iOS simülatörü veya Android emülatörü.
+
+```bash
+./demo.sh --as employer --frame
+```
+
+Script API'yi başlatır (ilk seferde `npm ci` yapar), hazır olmasını bekler ve uygulamayı gerçek API'ye bağlı açar. Uygulamadan çıkınca API de durur.
+
+| Seçenek | Ne yapar |
+|---|---|
+| (yok) | Rol seçim ekranıyla açılır |
+| `--as employer` | Doğrudan Eşleşen Personeller (işveren) |
+| `--as worker` | Doğrudan Görüşme Talepleri (iş arayan) |
+| `--frame` | Uygulamayı referanstaki 390×844 telefon çerçevesinin (bezel, Dynamic Island, 9:41) içinde gösterir |
+| diğerleri | `flutter run`'a geçer, ör. `-d emulator-5554` |
+
+Case'in minimum akışı uygulamada:
+
+1. `./demo.sh --as employer`: Merve seçili gelir; Benzer sekmesinden Derya'yı ekleyin, "Görüşme Talebi Gönder (2)".
+2. `./demo.sh --as worker`: yeni talepler Bekleyen sekmesinde; birini kabul, birini ret edin.
+3. Cevaplanan sekmesinde ikisi de görünür; uygulamayı yeniden açınca aynı kalır.
+
+Aynı adaylara ikinci kez talep 409 verir; temiz veriyle başlamak için önce `cd apps/api && npm run db:reset`.
+
+## Hızlı başlangıç (yalnız backend)
 
 Gereksinim: Node.js 24 veya üstü (npm ile gelir). Başka kurulum gerekmez; SQLite Node'un içinde gelir.
 
@@ -60,16 +86,21 @@ Tüm yanıtlar `{ ok: true, data }` veya `{ ok: false, error: { code, message } 
 
 ```bash
 cd apps/api
-npm test           # 131 test; her test kendi geçici veritabanını kullanır
+npm test           # 139 test; her test kendi geçici veritabanını kullanır
 npm run typecheck
+
+cd apps/mobile
+flutter test       # 65 test; canlı API testi için apps/mobile/README.md
 ```
+
+CI her push'ta backend testlerini, derleme ve smoke testini, mobil kod üretimi/format/analiz/testlerini ve uygulamanın repository'lerini gerçek sunucuya karşı çalıştırır.
 
 Case'in altı adımlık minimum testi, sunucu yeniden başlatma dahil [apps/api/test/minimum-flow.test.ts](apps/api/test/minimum-flow.test.ts) içinde de otomatik çalışır.
 
 ## Teknoloji
 
 - Backend: Node.js, TypeScript, Express 5, `node:sqlite`; testler Vitest + Supertest; Swagger UI.
-- Mobil: Flutter / Dart, iOS ve Android.
+- Mobil: Flutter / Dart, iOS ve Android; Riverpod, Dio, flutter_svg; FlutterGen (asset, renk, font) ve gen-l10n (metinler). Ayrıntı: [apps/mobile/README.md](apps/mobile/README.md).
 - Paketler: backend npm, mobil Flutter pub.
 
 ## Klasörler
@@ -81,8 +112,9 @@ vardigo/
 │   └── mobile/         # Flutter iOS/Android
 ├── packages/contracts/ # İlk iskeletten kalan boş klasör
 ├── resources/          # İlk iskeletten kalan boş klasörler
-├── scripts/
-├── .github/workflows/
+├── scripts/            # İlk iskeletten kalan boş klasör
+├── .github/workflows/  # CI
+├── demo.sh             # Tek komutla API + uygulama
 └── SUREC.txt           # Süreç notu
 ```
 

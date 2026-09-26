@@ -16,6 +16,7 @@ cd apps/mobile
 flutter pub get
 flutter run          # açık simülatör/emülatör veya bağlı cihazda başlatır
 flutter run --dart-define=START_AS=employer   # rol ekranını atlayıp işveren olarak açar (worker: iş arayan)
+flutter run --dart-define=REFERENCE_FRAME=true   # uygulamayı 390×844 telefon çerçevesinde gösterir
 flutter analyze
 flutter test
 ```
@@ -87,7 +88,21 @@ Kod üretimiyle gelmeyen tasarım değerleri `lib/shared/design_system/` altınd
 - `online.svg` içindeki çok hafif gölge (filtre) flutter_svg tarafından çizilmez; beyaz halka ve yeşil nokta görünür.
 - Aday fotoğrafları ve işletme logoları uygulamaya gömülmez; API'nin `/assets/...` adreslerinden yüklenir.
 
-Uygulama şimdilik [tasarım galerisi](lib/preview/design_preview_screen.dart) ile açılır: font ağırlıkları, Türkçe karakterler, 10 yazı stili, ana renkler, tüm ikonlar ve referanstaki kullanım örnekleri.
+[Tasarım galerisi](lib/preview/design_preview_screen.dart) (debug derlemede rol ekranından açılır): font ağırlıkları, Türkçe karakterler, 10 yazı stili, ana renkler, tüm ikonlar ve referanstaki kullanım örnekleri.
+
+## Telefon çerçevesi
+
+Case, referanstaki gibi siyah bezel ve Dynamic Island'lı bir telefon çerçevesi istiyor. `REFERENCE_FRAME=true` ile uygulama [PhoneFrame](lib/preview/phone_frame.dart) içinde açılır:
+
+- Dış kutu 390×844, bezel 11 px, köşe yarıçapı 54 / 44, gölge ve 1 px iç çizgi.
+- Status bar: solda 9:41, ortada 126×37 Dynamic Island ve lens, sağda sinyal/Wi-Fi/batarya (`levels.svg`). En altta 135×5 home pill.
+- Ekranlar 368×822 iç alanda çizilir. Status bar (54) ve home alanı (30) ekranlara güvenli alan olarak verilir; ekranlar `SafeArea` ile referanstaki yerleşime oturur, çerçeve için ayrı kod içermez.
+- Ekran çerçeveden küçükse çerçeve tek oranla küçültülür.
+- Ölçüler `AppFrame` token'larındadır ([app_dimens.dart](lib/shared/design_system/tokens/app_dimens.dart)).
+
+Bayrak olmadan uygulama cihazın kendi ekran kenarlarını ve güvenli alanını kullanır; sahte saat veya çentik çizilmez.
+
+Referansta Dynamic Island yerine çentik görünür; case metni Dynamic Island istediği ve token'larda island ölçüleri verildiği için island çizildi.
 
 ## Klasörler
 
@@ -126,4 +141,5 @@ Feature'lar presentation/application/domain/data sınırlarıyla büyür. Domain
 
 ## Durum
 
-İki case ekranı ve rol ekranı iOS simülatöründe (iPhone 17 Pro) gerçek backend'le çalışıyor. Android henüz denenmedi.
+- iOS simülatöründe (iPhone 17 Pro) iki case ekranı ve rol ekranı gerçek backend'le, çerçeveli ve çerçevesiz denendi.
+- Android: debug APK derleniyor; birleşmiş manifest'te `INTERNET` izni ve debug için şifresiz yerel trafik var. Bu makinede Android emülatörü olmadığı için emülatörde çalıştırılmadı; emülatörde API adresi otomatik `10.0.2.2:3000` olur.
