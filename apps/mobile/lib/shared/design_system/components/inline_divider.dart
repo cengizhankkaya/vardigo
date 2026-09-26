@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../gen/colors.gen.dart';
+import '../theme/theme.dart';
 
 /// Thin vertical line between items on one line ("4.9 | %100 | 1.2 km").
 class InlineDivider extends StatelessWidget {
@@ -12,7 +12,7 @@ class InlineDivider extends StatelessWidget {
       width: 1,
       height: 16,
       margin: const EdgeInsets.symmetric(horizontal: 8),
-      color: ColorName.slate200,
+      color: context.appColors.border,
     );
   }
 }

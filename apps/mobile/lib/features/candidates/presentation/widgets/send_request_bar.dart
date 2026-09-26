@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../../../gen/assets.gen.dart';
-import '../../../../gen/colors.gen.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../../shared/design_system/components/primary_button.dart';
+import '../../../../shared/design_system/theme/theme.dart';
 
 /// Bottom bar with "Görüşme Talebi Gönder (N)"; disabled with no selection.
 class SendRequestBar extends StatelessWidget {
@@ -20,10 +20,11 @@ class SendRequestBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.appColors;
     return Container(
-      decoration: const BoxDecoration(
-        color: ColorName.weak,
-        border: Border(top: BorderSide(color: ColorName.stroke)),
+      decoration: BoxDecoration(
+        color: colors.bar,
+        border: Border(top: BorderSide(color: colors.stroke)),
       ),
       padding: const EdgeInsets.fromLTRB(24, 20, 24, 12),
       child: SafeArea(

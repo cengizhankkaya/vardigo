@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../gen/colors.gen.dart';
 import '../../../../../l10n/l10n.dart';
+import '../../../../../shared/design_system/theme/theme.dart';
 import '../../../../../shared/design_system/tokens/app_dimens.dart';
-import '../../../../../shared/design_system/tokens/app_text_styles.dart';
 import '../../../domain/offer.dart';
 
 /// "İlgileniyorsun" / "İlgilenmiyorsun" / "Süresi doldu" in place of the
@@ -16,18 +15,21 @@ class OfferStatusLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final scheme = ColorScheme.of(context);
+    final semantic = context.semanticColors;
+    final colors = context.appColors;
     final (text, color, background) = switch (status) {
       OfferStatus.accepted => (
         l10n.statusAccepted,
-        ColorName.greenDark,
-        ColorName.greenLighter,
+        semantic.onSuccessContainer,
+        semantic.successContainer,
       ),
       OfferStatus.rejected => (
         l10n.statusRejected,
-        ColorName.error,
-        ColorName.errorSoft,
+        scheme.onErrorContainer,
+        scheme.errorContainer,
       ),
-      _ => (l10n.statusExpired, ColorName.sub, ColorName.weak50),
+      _ => (l10n.statusExpired, colors.textSecondary, colors.fillSubtle),
     };
     return Container(
       height: AppSizes.actionButton,
@@ -36,7 +38,10 @@ class OfferStatusLabel extends StatelessWidget {
         color: background,
         borderRadius: BorderRadius.circular(AppRadius.actionButton),
       ),
-      child: Text(text, style: AppTextStyles.label14.copyWith(color: color)),
+      child: Text(
+        text,
+        style: context.textStyles.label14.copyWith(color: color),
+      ),
     );
   }
 }

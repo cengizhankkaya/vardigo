@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../gen/colors.gen.dart';
 import '../../../../../shared/design_system/components/app_checkbox.dart';
+import '../../../../../shared/design_system/theme/theme.dart';
 import '../../../../../shared/design_system/tokens/app_dimens.dart';
 import '../../../../../shared/design_system/tokens/app_shadows.dart';
 import '../../../domain/candidate.dart';
@@ -27,6 +27,8 @@ class CandidateCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scheme = ColorScheme.of(context);
+    final colors = context.appColors;
     return Semantics(
       checked: selected,
       label: candidate.name,
@@ -35,9 +37,9 @@ class CandidateCard extends StatelessWidget {
         onTap: onToggle,
         child: Container(
           decoration: BoxDecoration(
-            color: selected ? ColorName.primaryLighter : ColorName.white,
+            color: selected ? scheme.primaryContainer : colors.card,
             borderRadius: BorderRadius.circular(AppRadius.card),
-            border: selected ? null : Border.all(color: ColorName.slate200),
+            border: selected ? null : Border.all(color: colors.border),
             boxShadow: selected ? AppShadows.cardSelected : AppShadows.card,
           ),
           // Selected cards have no border, so their content sits 1 px further
@@ -52,12 +54,12 @@ class CandidateCard extends StatelessWidget {
                   child: _Content(candidate: candidate, selected: selected),
                 ),
                 if (selected)
-                  const Positioned(
+                  Positioned(
                     left: 0,
                     top: 0,
                     bottom: 0,
                     width: _stripeWidth,
-                    child: ColoredBox(color: ColorName.primary),
+                    child: ColoredBox(color: scheme.primary),
                   ),
               ],
             ),

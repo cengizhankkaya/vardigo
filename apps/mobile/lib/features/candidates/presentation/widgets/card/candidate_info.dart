@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../gen/assets.gen.dart';
-import '../../../../../gen/colors.gen.dart';
 import '../../../../../shared/design_system/components/app_icon.dart';
 import '../../../../../shared/design_system/components/inline_divider.dart';
+import '../../../../../shared/design_system/theme/theme.dart';
 import '../../../../../shared/design_system/tokens/app_dimens.dart';
-import '../../../../../shared/design_system/tokens/app_text_styles.dart';
 import '../../../domain/candidate.dart';
 
 /// Name, then rating | attendance | distance.
@@ -21,7 +20,7 @@ class CandidateInfo extends StatelessWidget {
       children: [
         Text(
           candidate.name,
-          style: AppTextStyles.title18,
+          style: context.textStyles.title18,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
@@ -31,7 +30,7 @@ class CandidateInfo extends StatelessWidget {
           runSpacing: 4,
           children: [
             _Metric(
-              AppIcon(Assets.icons.star, color: ColorName.warning),
+              AppIcon(Assets.icons.star, color: context.semanticColors.warning),
               candidate.rating,
             ),
             const InlineDivider(),
@@ -58,7 +57,7 @@ class _Metric extends StatelessWidget {
       children: [
         icon,
         const SizedBox(width: AppSpacing.iconText),
-        Text(text, style: AppTextStyles.caption12Medium),
+        Text(text, style: context.textStyles.caption12Medium),
       ],
     );
   }

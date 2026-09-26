@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../gen/colors.gen.dart';
-import '../tokens/app_text_styles.dart';
+import '../theme/theme.dart';
 
 /// Centered text shown in place of an empty list.
 class EmptyView extends StatelessWidget {
@@ -16,8 +15,8 @@ class EmptyView extends StatelessWidget {
       child: Text(
         text,
         textAlign: TextAlign.center,
-        style: AppTextStyles.label14.copyWith(
-          color: ColorName.sub,
+        style: context.textStyles.label14.copyWith(
+          color: context.appColors.textSecondary,
           fontWeight: FontWeight.w400,
         ),
       ),

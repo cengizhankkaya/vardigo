@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../l10n/l10n.dart';
 import '../../../../shared/design_system/components/sort_chip.dart';
-import '../../../../shared/design_system/tokens/app_text_styles.dart';
+import '../../../../shared/design_system/theme/theme.dart';
 import '../../domain/candidate.dart';
 import '../candidate_labels.dart';
 
@@ -27,7 +27,7 @@ class SelectionRow extends StatelessWidget {
         Expanded(
           child: Text(
             l10n.selectedCount(selectedCount),
-            style: AppTextStyles.title16Semibold,
+            style: context.textStyles.title16Semibold,
           ),
         ),
         SortChip(label: l10n.sortLabel(sort.label(l10n)), onPressed: onSort),

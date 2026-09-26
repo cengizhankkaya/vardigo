@@ -4,12 +4,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../../app/providers.dart';
 import '../../../../../gen/assets.gen.dart';
-import '../../../../../gen/colors.gen.dart';
 import '../../../../../l10n/l10n.dart';
 import '../../../../../shared/design_system/components/app_icon.dart';
 import '../../../../../shared/design_system/components/inline_divider.dart';
+import '../../../../../shared/design_system/theme/theme.dart';
 import '../../../../../shared/design_system/tokens/app_dimens.dart';
-import '../../../../../shared/design_system/tokens/app_text_styles.dart';
 import '../../../domain/offer.dart';
 
 /// Logo, title and pay, place, then district | date.
@@ -30,7 +29,7 @@ class OfferSummary extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _TitleAndPay(title: offer.title, pay: offer.pay),
-              Text(offer.place, style: AppTextStyles.caption12),
+              Text(offer.place, style: context.textStyles.caption12),
               const SizedBox(height: 8),
               Wrap(
                 crossAxisAlignment: WrapCrossAlignment.center,
@@ -38,11 +37,14 @@ class OfferSummary extends StatelessWidget {
                 children: [
                   AppIcon(Assets.icons.pin, size: 14),
                   const SizedBox(width: AppSpacing.iconText),
-                  Text(offer.district, style: AppTextStyles.caption12Medium),
+                  Text(
+                    offer.district,
+                    style: context.textStyles.caption12Medium,
+                  ),
                   const InlineDivider(),
                   AppIcon(Assets.icons.date, size: 14),
                   const SizedBox(width: AppSpacing.iconText),
-                  Text(offer.when, style: AppTextStyles.caption12Medium),
+                  Text(offer.when, style: context.textStyles.caption12Medium),
                 ],
               ),
             ],
@@ -61,7 +63,7 @@ class _Logo extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    const placeholder = ColoredBox(color: ColorName.slate100);
+    final placeholder = ColoredBox(color: context.appColors.placeholder);
     return ClipOval(
       child: SizedBox.square(
         dimension: AppSizes.avatar,
@@ -90,7 +92,7 @@ class _TitleAndPay extends StatelessWidget {
         Expanded(
           child: Text(
             title,
-            style: AppTextStyles.title18,
+            style: context.textStyles.title18,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
@@ -99,8 +101,8 @@ class _TitleAndPay extends StatelessWidget {
         const SizedBox(width: AppSpacing.iconText),
         Text(
           context.l10n.payAmount(pay),
-          style: AppTextStyles.title18.copyWith(
-            color: ColorName.green,
+          style: context.textStyles.title18.copyWith(
+            color: context.semanticColors.success,
             fontWeight: FontWeight.w600,
           ),
         ),

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../../gen/assets.gen.dart';
-import '../../../gen/colors.gen.dart';
+import '../theme/theme.dart';
 import '../tokens/app_dimens.dart';
-import '../tokens/app_text_styles.dart';
 import 'app_icon.dart';
 
 /// Full-width blue call to action (44 high, radius 10). Disabled at 45%
@@ -28,6 +27,7 @@ class PrimaryButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final enabled = onPressed != null && !loading;
     final icon = this.icon;
+    final scheme = ColorScheme.of(context);
     return Semantics(
       button: true,
       enabled: enabled,
@@ -40,28 +40,28 @@ class PrimaryButton extends StatelessWidget {
             height: AppSizes.cta,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: ColorName.primary,
+              color: scheme.primary,
               borderRadius: BorderRadius.circular(AppRadius.cta),
             ),
             child: loading
-                ? const SizedBox.square(
+                ? SizedBox.square(
                     dimension: 20,
                     child: CircularProgressIndicator(
                       strokeWidth: 2,
-                      color: ColorName.white,
+                      color: scheme.onPrimary,
                     ),
                   )
                 : Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       if (icon != null) ...[
-                        AppIcon(icon, size: 20, color: ColorName.white),
+                        AppIcon(icon, size: 20, color: scheme.onPrimary),
                         const SizedBox(width: 8),
                       ],
                       Text(
                         label,
-                        style: AppTextStyles.label14.copyWith(
-                          color: ColorName.white,
+                        style: context.textStyles.label14.copyWith(
+                          color: scheme.onPrimary,
                         ),
                       ),
                     ],

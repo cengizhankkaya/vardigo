@@ -4,15 +4,17 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart' show MaterialApp;
 import 'package:vardigo/l10n/l10n.dart';
 import 'package:vardigo/preview/design_preview_screen.dart';
+import 'package:vardigo/shared/design_system/theme/app_theme.dart';
 
 void main() {
   testWidgets('design gallery shows styles and icons', (tester) async {
     await tester.pumpWidget(
-      const ProviderScope(
+      ProviderScope(
         child: MaterialApp(
+          theme: AppTheme.light(),
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
-          home: DesignPreviewScreen(),
+          home: const DesignPreviewScreen(),
         ),
       ),
     );

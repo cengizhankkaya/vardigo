@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../gen/assets.gen.dart';
 import '../gen/colors.gen.dart';
+import '../shared/design_system/theme/theme.dart';
 import '../shared/design_system/tokens/app_dimens.dart';
 import '../shared/design_system/tokens/app_shadows.dart';
-import '../shared/design_system/tokens/app_text_styles.dart';
 
 /// The case's reference phone: 390×844 with a black bezel, Dynamic Island,
 /// 9:41 status bar and home pill, drawn around [child].
@@ -95,7 +95,7 @@ class _StatusBar extends StatelessWidget {
               // The frame sits above the Navigator, outside any Material, so
               // the style is set whole rather than merged with the fallback.
               child: DefaultTextStyle(
-                style: AppTextStyles.statusTime,
+                style: context.textStyles.statusTime,
                 child: const Text('9:41', textAlign: TextAlign.center),
               ),
             ),
@@ -111,6 +111,10 @@ class _StatusBar extends StatelessWidget {
               child: Assets.icons.levels.svg(
                 width: AppFrame.statusSlotWidth,
                 height: AppFrame.levelsHeight,
+                colorFilter: ColorFilter.mode(
+                  context.appColors.textStrong,
+                  BlendMode.srcIn,
+                ),
               ),
             ),
           ],
@@ -178,7 +182,7 @@ class ReferenceFrameView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ColoredBox(
-      color: ColorName.slate100,
+      color: context.appColors.backdrop,
       child: SafeArea(
         child: Center(
           child: Padding(
