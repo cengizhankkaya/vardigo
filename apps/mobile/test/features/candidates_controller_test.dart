@@ -83,7 +83,7 @@ void main() {
       ..toggle('w_derya')
       ..selectTab(CandidateTab.similar)
       ..cycleSort();
-    await controller().submit();
+    expect(await controller().submit(), isNull);
     expect(state().selected, {'w_merve'});
     expect(state().tab, CandidateTab.perfect);
     expect(state().sort, CandidateSort.recommended);
@@ -92,6 +92,11 @@ void main() {
     repo.pendingSend!.complete(['o_1']);
     await result;
     expect(state().submitting, isFalse);
+  });
+
+  test('sends nothing without a selection', () async {
+    expect(await controller().submit(), isNull);
+    expect(repo.sent, isEmpty);
   });
 
   test('keeps the selection when the server refuses', () async {

@@ -112,10 +112,9 @@ class CandidatesController extends Notifier<CandidatesState> {
 
   /// Sends the current selection once. Never retries on its own: after a
   /// timeout the server may already have created the requests.
-  Future<SubmitResult> submit() async {
-    if (state.submitting || state.selected.isEmpty) {
-      return const SubmitSucceeded(0);
-    }
+  /// Returns null when nothing was sent (empty selection or a send in flight).
+  Future<SubmitResult?> submit() async {
+    if (state.submitting || state.selected.isEmpty) return null;
     final ids = state.selected.toList();
     state = state.copyWith(submitting: true);
     try {

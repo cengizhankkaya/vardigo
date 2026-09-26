@@ -117,7 +117,7 @@ class CandidatesScreen extends ConsumerWidget {
     final result = await ref
         .read(candidatesControllerProvider.notifier)
         .submit();
-    if (!context.mounted) return;
+    if (result == null || !context.mounted) return;
     final l10n = context.l10n;
     final message = switch (result) {
       SubmitSucceeded(:final count) => l10n.requestsSent(count),
