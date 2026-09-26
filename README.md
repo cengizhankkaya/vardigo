@@ -6,8 +6,8 @@
 
 | Parça | Durum |
 |---|---|
-| Backend | Tamamlandı: case'teki tüm endpoint'ler, SQLite kalıcılığı, Swagger, 139 test |
-| Mobil | Tamamlandı: iki case ekranı (Eşleşen Personeller, Görüşme Talepleri), demo rol seçimi, 390×844 telefon çerçevesi, 65 test |
+| Backend | Tamamlandı: case'teki tüm endpoint'ler, SQLite kalıcılığı, Swagger, 143 test |
+| Mobil | Tamamlandı: iki case ekranı (Eşleşen Personeller, Görüşme Talepleri), demo rol seçimi, 390×844 telefon çerçevesi, 66 test |
 
 ## 5 dakikada çalışan demo
 
@@ -86,11 +86,11 @@ Tüm yanıtlar `{ ok: true, data }` veya `{ ok: false, error: { code, message } 
 
 ```bash
 cd apps/api
-npm test           # 139 test; her test kendi geçici veritabanını kullanır
+npm test           # 143 test; her test kendi geçici veritabanını kullanır
 npm run typecheck
 
 cd apps/mobile
-flutter test       # 65 test; canlı API testi için apps/mobile/README.md
+flutter test       # 66 test; canlı API testi için apps/mobile/README.md
 ```
 
 CI her push'ta backend testlerini, derleme ve smoke testini, mobil kod üretimi/format/analiz/testlerini ve uygulamanın repository'lerini gerçek sunucuya karşı çalıştırır.
