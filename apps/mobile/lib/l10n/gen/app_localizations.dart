@@ -159,6 +159,192 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Görüşme Talebi Gönder ({count})'**
   String sendRequest(int count);
+
+  /// No description provided for @roleTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Demo hesabı seç'**
+  String get roleTitle;
+
+  /// No description provided for @roleSubtitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Case\'teki iki sabit hesaptan biriyle devam et.'**
+  String get roleSubtitle;
+
+  /// No description provided for @roleEmployer.
+  ///
+  /// In tr, this message translates to:
+  /// **'İşveren'**
+  String get roleEmployer;
+
+  /// No description provided for @roleEmployerHint.
+  ///
+  /// In tr, this message translates to:
+  /// **'Eşleşen personelleri gör, görüşme talebi gönder'**
+  String get roleEmployerHint;
+
+  /// No description provided for @roleWorker.
+  ///
+  /// In tr, this message translates to:
+  /// **'İş arayan'**
+  String get roleWorker;
+
+  /// No description provided for @roleWorkerHint.
+  ///
+  /// In tr, this message translates to:
+  /// **'Gelen görüşme taleplerini gör, yanıtla'**
+  String get roleWorkerHint;
+
+  /// No description provided for @openGallery.
+  ///
+  /// In tr, this message translates to:
+  /// **'Tasarım galerisi'**
+  String get openGallery;
+
+  /// No description provided for @candidatesTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Eşleşen Personeller'**
+  String get candidatesTitle;
+
+  /// No description provided for @candidatesFound.
+  ///
+  /// In tr, this message translates to:
+  /// **'{count} personel bulundu'**
+  String candidatesFound(int count);
+
+  /// No description provided for @tabPerfect.
+  ///
+  /// In tr, this message translates to:
+  /// **'%100 Eşleşme ({count})'**
+  String tabPerfect(int count);
+
+  /// No description provided for @tabSimilar.
+  ///
+  /// In tr, this message translates to:
+  /// **'Benzer Personeller ({count})'**
+  String tabSimilar(int count);
+
+  /// No description provided for @selectedCount.
+  ///
+  /// In tr, this message translates to:
+  /// **'{count} kişi seçildi'**
+  String selectedCount(int count);
+
+  /// No description provided for @sortLabel.
+  ///
+  /// In tr, this message translates to:
+  /// **'Sırala: {option}'**
+  String sortLabel(String option);
+
+  /// No description provided for @sortRecommended.
+  ///
+  /// In tr, this message translates to:
+  /// **'Önerilen'**
+  String get sortRecommended;
+
+  /// No description provided for @sortNear.
+  ///
+  /// In tr, this message translates to:
+  /// **'En Yakın'**
+  String get sortNear;
+
+  /// No description provided for @sortRating.
+  ///
+  /// In tr, this message translates to:
+  /// **'Puan'**
+  String get sortRating;
+
+  /// No description provided for @payMatches.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ücret beklentisi uyuşuyor'**
+  String get payMatches;
+
+  /// No description provided for @payMismatch.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ücret beklentisi uyuşmuyor'**
+  String get payMismatch;
+
+  /// No description provided for @payPerMonth.
+  ///
+  /// In tr, this message translates to:
+  /// **'₺{amount} / ay'**
+  String payPerMonth(String amount);
+
+  /// No description provided for @candidatesEmpty.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu sekmede aday yok'**
+  String get candidatesEmpty;
+
+  /// No description provided for @requestsSent.
+  ///
+  /// In tr, this message translates to:
+  /// **'{count, plural, =1{1 kişiye görüşme talebi gönderildi} other{{count} kişiye görüşme talebi gönderildi}}'**
+  String requestsSent(int count);
+
+  /// No description provided for @sendUncertain.
+  ///
+  /// In tr, this message translates to:
+  /// **'Sunucudan yanıt alınamadı; talebin gönderilip gönderilmediği doğrulanamadı. İş arayan hesabından kontrol edebilir veya tekrar deneyebilirsin.'**
+  String get sendUncertain;
+
+  /// No description provided for @helpTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu ekran'**
+  String get helpTitle;
+
+  /// No description provided for @candidatesHelp.
+  ///
+  /// In tr, this message translates to:
+  /// **'İlan için eşleşen personeller listelenir. Kişileri seçip görüşme talebi gönderebilirsin; seçimler sekmeler arasında korunur.'**
+  String get candidatesHelp;
+
+  /// No description provided for @back.
+  ///
+  /// In tr, this message translates to:
+  /// **'Geri'**
+  String get back;
+
+  /// No description provided for @help.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yardım'**
+  String get help;
+
+  /// No description provided for @retry.
+  ///
+  /// In tr, this message translates to:
+  /// **'Tekrar dene'**
+  String get retry;
+
+  /// No description provided for @errorNetwork.
+  ///
+  /// In tr, this message translates to:
+  /// **'Sunucuya ulaşılamadı. Backend\'in çalıştığından emin olup tekrar dene.'**
+  String get errorNetwork;
+
+  /// No description provided for @errorTimeout.
+  ///
+  /// In tr, this message translates to:
+  /// **'Sunucu zamanında yanıt vermedi. Tekrar dene.'**
+  String get errorTimeout;
+
+  /// No description provided for @errorUnexpected.
+  ///
+  /// In tr, this message translates to:
+  /// **'Beklenmeyen bir hata oluştu. Tekrar dene.'**
+  String get errorUnexpected;
+
+  /// No description provided for @offersComingSoon.
+  ///
+  /// In tr, this message translates to:
+  /// **'Görüşme Talepleri ekranı sonraki adımda eklenecek.'**
+  String get offersComingSoon;
 }
 
 class _AppLocalizationsDelegate
