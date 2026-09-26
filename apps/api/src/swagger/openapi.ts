@@ -10,7 +10,11 @@ const errorResponse = (description: string, code: string, message: string) => ({
   },
 });
 
-const unauthorized = errorResponse("Token yok, geçersiz ya da rol yanlış", "ROLE_NOT_ALLOWED", "Bu işlem için yetkiniz yok");
+const unauthorized = errorResponse(
+  "Token yok (AUTH_REQUIRED), geçersiz (INVALID_TOKEN) ya da başka role ait (ROLE_NOT_ALLOWED)",
+  "ROLE_NOT_ALLOWED",
+  "Bu işlem için yetkiniz yok",
+);
 
 const ok = (description: string, data: object, example: unknown) => ({
   description,

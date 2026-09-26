@@ -6,10 +6,14 @@ import type { SqliteUsersRepository } from "../infrastructure/sqlite-users-repos
 /** Accepts `Authorization: Bearer <token>` only for the given role. */
 export function requireRole(users: SqliteUsersRepository, role: Role): RequestHandler {
   return (req, res, next) => {
-    const match = /^Bearer (\S+)$/.exec(req.get("authorization") ?? "");
+    const header = req.get("authorization");
+    if (!header) {
+      throw new HttpError(401, "AUTH_REQUIRED", "Giriş yapmanız gerekiyor");
+    }
+    const match = /^Bearer\s+(\S+)$/i.exec(header);
     const user = match ? users.findByToken(match[1]!) : undefined;
     if (!user) {
-      throw new HttpError(401, "UNAUTHORIZED", "Geçerli bir Bearer token gerekli");
+      throw new HttpError(401, "INVALID_TOKEN", "Oturum bilgisi geçersiz");
     }
     if (user.role !== role) {
       throw new HttpError(401, "ROLE_NOT_ALLOWED", "Bu işlem için yetkiniz yok");
