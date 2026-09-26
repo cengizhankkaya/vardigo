@@ -128,4 +128,22 @@ void main() {
     expect(repo.sent, hasLength(1));
     expect(state().selected, {'w_merve'});
   });
+
+  test('an answer after leaving the screen is dropped quietly', () async {
+    final local = ProviderContainer(
+      overrides: [candidatesRepositoryProvider.overrideWithValue(repo)],
+    );
+    addTearDown(local.dispose);
+    final sub = local.listen(candidatesControllerProvider, (_, _) {});
+    repo.pendingSend = Completer();
+    final notifier = local.read(candidatesControllerProvider.notifier)
+      ..toggle('w_merve');
+    final result = notifier.submit();
+
+    sub.close();
+    await Future<void>.delayed(Duration.zero);
+    repo.pendingSend!.complete(['o_1']);
+
+    expect(await result, isA<SubmitSucceeded>());
+  });
 }

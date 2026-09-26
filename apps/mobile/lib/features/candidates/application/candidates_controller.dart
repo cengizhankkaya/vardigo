@@ -121,15 +121,20 @@ class CandidatesController extends Notifier<CandidatesState> {
       final created = await ref
           .read(candidatesRepositoryProvider)
           .sendInterviewRequests(ids);
-      state = state.copyWith(
-        submitting: false,
-        selected: {...state.selected}..removeAll(ids),
-      );
+      // The screen may have closed while waiting; the result still goes back.
+      if (ref.mounted) {
+        state = state.copyWith(
+          submitting: false,
+          selected: {...state.selected}..removeAll(ids),
+        );
+      }
       return SubmitSucceeded(created.length);
     } on ApiException catch (error) {
-      state = state.copyWith(submitting: false);
-      if (error.code == 'CANDIDATE_NOT_FOUND') {
-        ref.invalidate(candidateListProvider);
+      if (ref.mounted) {
+        state = state.copyWith(submitting: false);
+        if (error.code == 'CANDIDATE_NOT_FOUND') {
+          ref.invalidate(candidateListProvider);
+        }
       }
       return SubmitFailed(error);
     }

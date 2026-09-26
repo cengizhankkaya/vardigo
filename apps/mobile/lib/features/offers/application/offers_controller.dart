@@ -112,8 +112,11 @@ class OffersController extends Notifier<OffersState> {
     } on ApiException catch (error) {
       return RespondFailed(error);
     } finally {
-      state = state.copyWith(busy: {...state.busy}..remove(offer.id));
-      ref.invalidate(offerListProvider);
+      // The screen may have closed while waiting; then there is nothing to update.
+      if (ref.mounted) {
+        state = state.copyWith(busy: {...state.busy}..remove(offer.id));
+        ref.invalidate(offerListProvider);
+      }
     }
   }
 

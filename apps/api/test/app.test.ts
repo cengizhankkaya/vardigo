@@ -1,6 +1,39 @@
+import { request as httpRequest } from "node:http";
+import type { AddressInfo } from "node:net";
 import request from "supertest";
 import { beforeEach, describe, expect, it } from "vitest";
 import { createTestApp } from "./support/test-app.js";
+
+/** Sends a body with Transfer-Encoding: chunked (no Content-Length), which supertest cannot do. */
+async function postChunked(app: ReturnType<typeof createTestApp>["app"], path: string, body: string) {
+  const server = app.listen(0, "127.0.0.1");
+  await new Promise((resolve) => server.once("listening", resolve));
+  try {
+    const { port } = server.address() as AddressInfo;
+    return await new Promise<{ status: number; body: { error?: { code: string } } }>((resolve, reject) => {
+      const req = httpRequest(
+        {
+          host: "127.0.0.1",
+          port,
+          path,
+          method: "POST",
+          headers: { "Content-Type": "text/plain", Authorization: "Bearer dev-worker" },
+        },
+        (res) => {
+          let text = "";
+          res.setEncoding("utf8");
+          res.on("data", (chunk: string) => (text += chunk));
+          res.on("end", () => resolve({ status: res.statusCode ?? 0, body: JSON.parse(text) }));
+        },
+      );
+      req.on("error", reject);
+      req.write(body);
+      req.end();
+    });
+  } finally {
+    await new Promise((resolve) => server.close(resolve));
+  }
+}
 
 describe("app", () => {
   let app: ReturnType<typeof createTestApp>["app"];
@@ -46,6 +79,14 @@ describe("app", () => {
     const res = await request(app).post("/api/auth/login").set("Content-Type", "text/plain").send("role=worker");
     expect(res.status).toBe(415);
     expect(res.body.error.code).toBe("UNSUPPORTED_MEDIA_TYPE");
+  });
+
+  it("returns 415 for a chunked body that is not JSON and leaves the offer untouched", async () => {
+    const { app: chunkedApp, db } = createTestApp();
+    const res = await postChunked(chunkedApp, "/api/offers/o_garson/accept", "anything");
+    expect(res.status).toBe(415);
+    expect(res.body.error?.code).toBe("UNSUPPORTED_MEDIA_TYPE");
+    expect(db.prepare("SELECT status FROM offers WHERE id = 'o_garson'").get()?.status).toBe("pending");
   });
 
   it("returns 415 for a non UTF-8 JSON charset", async () => {
