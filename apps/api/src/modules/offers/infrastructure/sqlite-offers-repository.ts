@@ -1,7 +1,14 @@
 import type { Database } from "../../../platform/database/connection.js";
-import type { NewOffer, Offer, OfferStatus } from "../domain/offer.js";
+import type { NewOffer, Offer, OfferSort, OfferStatus } from "../domain/offer.js";
 
 const OFFER_COLUMNS = "id, title, place, pay, logo, district, when_label, status, expires_at_ms";
+
+// Ties fall back to insert order so the list never jumps between requests.
+const ORDER_BY: Record<OfferSort, string> = {
+  recommended: "created_at_ms DESC, rowid ASC",
+  expiring: "expires_at_ms ASC, rowid ASC",
+  pay: "pay_value DESC, rowid ASC",
+};
 
 function toOffer(row: Record<string, unknown>): Offer {
   return {
@@ -50,14 +57,13 @@ export class SqliteOffersRepository {
       );
   }
 
-  /** Newest first; offers created together keep their insert order. */
-  listForRecipient(recipientUserId: string, statuses: readonly OfferStatus[]): Offer[] {
+  listForRecipient(recipientUserId: string, statuses: readonly OfferStatus[], sort: OfferSort = "recommended"): Offer[] {
     const placeholders = statuses.map(() => "?").join(", ");
     return this.db
       .prepare(
         `SELECT ${OFFER_COLUMNS} FROM offers
          WHERE recipient_user_id = ? AND status IN (${placeholders})
-         ORDER BY created_at_ms DESC, rowid ASC`,
+         ORDER BY ${ORDER_BY[sort]}`,
       )
       .all(recipientUserId, ...statuses)
       .map(toOffer);

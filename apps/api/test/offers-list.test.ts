@@ -60,12 +60,34 @@ describe("GET /api/offers", () => {
     expect((await list()).body.data.pendingCount).toBe(2);
   });
 
+  it.each([
+    ["recommended", ["o_garson", "o_barista", "o_komi"]],
+    ["expiring", ["o_komi", "o_garson", "o_barista"]],
+    ["pay", ["o_garson", "o_barista", "o_komi"]],
+  ])("sorts by %s", async (sort, expected) => {
+    const res = await list(`?sort=${sort}`);
+    expect(res.body.data.offers.map((o: { id: string }) => o.id)).toEqual(expected);
+  });
+
+  it("puts new offers first by default and keeps ties in insert order", async () => {
+    now = TEST_NOW + 1000;
+    await request(app).post("/api/offers").set("Authorization", "Bearer dev-employer").send({ workerIds: ["w_merve"] });
+    const recommended = await list();
+    const pay = await list("?sort=pay");
+    expect(recommended.body.data.offers[0].id).toMatch(/^o_(?!garson)/);
+    expect(pay.body.data.offers.slice(0, 2).map((o: { place: string }) => o.place)).toEqual([
+      "Zarif Cheff Restaurant",
+      "Zarif Cheff Restaurant",
+    ]);
+    expect(pay.body.data.offers[0].id).toBe("o_garson");
+  });
+
   it("returns an empty answered tab on a fresh seed", async () => {
     const res = await list("?status=answered");
     expect(res.body.data.offers).toEqual([]);
   });
 
-  it.each(["?status=accepted", "?status=all", "?status=pending&status=expired"])("rejects %s with 400", async (q) => {
+  it.each(["?status=accepted", "?status=all", "?status=pending&status=expired", "?sort=price"])("rejects %s with 400", async (q) => {
     const res = await list(q);
     expect(res.status).toBe(400);
     expect(res.body.error.code).toBe("VALIDATION_ERROR");

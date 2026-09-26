@@ -1,5 +1,5 @@
 import { type Database, transaction } from "../../../platform/database/connection.js";
-import { type Offer, type OfferStatusFilter, statusesFor } from "../domain/offer.js";
+import { type Offer, type OfferSort, type OfferStatusFilter, statusesFor } from "../domain/offer.js";
 import type { SqliteOffersRepository } from "../infrastructure/sqlite-offers-repository.js";
 
 export interface ListOffersDeps {
@@ -15,14 +15,19 @@ export interface OfferListing {
 }
 
 /** Closes expired offers first so the tab contents and the count agree. */
-export function listOffers(deps: ListOffersDeps, recipientUserId: string, filter: OfferStatusFilter): OfferListing {
+export function listOffers(
+  deps: ListOffersDeps,
+  recipientUserId: string,
+  filter: OfferStatusFilter,
+  sort: OfferSort = "recommended",
+): OfferListing {
   return transaction(deps.db, () => {
     const now = deps.now();
     deps.offers.expireDue(now);
     return {
       now,
       pendingCount: deps.offers.countPending(recipientUserId),
-      offers: deps.offers.listForRecipient(recipientUserId, statusesFor(filter)),
+      offers: deps.offers.listForRecipient(recipientUserId, statusesFor(filter), sort),
     };
   });
 }

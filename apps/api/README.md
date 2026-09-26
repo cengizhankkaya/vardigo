@@ -115,7 +115,7 @@ Süresi dolmuş, kabul edilmiş veya reddedilmiş talepten sonra aynı adaya yen
 ## Talepleri listeleme (iş arayan)
 
 ```bash
-curl "http://localhost:3000/api/offers?status=pending" -H "Authorization: Bearer dev-worker"
+curl "http://localhost:3000/api/offers?status=pending&sort=expiring" -H "Authorization: Bearer dev-worker"
 ```
 
 ```json
@@ -151,7 +151,7 @@ curl "http://localhost:3000/api/offers?status=pending" -H "Authorization: Bearer
 - `remain` sunucuda hesaplanır: tam saat ve dakika, aşağı yuvarlanır; süresi dolanlarda `0 saat 0 dakika`.
 - Süresi dolan bekleyen talepler her istekte önce `expired` yapılır, sonra liste ve sayı üretilir. Yanıtlanmış talepler süre geçince değişmez.
 - `pendingCount` gerçek bekleyen sayısıdır. `pendingCountLabel` (12) referans tasarımdaki sabit etikettir.
-- Sıralama: en yeni talep önce; aynı anda oluşturulanlar oluşturulma sırasını korur.
+- `sort` (ekrandaki "Sırala" düğmesi): `recommended` (varsayılan, en yeni talep önce), `expiring` (süresi en yakın biten önce), `pay` (ücret azalan). Eşit değerlerde oluşturulma sırası korunur. Geçersiz değer `400 VALIDATION_ERROR`.
 - İş arayan yalnız kendi gelen kutusunu görür.
 
 `GET /api/offers/:id` aynı alanlara ek olarak `city` ve `note` döner; bulunamazsa `404 OFFER_NOT_FOUND`.

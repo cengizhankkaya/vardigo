@@ -5,7 +5,7 @@ import { currentUser } from "../../auth/http/require-role.js";
 import { createOffers, type CreateOffersDeps } from "../application/create-offers.js";
 import { getOffer, listOffers, type ListOffersDeps } from "../application/list-offers.js";
 import { type Decision, respondToOffer, type RespondToOfferDeps } from "../application/respond-to-offer.js";
-import { formatRemain, type Offer, OFFER_STATUS_FILTERS } from "../domain/offer.js";
+import { formatRemain, type Offer, OFFER_SORTS, OFFER_STATUS_FILTERS } from "../domain/offer.js";
 
 const MAX_WORKER_IDS = 100;
 
@@ -85,7 +85,8 @@ export function offersRoutes(deps: OffersRoutesDeps): Router {
 
   router.get("/", deps.workerOnly, (req, res) => {
     const status = optionalQuery(req.query.status, "status", OFFER_STATUS_FILTERS) ?? "pending";
-    const listing = listOffers(deps.list, currentUser(res).id, status);
+    const sort = optionalQuery(req.query.sort, "sort", OFFER_SORTS);
+    const listing = listOffers(deps.list, currentUser(res).id, status, sort);
     sendOk(res, {
       pendingCount: listing.pendingCount,
       pendingCountLabel: deps.pendingCountLabel,
