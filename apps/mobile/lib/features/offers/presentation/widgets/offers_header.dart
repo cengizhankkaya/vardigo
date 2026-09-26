@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../gen/assets.gen.dart';
 import '../../../../l10n/l10n.dart';
@@ -41,7 +42,7 @@ class OffersHeader extends StatelessWidget {
           SquareIconButton(
             icon: Assets.icons.back,
             label: l10n.back,
-            onPressed: () => Navigator.of(context).maybePop(),
+            onPressed: () => context.pop(),
           ),
           const SizedBox(width: 16),
           Expanded(

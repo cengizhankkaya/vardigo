@@ -15,8 +15,16 @@ final candidateListProvider = FutureProvider.autoDispose
           .fetch(tab: query.tab, sort: query.sort),
     );
 
-final candidatesControllerProvider =
-    NotifierProvider.autoDispose<CandidatesController, CandidatesState>(
+/// Tab and sort the screen opens with when the link names none.
+const defaultCandidateQuery = (
+  tab: CandidateTab.perfect,
+  sort: CandidateSort.recommended,
+);
+
+/// One controller per screen visit, keyed by the tab and sort it opens with
+/// (from the route, e.g. `?tab=...`).
+final candidatesControllerProvider = NotifierProvider.autoDispose
+    .family<CandidatesController, CandidatesState, CandidateQuery>(
       CandidatesController.new,
     );
 
@@ -73,8 +81,13 @@ class SubmitFailed extends SubmitResult {
 }
 
 class CandidatesController extends Notifier<CandidatesState> {
+  CandidatesController(this.opening);
+
+  final CandidateQuery opening;
+
   @override
-  CandidatesState build() => const CandidatesState();
+  CandidatesState build() =>
+      CandidatesState(tab: opening.tab, sort: opening.sort);
 
   void selectTab(CandidateTab tab) {
     if (state.submitting) return;

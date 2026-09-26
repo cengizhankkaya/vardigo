@@ -17,7 +17,11 @@ import 'widgets/offers_header.dart';
 /// Job seeker screen "Görüşme Talepleri". Reads the providers and hands
 /// plain values and callbacks to the widgets below it.
 class OffersScreen extends ConsumerStatefulWidget {
-  const OffersScreen({super.key});
+  const OffersScreen({super.key, this.initialTab, this.initialSort});
+
+  /// From the route; null opens the defaults.
+  final OfferTab? initialTab;
+  final OfferSort? initialSort;
 
   @override
   ConsumerState<OffersScreen> createState() => _OffersScreenState();
@@ -41,10 +45,16 @@ class _OffersScreenState extends ConsumerState<OffersScreen> {
     super.dispose();
   }
 
+  /// This visit's controller, opened on the route's tab and sort.
+  late final _controller = offersControllerProvider((
+    tab: widget.initialTab ?? defaultOfferQuery.tab,
+    sort: widget.initialSort ?? defaultOfferQuery.sort,
+  ));
+
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(offersControllerProvider);
-    final controller = ref.read(offersControllerProvider.notifier);
+    final state = ref.watch(_controller);
+    final controller = ref.read(_controller.notifier);
     final list = ref.watch(offerListProvider(state.query));
     final now =
         ref.watch(countdownTickProvider).value ?? ref.watch(clockProvider)();
@@ -111,7 +121,7 @@ class _OffersScreenState extends ConsumerState<OffersScreen> {
 
   Future<void> _respond(Offer offer, {required bool accept}) async {
     final result = await ref
-        .read(offersControllerProvider.notifier)
+        .read(_controller.notifier)
         .respond(offer, accept: accept);
     if (!mounted) return;
     final l10n = context.l10n;

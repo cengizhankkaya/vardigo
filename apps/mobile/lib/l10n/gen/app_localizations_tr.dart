@@ -79,6 +79,17 @@ class AppLocalizationsTr extends AppLocalizations {
   String get themeDark => 'Koyu';
 
   @override
+  String get routeNotFoundTitle => 'Sayfa bulunamadı';
+
+  @override
+  String routeNotFoundBody(String location) {
+    return '$location adresinde bir ekran yok.';
+  }
+
+  @override
+  String get backToRoleSelect => 'Rol seçimine dön';
+
+  @override
   String get candidatesTitle => 'Eşleşen Personeller';
 
   @override

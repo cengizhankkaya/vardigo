@@ -20,12 +20,17 @@ void main() {
     );
     addTearDown(container.dispose);
     // Keep the auto-dispose controller alive like the screen does.
-    container.listen(candidatesControllerProvider, (_, _) {});
+    container.listen(
+      candidatesControllerProvider(defaultCandidateQuery),
+      (_, _) {},
+    );
   });
 
-  CandidatesController controller() =>
-      container.read(candidatesControllerProvider.notifier);
-  CandidatesState state() => container.read(candidatesControllerProvider);
+  CandidatesController controller() => container.read(
+    candidatesControllerProvider(defaultCandidateQuery).notifier,
+  );
+  CandidatesState state() =>
+      container.read(candidatesControllerProvider(defaultCandidateQuery));
 
   Future<CandidateList> load() =>
       container.read(candidateListProvider(state().query).future);
@@ -134,10 +139,14 @@ void main() {
       overrides: [candidatesRepositoryProvider.overrideWithValue(repo)],
     );
     addTearDown(local.dispose);
-    final sub = local.listen(candidatesControllerProvider, (_, _) {});
+    final sub = local.listen(
+      candidatesControllerProvider(defaultCandidateQuery),
+      (_, _) {},
+    );
     repo.pendingSend = Completer();
-    final notifier = local.read(candidatesControllerProvider.notifier)
-      ..toggle('w_merve');
+    final notifier = local.read(
+      candidatesControllerProvider(defaultCandidateQuery).notifier,
+    )..toggle('w_merve');
     final result = notifier.submit();
 
     sub.close();

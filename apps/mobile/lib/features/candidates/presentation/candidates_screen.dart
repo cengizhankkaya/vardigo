@@ -15,13 +15,28 @@ import 'widgets/send_request_bar.dart';
 
 /// Employer screen "Eşleşen Personeller". Reads the providers and hands
 /// plain values and callbacks to the widgets below it.
-class CandidatesScreen extends ConsumerWidget {
-  const CandidatesScreen({super.key});
+class CandidatesScreen extends ConsumerStatefulWidget {
+  const CandidatesScreen({super.key, this.initialTab, this.initialSort});
+
+  /// From the route; null opens the defaults.
+  final CandidateTab? initialTab;
+  final CandidateSort? initialSort;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(candidatesControllerProvider);
-    final controller = ref.read(candidatesControllerProvider.notifier);
+  ConsumerState<CandidatesScreen> createState() => _CandidatesScreenState();
+}
+
+class _CandidatesScreenState extends ConsumerState<CandidatesScreen> {
+  /// This visit's controller, opened on the route's tab and sort.
+  late final _controller = candidatesControllerProvider((
+    tab: widget.initialTab ?? defaultCandidateQuery.tab,
+    sort: widget.initialSort ?? defaultCandidateQuery.sort,
+  ));
+
+  @override
+  Widget build(BuildContext context) {
+    final state = ref.watch(_controller);
+    final controller = ref.read(_controller.notifier);
     final list = ref.watch(candidateListProvider(state.query));
     ref.listen(candidateListProvider(state.query), (_, next) {
       if (next.value case final loaded?) {
@@ -83,7 +98,7 @@ class CandidatesScreen extends ConsumerWidget {
             SendRequestBar(
               count: state.selected.length,
               sending: state.submitting,
-              onSend: () => _send(context, ref),
+              onSend: _send,
             ),
           ],
         ),
@@ -91,11 +106,9 @@ class CandidatesScreen extends ConsumerWidget {
     );
   }
 
-  Future<void> _send(BuildContext context, WidgetRef ref) async {
-    final result = await ref
-        .read(candidatesControllerProvider.notifier)
-        .submit();
-    if (result == null || !context.mounted) return;
+  Future<void> _send() async {
+    final result = await ref.read(_controller.notifier).submit();
+    if (result == null || !mounted) return;
     final l10n = context.l10n;
     showAppSnackBar(context, switch (result) {
       SubmitSucceeded(:final count) => l10n.requestsSent(count),

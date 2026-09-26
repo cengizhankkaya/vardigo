@@ -22,12 +22,13 @@ void main() {
       ],
     );
     addTearDown(container.dispose);
-    container.listen(offersControllerProvider, (_, _) {});
+    container.listen(offersControllerProvider(defaultOfferQuery), (_, _) {});
   });
 
   OffersController controller() =>
-      container.read(offersControllerProvider.notifier);
-  OffersState state() => container.read(offersControllerProvider);
+      container.read(offersControllerProvider(defaultOfferQuery).notifier);
+  OffersState state() =>
+      container.read(offersControllerProvider(defaultOfferQuery));
   Future<OfferList> load() =>
       container.read(offerListProvider(state().query).future);
 
@@ -126,10 +127,13 @@ void main() {
       overrides: [offersRepositoryProvider.overrideWithValue(repo)],
     );
     addTearDown(local.dispose);
-    final sub = local.listen(offersControllerProvider, (_, _) {});
+    final sub = local.listen(
+      offersControllerProvider(defaultOfferQuery),
+      (_, _) {},
+    );
     repo.pendingRespond = Completer();
     final result = local
-        .read(offersControllerProvider.notifier)
+        .read(offersControllerProvider(defaultOfferQuery).notifier)
         .respond(repo.offers['o_garson']!, accept: true);
 
     sub.close();
