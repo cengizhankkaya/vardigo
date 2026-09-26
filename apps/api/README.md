@@ -17,6 +17,7 @@ npm test
 npm run typecheck
 npm run build && npm start
 npm run db:reset   # veritabanını silip seed verisiyle yeniden kurar
+npm run smoke      # case minimum testini çalışan sunucuya karşı koşturur
 ```
 
 | Ortam değişkeni | Varsayılan |
@@ -54,10 +55,11 @@ Token tarayıcıda hatırlanır; rol değiştirmek için Authorize'dan çıkış
 | POST | `/api/auth/login` | Demo hesabı için token döner |
 | GET | `/api/candidates` | İşveren: eşleşen adaylar |
 | POST | `/api/offers` | İşveren: seçilen adaylara görüşme talebi |
-| GET | `/api/offers` | İş arayan: talepler (sekmeye göre) |
+| GET | `/api/offers` | İş arayan: talepler (sekme ve sıralama) |
 | GET | `/api/offers/:id` | İş arayan: talep detayı |
 | POST | `/api/offers/:id/accept` | İş arayan: ilgileniyorum |
 | POST | `/api/offers/:id/reject` | İş arayan: ilgilenmiyorum |
+| GET | `/assets/...` | Aday fotoğrafları ve işletme logoları |
 
 ## Giriş
 
@@ -115,7 +117,7 @@ Süresi dolmuş, kabul edilmiş veya reddedilmiş talepten sonra aynı adaya yen
 ## Talepleri listeleme (iş arayan)
 
 ```bash
-curl "http://localhost:3000/api/offers?status=pending&sort=expiring" -H "Authorization: Bearer dev-worker"
+curl "http://localhost:3000/api/offers?status=pending" -H "Authorization: Bearer dev-worker"
 ```
 
 ```json
