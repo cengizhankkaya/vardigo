@@ -1,14 +1,43 @@
 # Backend
 
-Hedef: Node.js + TypeScript + Express, SQLite kullanan modüler monolit.
+Node.js + TypeScript + Express REST API. Veri için SQLite kullanılacak.
 
-Bu commit yalnız klasörleri hazırlar. package.json, bağımlılıklar, sunucu ve endpoint'ler henüz oluşturulmadı.
+## Gereksinim
 
-- `src/bootstrap/`: yapılandırma ve somut bağımlılıkların bağlanması.
-- `src/platform/`: HTTP, veritabanı, saat ve log altyapısı.
+- Node.js 24 veya üstü
+- npm
+
+## Komutlar
+
+```bash
+cd apps/api
+npm install
+npm run dev        # http://localhost:3000/api, değişiklikte yeniden başlar
+npm test
+npm run typecheck
+npm run build && npm start
+```
+
+Port `PORT` ortam değişkeniyle değiştirilebilir.
+
+## Cevap zarfı
+
+```json
+{ "ok": true, "data": { "status": "up" } }
+{ "ok": false, "error": { "code": "NOT_FOUND", "message": "Endpoint bulunamadı" } }
+```
+
+## Endpoint'ler
+
+| Metot | Yol | Açıklama |
+|---|---|---|
+| GET | `/api/health` | Sunucu ayakta mı |
+
+## Klasörler
+
+- `src/app.ts`: Express uygulaması ve route bağlantıları.
+- `src/server.ts`: HTTP sunucusunu başlatır.
+- `src/platform/`: HTTP, veritabanı ve saat gibi altyapı.
 - `src/modules/`: auth, candidates ve offers; ilgili özellik geliştirildiğinde açılacak.
-- `src/demo/`: case hesapları, seed ve demo alıcı eşlemesi.
-
-Her modül domain/application/infrastructure/http sınırlarıyla büyür. Domain ve application Express veya SQLite sürücüsüne bağımlı olmaz. Modüller birbirinin iç dosyalarına erişmez.
-
-Sonraki backend adımı: sürümleri doğrula; pnpm workspace, TypeScript ve Express başlangıcını kur; başlangıç/derleme kontrolünden sonra ayrı commit oluştur. İş kuralları ve veritabanı bundan sonraki adımlardır.
+- `src/demo/`: demo hesapları ve seed.
+- `test/`: Vitest + Supertest testleri.

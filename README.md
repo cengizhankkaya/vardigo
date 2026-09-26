@@ -2,13 +2,13 @@
 
 İki ekranlı case için Flutter mobil uygulama ve REST API.
 
-**Durum:** İlk commit yalnız depo ve klasör iskeletini oluşturur. Henüz çalıştırılabilir uygulama, paket kurulumu veya API yoktur.
+**Durum:** Backend iskeleti hazır (Express + TypeScript). Mobil uygulama ve iş endpoint'leri henüz yok.
 
 ## Teknoloji
 
 - Mobil: Flutter / Dart; sonraki adımlarda Riverpod, Dio ve flutter_svg.
 - Backend: Node.js / TypeScript / Express; kalıcı veri için SQLite.
-- Backend paketleri: pnpm; mobil bağımlılıkları: Flutter pub.
+- Backend paketleri: npm; mobil bağımlılıkları: Flutter pub.
 
 ## Klasörler
 
@@ -38,4 +38,4 @@ Her adım tek bir işi tamamlar, ilgili kontrol yapılır ve sonra commitlenir. 
 
 ## Çalıştırma
 
-Bu aşamada çalıştırma komutu yoktur. Backend ve Flutter kurulum commitlerinde gerçek komutlar, doğrulanan SDK/paket sürümleri ve lockfile'lar eklenecek. Mobil cihaz/simülatör için API adresi daha sonra açıkça belgelenecek.
+Backend: `cd apps/api && npm install && npm run dev` (ayrıntı: [apps/api/README.md](apps/api/README.md)). Mobil çalıştırma komutları Flutter kurulumunda eklenecek.
