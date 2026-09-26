@@ -76,4 +76,15 @@ export class SqliteOffersRepository {
       .get(id, recipientUserId);
     return row ? toOffer(row) : undefined;
   }
+
+  /** Records the decision only if the offer is still pending and not past its time. */
+  markResponded(id: string, recipientUserId: string, status: "accepted" | "rejected", nowMs: number): boolean {
+    const result = this.db
+      .prepare(
+        `UPDATE offers SET status = ?, responded_at_ms = ?
+         WHERE id = ? AND recipient_user_id = ? AND status = 'pending' AND expires_at_ms > ?`,
+      )
+      .run(status, nowMs, id, recipientUserId, nowMs);
+    return result.changes === 1;
+  }
 }
