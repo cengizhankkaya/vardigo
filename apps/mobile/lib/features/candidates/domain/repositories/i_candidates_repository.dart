@@ -2,7 +2,7 @@ import '../entities/candidate_list.dart';
 import '../entities/candidate_sort.dart';
 import '../entities/candidate_tab.dart';
 
-abstract interface class CandidatesRepository {
+abstract interface class ICandidatesRepository {
   Future<CandidateList> fetch({CandidateTab? tab, CandidateSort? sort});
 
   /// Sends the interview request to every id, or to none (API is atomic).

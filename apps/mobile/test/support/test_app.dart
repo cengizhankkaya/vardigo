@@ -5,9 +5,13 @@ import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:vardigo/app/app.dart';
-import 'package:vardigo/app/providers.dart';
 import 'package:vardigo/app/router/app_router.dart';
+import 'package:vardigo/core/api/api_providers.dart';
+import 'package:vardigo/features/appearance/application/theme_mode_repository_provider.dart';
+import 'package:vardigo/features/candidates/application/candidates_repository_provider.dart';
+import 'package:vardigo/features/offers/application/offers_repository_provider.dart';
 import 'package:vardigo/features/offers/presentation/controllers/offers_controller.dart';
+import 'package:vardigo/features/session/application/session_repository_provider.dart';
 
 import 'fake_repositories.dart';
 
@@ -30,6 +34,9 @@ class TestApp {
     container = ProviderContainer(
       overrides: [
         sessionRepositoryProvider.overrideWithValue(sessions),
+        themeModeRepositoryProvider.overrideWithValue(
+          FakeThemeModeRepository(),
+        ),
         candidatesRepositoryProvider.overrideWithValue(candidates),
         offersRepositoryProvider.overrideWithValue(offers),
         svgHttpClientProvider.overrideWithValue(

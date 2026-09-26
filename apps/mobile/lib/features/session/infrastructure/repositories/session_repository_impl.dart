@@ -2,10 +2,10 @@ import '../../../../core/api/api_client.dart';
 import '../../../../core/api/json_reader.dart';
 import '../../domain/entities/role.dart';
 import '../../domain/entities/session.dart';
-import '../../domain/repositories/session_repository.dart';
+import '../../domain/repositories/i_session_repository.dart';
 
-class ApiSessionRepository implements SessionRepository {
-  ApiSessionRepository(this._api);
+class SessionRepositoryImpl implements ISessionRepository {
+  SessionRepositoryImpl(this._api);
 
   final ApiClient _api;
 

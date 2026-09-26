@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:vardigo/app/providers.dart';
 import 'package:vardigo/core/error/exceptions/api_exception.dart';
 import 'package:vardigo/features/offers/presentation/controllers/offers_controller.dart';
 
@@ -15,6 +14,7 @@ import 'package:vardigo/features/offers/domain/entities/offer_list.dart';
 import 'package:vardigo/features/offers/presentation/controllers/offer_query.dart';
 import 'package:vardigo/features/offers/presentation/controllers/offers_state.dart';
 import 'package:vardigo/features/offers/presentation/controllers/respond_result.dart';
+import 'package:vardigo/features/offers/application/offers_repository_provider.dart';
 
 void main() {
   late FakeOffersRepository repo;
