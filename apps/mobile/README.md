@@ -15,7 +15,7 @@ Flutter / Dart ile iOS ve Android uygulaması. İki case ekranı burada gelişti
 cd apps/mobile
 flutter pub get
 flutter run          # açık simülatör/emülatör veya bağlı cihazda başlatır
-flutter run --dart-define=START_AS=employer   # rol ekranını atlayıp işveren olarak açar (worker da olur)
+flutter run --dart-define=START_AS=employer   # rol ekranını atlayıp işveren olarak açar (worker: iş arayan)
 flutter analyze
 flutter test
 ```
@@ -109,14 +109,21 @@ Feature'lar presentation/application/domain/data sınırlarıyla büyür. Domain
    - Gönderim sırasında sekme, sıralama ve seçim kilitlenir. Başarıda gönderilenler seçimden çıkar; 409 gibi hatalarda backend mesajı gösterilir ve seçim korunur.
    - Sunucudan yanıt gelmezse otomatik tekrar gönderilmez; "doğrulanamadı" uyarısı gösterilir.
    - Yükleniyor, boş liste ve hata + "Tekrar dene" durumları vardır; liste aşağı çekilerek yenilenir.
-3. **Görüşme Talepleri (iş arayan):** sonraki adım.
+3. **Görüşme Talepleri (iş arayan):** Bekleyen / Cevaplanan / Süresi Dolan sekmeleri (`status=pending|answered|expired`), sıralama (Önerilen → Süresi Yakın → Ücret).
+   - İlgileniyorum / İlgilenmiyorum talebi kabul veya ret eder; talep Cevaplanan sekmesine geçer ve karar kalıcıdır. Süresi dolmuş veya daha önce yanıtlanmış talepte backend'in mesajı gösterilir ve liste yenilenir.
+   - "Detayları Gör" kartın altında detay endpoint'inden gelen şehir ve şube notunu, ücret ve saati gösterir.
+   - Geri sayım `expiresAt` ile cihazda hesaplanır ve 30 saniyede bir güncellenir; 6 saatten az kalınca kırmızıya döner (referanstaki ilk kart). Sayaç sıfırlanınca ve uygulama arka plandan dönünce liste sunucudan yenilenir.
+   - Cevaplanan ve süresi dolan kartlarda buton ve sayaç yerine durum etiketi vardır.
 
 ### Referansla farklar
 
 - Referansın ilk sekmesinde 4 kişi var; API kuralı (score ≥ 80) bu sekmede 2 kişi döndürür.
 - Case paketindeki fotoğraf dosyaları referans görseldeki kişilerle eşleşmiyor (ör. `merve.png` referansta "Ayşe K." kartındaki fotoğraf). Seed eşlemesi korunur.
 - Puan yıldızı referansta daha sarı görünür; spesifikasyondaki `#FA7319` kullanılır.
+- Görüşme Talepleri başlığındaki sayı gerçek bekleyen sayısıdır (`pendingCount`, temiz seed'de 3); referanstaki 12 sabit etikettir.
+- Talep logoları ve ücretleri seed'deki gibidir (Garson 45.000 / Barista 38.000 / Komi 32.000); referanstaki üç "Garson ₺1.500" kartı temsili tasarımdır.
+- Spesifikasyon Görüşme Talepleri başlığını ortada tarif eder; referans görsele uyularak sola, geri butonunun yanına hizalandı.
 
 ## Durum
 
-Rol ekranı ve Eşleşen Personeller ekranı iOS simülatöründe (iPhone 17 Pro) gerçek backend'le çalışıyor. Android henüz denenmedi.
+İki case ekranı ve rol ekranı iOS simülatöründe (iPhone 17 Pro) gerçek backend'le çalışıyor. Android henüz denenmedi.
