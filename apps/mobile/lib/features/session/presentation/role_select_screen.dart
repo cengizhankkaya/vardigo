@@ -26,6 +26,9 @@ class _RoleSelectScreenState extends ConsumerState<RoleSelectScreen> {
   Role? _loggingIn;
   Object? _error;
 
+  /// The account whose login failed; "Tekrar dene" tries it again.
+  Role? _failedRole;
+
   /// `flutter run --dart-define=START_AS=employer` (or `worker`) opens that
   /// account right away; handy for checking a screen.
   static const _startAs = String.fromEnvironment('START_AS');
@@ -45,12 +48,18 @@ class _RoleSelectScreenState extends ConsumerState<RoleSelectScreen> {
     setState(() {
       _loggingIn = role;
       _error = null;
+      _failedRole = null;
     });
     final session = ref.read(sessionProvider.notifier);
     try {
       await session.login(role);
     } catch (error) {
-      if (mounted) setState(() => _error = error);
+      if (mounted) {
+        setState(() {
+          _error = error;
+          _failedRole = role;
+        });
+      }
       return;
     } finally {
       if (mounted) setState(() => _loggingIn = null);
@@ -70,6 +79,7 @@ class _RoleSelectScreenState extends ConsumerState<RoleSelectScreen> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final error = _error;
+    final failedRole = _failedRole;
     return Scaffold(
       body: SafeArea(
         child: ListView(
@@ -93,11 +103,8 @@ class _RoleSelectScreenState extends ConsumerState<RoleSelectScreen> {
               loading: _loggingIn == Role.worker,
               onTap: () => _continueAs(Role.worker),
             ),
-            if (error != null)
-              ErrorView(
-                error: error,
-                onRetry: () => setState(() => _error = null),
-              ),
+            if (error != null && failedRole != null)
+              ErrorView(error: error, onRetry: () => _continueAs(failedRole)),
             if (kDebugMode) ...[
               const SizedBox(height: 32),
               TextButton(
