@@ -264,6 +264,12 @@ export const openApiDocument = {
             description: "`answered` = kabul + ret",
             schema: { type: "string", enum: ["pending", "answered", "expired"], default: "pending" },
           },
+          {
+            name: "sort",
+            in: "query",
+            description: "`recommended`: en yeni önce, `expiring`: süresi en yakın biten önce, `pay`: ücret azalan",
+            schema: { type: "string", enum: ["recommended", "expiring", "pay"], default: "recommended" },
+          },
         ],
         responses: {
           200: ok(
@@ -278,7 +284,7 @@ export const openApiDocument = {
             },
             { pendingCount: 3, pendingCountLabel: 12, offers: [offerExample] },
           ),
-          400: errorResponse("status geçersiz", "VALIDATION_ERROR", "status şunlardan biri olmalı: pending, answered, expired"),
+          400: errorResponse("status veya sort geçersiz", "VALIDATION_ERROR", "status şunlardan biri olmalı: pending, answered, expired"),
           401: unauthorized,
         },
       },

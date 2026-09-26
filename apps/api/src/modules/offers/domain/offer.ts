@@ -38,6 +38,11 @@ export const OFFER_STATUS_FILTERS = ["pending", "answered", "expired"] as const;
 
 export type OfferStatusFilter = (typeof OFFER_STATUS_FILTERS)[number];
 
+export const OFFER_SORTS = ["recommended", "expiring", "pay"] as const;
+
+/** recommended: newest first; expiring: ends soonest first; pay: highest pay first. */
+export type OfferSort = (typeof OFFER_SORTS)[number];
+
 /** The "answered" tab covers both decisions. */
 export function statusesFor(filter: OfferStatusFilter): OfferStatus[] {
   return filter === "answered" ? ["accepted", "rejected"] : [filter];
