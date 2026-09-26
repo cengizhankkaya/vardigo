@@ -17,5 +17,85 @@
         "type": "int"
       }
     }
-  }
+  },
+  "roleTitle": "Demo hesabı seç",
+  "roleSubtitle": "Case'teki iki sabit hesaptan biriyle devam et.",
+  "roleEmployer": "İşveren",
+  "roleEmployerHint": "Eşleşen personelleri gör, görüşme talebi gönder",
+  "roleWorker": "İş arayan",
+  "roleWorkerHint": "Gelen görüşme taleplerini gör, yanıtla",
+  "openGallery": "Tasarım galerisi",
+  "candidatesTitle": "Eşleşen Personeller",
+  "candidatesFound": "{count} personel bulundu",
+  "@candidatesFound": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "tabPerfect": "%100 Eşleşme ({count})",
+  "@tabPerfect": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "tabSimilar": "Benzer Personeller ({count})",
+  "@tabSimilar": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "selectedCount": "{count} kişi seçildi",
+  "@selectedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "sortLabel": "Sırala: {option}",
+  "@sortLabel": {
+    "placeholders": {
+      "option": {
+        "type": "String"
+      }
+    }
+  },
+  "sortRecommended": "Önerilen",
+  "sortNear": "En Yakın",
+  "sortRating": "Puan",
+  "payMatches": "Ücret beklentisi uyuşuyor",
+  "payMismatch": "Ücret beklentisi uyuşmuyor",
+  "payPerMonth": "₺{amount} / ay",
+  "@payPerMonth": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "candidatesEmpty": "Bu sekmede aday yok",
+  "requestsSent": "{count, plural, =1{1 kişiye görüşme talebi gönderildi} other{{count} kişiye görüşme talebi gönderildi}}",
+  "@requestsSent": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "sendUncertain": "Sunucudan yanıt alınamadı; talebin gönderilip gönderilmediği doğrulanamadı. İş arayan hesabından kontrol edebilir veya tekrar deneyebilirsin.",
+  "helpTitle": "Bu ekran",
+  "candidatesHelp": "İlan için eşleşen personeller listelenir. Kişileri seçip görüşme talebi gönderebilirsin; seçimler sekmeler arasında korunur.",
+  "back": "Geri",
+  "help": "Yardım",
+  "retry": "Tekrar dene",
+  "errorNetwork": "Sunucuya ulaşılamadı. Backend'in çalıştığından emin olup tekrar dene.",
+  "errorTimeout": "Sunucu zamanında yanıt vermedi. Tekrar dene.",
+  "errorUnexpected": "Beklenmeyen bir hata oluştu. Tekrar dene.",
+  "offersComingSoon": "Görüşme Talepleri ekranı sonraki adımda eklenecek."
 }

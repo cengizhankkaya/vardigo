@@ -15,6 +15,7 @@ Flutter / Dart ile iOS ve Android uygulaması. İki case ekranı burada gelişti
 cd apps/mobile
 flutter pub get
 flutter run          # açık simülatör/emülatör veya bağlı cihazda başlatır
+flutter run --dart-define=START_AS=employer   # rol ekranını atlayıp işveren olarak açar (worker da olur)
 flutter analyze
 flutter test
 ```
@@ -99,6 +100,23 @@ Uygulama şimdilik [tasarım galerisi](lib/preview/design_preview_screen.dart) i
 
 Feature'lar presentation/application/domain/data sınırlarıyla büyür. Domain Flutter UI, Dio veya Riverpod bilmez; widget HTTP isteği yapmaz.
 
+## Ekranlar
+
+1. **Demo hesabı seç:** İşveren veya İş arayan; seçilen rolle `POST /auth/login` yapılır. Geri dönünce oturum kapanır. Debug derlemede buradan tasarım galerisi de açılır.
+2. **Eşleşen Personeller (işveren):** sekmeler (`tab=perfect|similar`), sıralama düğmesi (Önerilen → En Yakın → Puan), çoklu seçim ve "Görüşme Talebi Gönder (N)".
+   - İlk açılışta API'nin `selectedHint` değeri kadar ilk aday (Merve) seçili gelir; bu bir kez uygulanır.
+   - Seçim sekmeler arasında korunur; sayı iki sekmedeki seçimlerin toplamıdır.
+   - Gönderim sırasında sekme, sıralama ve seçim kilitlenir. Başarıda gönderilenler seçimden çıkar; 409 gibi hatalarda backend mesajı gösterilir ve seçim korunur.
+   - Sunucudan yanıt gelmezse otomatik tekrar gönderilmez; "doğrulanamadı" uyarısı gösterilir.
+   - Yükleniyor, boş liste ve hata + "Tekrar dene" durumları vardır; liste aşağı çekilerek yenilenir.
+3. **Görüşme Talepleri (iş arayan):** sonraki adım.
+
+### Referansla farklar
+
+- Referansın ilk sekmesinde 4 kişi var; API kuralı (score ≥ 80) bu sekmede 2 kişi döndürür.
+- Case paketindeki fotoğraf dosyaları referans görseldeki kişilerle eşleşmiyor (ör. `merve.png` referansta "Ayşe K." kartındaki fotoğraf). Seed eşlemesi korunur.
+- Puan yıldızı referansta daha sarı görünür; spesifikasyondaki `#FA7319` kullanılır.
+
 ## Durum
 
-Tasarım galerisi iOS simülatöründe (iPhone 17 Pro) açılıyor. Android henüz denenmedi.
+Rol ekranı ve Eşleşen Personeller ekranı iOS simülatöründe (iPhone 17 Pro) gerçek backend'le çalışıyor. Android henüz denenmedi.

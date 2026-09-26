@@ -43,4 +43,122 @@ class AppLocalizationsTr extends AppLocalizations {
   String sendRequest(int count) {
     return 'Görüşme Talebi Gönder ($count)';
   }
+
+  @override
+  String get roleTitle => 'Demo hesabı seç';
+
+  @override
+  String get roleSubtitle => 'Case\'teki iki sabit hesaptan biriyle devam et.';
+
+  @override
+  String get roleEmployer => 'İşveren';
+
+  @override
+  String get roleEmployerHint =>
+      'Eşleşen personelleri gör, görüşme talebi gönder';
+
+  @override
+  String get roleWorker => 'İş arayan';
+
+  @override
+  String get roleWorkerHint => 'Gelen görüşme taleplerini gör, yanıtla';
+
+  @override
+  String get openGallery => 'Tasarım galerisi';
+
+  @override
+  String get candidatesTitle => 'Eşleşen Personeller';
+
+  @override
+  String candidatesFound(int count) {
+    return '$count personel bulundu';
+  }
+
+  @override
+  String tabPerfect(int count) {
+    return '%100 Eşleşme ($count)';
+  }
+
+  @override
+  String tabSimilar(int count) {
+    return 'Benzer Personeller ($count)';
+  }
+
+  @override
+  String selectedCount(int count) {
+    return '$count kişi seçildi';
+  }
+
+  @override
+  String sortLabel(String option) {
+    return 'Sırala: $option';
+  }
+
+  @override
+  String get sortRecommended => 'Önerilen';
+
+  @override
+  String get sortNear => 'En Yakın';
+
+  @override
+  String get sortRating => 'Puan';
+
+  @override
+  String get payMatches => 'Ücret beklentisi uyuşuyor';
+
+  @override
+  String get payMismatch => 'Ücret beklentisi uyuşmuyor';
+
+  @override
+  String payPerMonth(String amount) {
+    return '₺$amount / ay';
+  }
+
+  @override
+  String get candidatesEmpty => 'Bu sekmede aday yok';
+
+  @override
+  String requestsSent(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count kişiye görüşme talebi gönderildi',
+      one: '1 kişiye görüşme talebi gönderildi',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get sendUncertain =>
+      'Sunucudan yanıt alınamadı; talebin gönderilip gönderilmediği doğrulanamadı. İş arayan hesabından kontrol edebilir veya tekrar deneyebilirsin.';
+
+  @override
+  String get helpTitle => 'Bu ekran';
+
+  @override
+  String get candidatesHelp =>
+      'İlan için eşleşen personeller listelenir. Kişileri seçip görüşme talebi gönderebilirsin; seçimler sekmeler arasında korunur.';
+
+  @override
+  String get back => 'Geri';
+
+  @override
+  String get help => 'Yardım';
+
+  @override
+  String get retry => 'Tekrar dene';
+
+  @override
+  String get errorNetwork =>
+      'Sunucuya ulaşılamadı. Backend\'in çalıştığından emin olup tekrar dene.';
+
+  @override
+  String get errorTimeout => 'Sunucu zamanında yanıt vermedi. Tekrar dene.';
+
+  @override
+  String get errorUnexpected => 'Beklenmeyen bir hata oluştu. Tekrar dene.';
+
+  @override
+  String get offersComingSoon =>
+      'Görüşme Talepleri ekranı sonraki adımda eklenecek.';
 }

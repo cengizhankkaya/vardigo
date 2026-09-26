@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../l10n/l10n.dart';
-import '../preview/design_preview_screen.dart';
+import '../features/session/presentation/role_select_screen.dart';
 import '../shared/design_system/theme/app_theme.dart';
 
 class VardigoApp extends StatelessWidget {
@@ -15,7 +15,7 @@ class VardigoApp extends StatelessWidget {
       theme: AppTheme.light(),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home: const DesignPreviewScreen(),
+      home: const RoleSelectScreen(),
     );
   }
 }
