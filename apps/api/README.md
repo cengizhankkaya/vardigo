@@ -192,6 +192,11 @@ curl "http://localhost:3000/api/offers?status=answered" -H "Authorization: Beare
 # 6. sunucuyu durdurup başlatın, 5. adımı tekrarlayın: aynı sonuç
 ```
 
+## Görseller ve CORS
+
+- Aday fotoğrafları ve işletme logoları `/assets/...` altında servis edilir (`/api` ön eki yok): `http://localhost:3000/assets/photos/merve.png`, `http://localhost:3000/assets/logos/zarif.svg`. API yanıtlarındaki `photo` ve `logo` alanları bu yolları verir; istemci başına sunucu adresini ekler. Dosyalar [public/assets/](public/assets/) içindedir ve case paketinden değiştirilmeden alınmıştır.
+- CORS yalnız `localhost`, `127.0.0.1` ve `[::1]` kaynaklarına (her port) açıktır. Flutter uygulaması native çalıştığı için CORS'a ihtiyaç duymaz; bu ayar tarayıcıdan yapılan denemeler içindir.
+
 ## Klasörler
 
 - `src/app.ts`: Express uygulaması ve route bağlantıları.
@@ -203,4 +208,5 @@ curl "http://localhost:3000/api/offers?status=answered" -H "Authorization: Beare
 - `src/modules/candidates/`: aday listeleme, sekme filtresi ve sıralama.
 - `src/modules/offers/`: talep oluşturma, listeleme, detay, kabul/ret ve süre dolumu.
 - `src/demo/`: case seed verisi, seed yükleyici ve reset komutu.
+- `public/assets/`: case fotoğrafları ve logoları.
 - `test/`: Vitest + Supertest testleri.

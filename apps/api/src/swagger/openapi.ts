@@ -70,6 +70,8 @@ export const openApiDocument = {
       "Token'lar case gereği sabit demo değerleridir.",
       "",
       "Tüm yanıtlar `{ ok: true, data }` ya da `{ ok: false, error: { code, message } }` biçimindedir.",
+      "",
+      "`photo` ve `logo` alanları sunucu köküne göre yoldur: [/assets/photos/merve.png](/assets/photos/merve.png).",
     ].join("\n"),
   },
   servers: [{ url: "/api" }],
