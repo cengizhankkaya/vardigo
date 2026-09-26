@@ -43,6 +43,7 @@ Sunucu açılırken tabloları oluşturur ve veritabanı boşsa [src/demo/seed.j
 | GET | `/api/health` | Sunucu ayakta mı |
 | POST | `/api/auth/login` | Demo hesabı için token döner |
 | GET | `/api/candidates` | İşveren: eşleşen adaylar |
+| POST | `/api/offers` | İşveren: seçilen adaylara görüşme talebi |
 
 ## Giriş
 
@@ -71,6 +72,30 @@ curl "http://localhost:3000/api/candidates?tab=perfect&sort=near" \
 
 Geçersiz değer `400 VALIDATION_ERROR` döner. `totalPerfect` (26), `totalSimilar` (16) ve `selectedHint` (1) referans tasarımdaki sabit etiketlerdir; listedeki gerçek aday sayısı 4'tür. Eşit değerlerde seed sırası korunur.
 
+## Görüşme talebi gönderme (işveren)
+
+```bash
+curl -X POST http://localhost:3000/api/offers \
+  -H "Authorization: Bearer dev-employer" \
+  -H "Content-Type: application/json" \
+  -d '{"workerIds":["w_merve","w_derya"]}'
+# 201 {"ok":true,"data":{"created":[{"id":"o_...","workerId":"w_merve","status":"pending"}, ...]}}
+```
+
+Case'te tek iş var: her talep "Garson — Zarif Cheff Restaurant", 45.000, Kadıköy, 16 Ağu 12:00 - 16:00 bilgisiyle oluşturulur ve 21 saat 32 dakika sonra süresi dolar. Case'te tek iş arayan hesabı olduğu için tüm talepler o hesabın gelen kutusuna düşer.
+
+Talepler ya hepsi birlikte oluşturulur ya da hiçbiri oluşturulmaz.
+
+| Durum | Yanıt |
+|---|---|
+| `workerIds` boş | `400 EMPTY_SELECTION` |
+| Aynı id iki kez | `400 DUPLICATE_WORKER_IDS` |
+| `workerIds` dizi değil, metin olmayan değer, 100'den fazla id | `400 VALIDATION_ERROR` |
+| Bilinmeyen aday | `404 CANDIDATE_NOT_FOUND` |
+| Adayın bekleyen talebi var | `409 OFFER_PENDING_EXISTS` |
+
+Süresi dolmuş, kabul edilmiş veya reddedilmiş talepten sonra aynı adaya yeniden talep gönderilebilir.
+
 ## Klasörler
 
 - `src/app.ts`: Express uygulaması ve route bağlantıları.
@@ -79,6 +104,6 @@ Geçersiz değer `400 VALIDATION_ERROR` döner. `totalPerfect` (26), `totalSimil
 - `src/platform/`: HTTP yanıtları, SQLite bağlantısı ve migration'lar.
 - `src/modules/auth/`: demo login ve Bearer token rol kontrolü.
 - `src/modules/candidates/`: aday listeleme, sekme filtresi ve sıralama.
-- `src/modules/offers/`: sonraki adımlarda eklenecek.
+- `src/modules/offers/`: talep oluşturma ve süre dolumu. Listeleme ve yanıtlama sonraki adımlarda eklenecek.
 - `src/demo/`: case seed verisi, seed yükleyici ve reset komutu.
 - `test/`: Vitest + Supertest testleri.
