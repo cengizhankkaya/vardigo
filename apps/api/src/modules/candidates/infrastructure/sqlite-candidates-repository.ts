@@ -1,7 +1,8 @@
 import type { Database } from "../../../platform/database/connection.js";
 import type { Candidate } from "../domain/candidate.js";
+import type { CandidatesRepository } from "../domain/candidates-repository.js";
 
-export class SqliteCandidatesRepository {
+export class SqliteCandidatesRepository implements CandidatesRepository {
   constructor(private readonly db: Database) {}
 
   findAll(): Candidate[] {

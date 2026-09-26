@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { demoJob } from "../src/demo/demo-job.js";
 import { getOffer, listOffers, type ListOffersDeps } from "../src/modules/offers/application/list-offers.js";
 import { SqliteOffersRepository } from "../src/modules/offers/infrastructure/sqlite-offers-repository.js";
+import { sqliteUnitOfWork } from "../src/platform/database/connection.js";
 import { createTestApp, TEST_NOW } from "./support/test-app.js";
 
 const HOUR = 3_600_000;
@@ -15,7 +16,7 @@ describe("listOffers", () => {
     ({ db } = createTestApp());
     now = TEST_NOW;
     const offers = new SqliteOffersRepository(db);
-    deps = { db, offers, now: () => now };
+    deps = { unitOfWork: sqliteUnitOfWork(db), offers, now: () => now };
     offers.insert({
       id: "o_new",
       recipientUserId: "u_worker",

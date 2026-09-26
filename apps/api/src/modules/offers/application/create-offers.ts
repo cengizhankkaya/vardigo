@@ -1,13 +1,13 @@
 import { randomUUID } from "node:crypto";
-import { type Database, transaction } from "../../../platform/database/connection.js";
-import type { SqliteCandidatesRepository } from "../../candidates/infrastructure/sqlite-candidates-repository.js";
+import type { UnitOfWork } from "../../../platform/unit-of-work.js";
+import type { CandidatesRepository } from "../../candidates/domain/candidates-repository.js";
 import type { OfferJob } from "../domain/offer.js";
-import type { SqliteOffersRepository } from "../infrastructure/sqlite-offers-repository.js";
+import type { OffersRepository } from "../domain/offers-repository.js";
 
 export interface CreateOffersDeps {
-  db: Database;
-  offers: SqliteOffersRepository;
-  candidates: SqliteCandidatesRepository;
+  unitOfWork: UnitOfWork;
+  offers: OffersRepository;
+  candidates: CandidatesRepository;
   job: OfferJob;
   recipientUserId: string;
   now: () => number;
@@ -27,7 +27,7 @@ export type CreateOffersResult =
 export function createOffers(deps: CreateOffersDeps, workerIds: readonly string[]): CreateOffersResult {
   const newId = deps.newId ?? (() => `o_${randomUUID()}`);
 
-  return transaction(deps.db, (): CreateOffersResult => {
+  return deps.unitOfWork((): CreateOffersResult => {
     const now = deps.now();
     const known = new Set(deps.candidates.findAll().map((c) => c.id));
     const unknown = workerIds.find((id) => !known.has(id));

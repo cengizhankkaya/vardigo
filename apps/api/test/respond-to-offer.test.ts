@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { respondToOffer, type RespondToOfferDeps } from "../src/modules/offers/application/respond-to-offer.js";
 import { SqliteOffersRepository } from "../src/modules/offers/infrastructure/sqlite-offers-repository.js";
-import { openDatabase } from "../src/platform/database/connection.js";
+import { openDatabase, sqliteUnitOfWork } from "../src/platform/database/connection.js";
 import { createTestApp, TEST_NOW } from "./support/test-app.js";
 
 const HOUR = 3_600_000;
@@ -15,7 +15,7 @@ describe("respondToOffer", () => {
   beforeEach(() => {
     ({ db } = createTestApp());
     now = TEST_NOW;
-    deps = { db, offers: new SqliteOffersRepository(db), now: () => now };
+    deps = { unitOfWork: sqliteUnitOfWork(db), offers: new SqliteOffersRepository(db), now: () => now };
   });
 
   const row = (id: string) => db.prepare("SELECT status, responded_at_ms FROM offers WHERE id = ?").get(id);
@@ -64,7 +64,7 @@ describe("respondToOffer", () => {
   it("lets only the first of two connections answer", () => {
     const path = String(db.prepare("PRAGMA database_list").get()?.file);
     const other = openDatabase(path);
-    const otherDeps = { db: other, offers: new SqliteOffersRepository(other), now: () => now };
+    const otherDeps = { unitOfWork: sqliteUnitOfWork(other), offers: new SqliteOffersRepository(other), now: () => now };
 
     expect(respondToOffer(deps, "u_worker", "o_garson", "accepted").kind).toBe("responded");
     expect(respondToOffer(otherDeps, "u_worker", "o_garson", "rejected")).toEqual({ kind: "already_answered" });

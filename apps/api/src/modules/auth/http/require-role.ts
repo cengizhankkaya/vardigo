@@ -1,10 +1,10 @@
 import type { RequestHandler, Response } from "express";
 import { HttpError } from "../../../platform/http/response.js";
 import type { Role, User } from "../domain/user.js";
-import type { SqliteUsersRepository } from "../infrastructure/sqlite-users-repository.js";
+import type { UsersRepository } from "../domain/users-repository.js";
 
 /** Accepts `Authorization: Bearer <token>` only for the given role. */
-export function requireRole(users: SqliteUsersRepository, role: Role): RequestHandler {
+export function requireRole(users: UsersRepository, role: Role): RequestHandler {
   return (req, res, next) => {
     const header = req.get("authorization");
     if (!header) {

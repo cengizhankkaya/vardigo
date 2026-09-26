@@ -1,9 +1,9 @@
 import { Router } from "express";
 import { HttpError, sendOk } from "../../../platform/http/response.js";
 import { isRole } from "../domain/user.js";
-import type { SqliteUsersRepository } from "../infrastructure/sqlite-users-repository.js";
+import type { UsersRepository } from "../domain/users-repository.js";
 
-export function authRoutes(users: SqliteUsersRepository): Router {
+export function authRoutes(users: UsersRepository): Router {
   const router = Router();
 
   router.post("/login", (req, res) => {

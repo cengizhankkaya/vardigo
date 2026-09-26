@@ -1,7 +1,8 @@
 import type { Database } from "../../../platform/database/connection.js";
 import type { Role, User } from "../domain/user.js";
+import type { UsersRepository } from "../domain/users-repository.js";
 
-export class SqliteUsersRepository {
+export class SqliteUsersRepository implements UsersRepository {
   constructor(private readonly db: Database) {}
 
   findByRole(role: Role): User | undefined {

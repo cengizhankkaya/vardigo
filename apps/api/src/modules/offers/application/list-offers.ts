@@ -1,10 +1,10 @@
-import { type Database, transaction } from "../../../platform/database/connection.js";
+import type { UnitOfWork } from "../../../platform/unit-of-work.js";
 import { type Offer, type OfferSort, type OfferStatusFilter, statusesFor } from "../domain/offer.js";
-import type { SqliteOffersRepository } from "../infrastructure/sqlite-offers-repository.js";
+import type { OffersRepository } from "../domain/offers-repository.js";
 
 export interface ListOffersDeps {
-  db: Database;
-  offers: SqliteOffersRepository;
+  unitOfWork: UnitOfWork;
+  offers: OffersRepository;
   now: () => number;
 }
 
@@ -21,7 +21,7 @@ export function listOffers(
   filter: OfferStatusFilter,
   sort: OfferSort = "recommended",
 ): OfferListing {
-  return transaction(deps.db, () => {
+  return deps.unitOfWork(() => {
     const now = deps.now();
     deps.offers.expireDue(now);
     return {
@@ -37,7 +37,7 @@ export function getOffer(
   recipientUserId: string,
   offerId: string,
 ): { now: number; offer: Offer | undefined } {
-  return transaction(deps.db, () => {
+  return deps.unitOfWork(() => {
     const now = deps.now();
     deps.offers.expireDue(now);
     return { now, offer: deps.offers.findForRecipient(offerId, recipientUserId) };
