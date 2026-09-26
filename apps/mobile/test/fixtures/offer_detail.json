@@ -1,0 +1,17 @@
+{
+  "ok": true,
+  "data": {
+    "id": "o_barista",
+    "title": "Barista",
+    "place": "Horizon Cafe",
+    "pay": "38.000",
+    "logo": "/assets/logos/horizon.svg",
+    "district": "Kadıköy",
+    "when": "16 Ağu · 12:00 - 16:00",
+    "status": "pending",
+    "remain": "21 saat 31 dakika",
+    "expiresAt": "2026-09-27T08:48:32.977Z",
+    "city": "İstanbul",
+    "note": "Şube: Sinanpaşa Mah."
+  }
+}

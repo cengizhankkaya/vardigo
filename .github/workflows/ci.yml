@@ -60,3 +60,38 @@ jobs:
       - run: dart format --output=none --set-exit-if-changed lib test
       - run: flutter analyze
       - run: flutter test
+
+  contract:
+    name: Mobile against live API
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: apps/api/.nvmrc
+          cache: npm
+          cache-dependency-path: apps/api/package-lock.json
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.47.1
+          channel: stable
+          cache: true
+      - name: Start the backend
+        working-directory: apps/api
+        env:
+          DATABASE_PATH: ${{ runner.temp }}/vardigo.db
+        run: |
+          npm ci
+          npm run build
+          npm start &
+          for i in $(seq 1 30); do
+            curl -sf http://127.0.0.1:3000/api/health && break
+            sleep 1
+          done
+      - name: Run the case flow through the app repositories
+        working-directory: apps/mobile
+        env:
+          LIVE_API_ORIGIN: http://127.0.0.1:3000
+        run: |
+          flutter pub get
+          flutter test test/live

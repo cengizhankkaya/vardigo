@@ -19,6 +19,27 @@ flutter analyze
 flutter test
 ```
 
+## Backend bağlantısı
+
+Uygulama backend'e `http` ile bağlanır. Varsayılan adres platforma göre seçilir:
+
+| Nerede | Adres | Backend |
+|---|---|---|
+| iOS simülatörü | `http://127.0.0.1:3000` | `npm run dev` |
+| Android emülatörü | `http://10.0.2.2:3000` (emülatörden bilgisayara) | `npm run dev` |
+| Gerçek telefon (aynı Wi-Fi) | `flutter run --dart-define=API_ORIGIN=http://<bilgisayar-IP>:3000` | `HOST=0.0.0.0 npm run dev` |
+
+- iOS'ta yalnız yerel ağ için `http` izni açıktır (`NSAllowsLocalNetworking`); Android'de şifresiz trafik yalnız debug derlemede açıktır.
+- Katmanlar: `domain` (model + repository arayüzü) → `data` (JSON okuma + Dio ile API) → `app/providers.dart` (Riverpod ile bağlama). Ekranlar yalnız repository arayüzlerini kullanır.
+- Hatalar `ApiException` olarak gelir: backend kodu (`OFFER_EXPIRED`...) ve Türkçe mesajı ya da istemci kodu (`NETWORK_ERROR`, `TIMEOUT`, `BAD_RESPONSE`).
+- [test/fixtures/](test/fixtures/) backend'in gerçek yanıtlarıdır; repository testleri bunları okur. Backend yanıtı değişirse fixture'lar yeniden alınmalıdır.
+- Canlı test, case akışını uygulamanın repository'leri üzerinden gerçek sunucuya karşı çalıştırır (CI'da her push'ta da çalışır):
+
+```bash
+cd apps/api && npm run db:reset && npm run dev       # 1. terminal
+cd apps/mobile && LIVE_API_ORIGIN=http://127.0.0.1:3000 flutter test test/live   # 2. terminal
+```
+
 ## Kod üretimi: asset, renk, font ve metin
 
 Kodda dosya yolu, hex renk, font adı veya Türkçe metin elle yazılmaz; hepsi üretilen sınıflardan okunur.

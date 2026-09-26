@@ -1,0 +1,69 @@
+{
+  "ok": true,
+  "data": {
+    "pendingCount": 5,
+    "pendingCountLabel": 12,
+    "offers": [
+      {
+        "id": "o_2aedf8ff-69d7-4b22-b68c-e30762a4b09a",
+        "title": "Garson",
+        "place": "Zarif Cheff Restaurant",
+        "pay": "45.000",
+        "logo": "/assets/logos/zarif.svg",
+        "district": "Kadıköy",
+        "when": "16 Ağu · 12:00 - 16:00",
+        "status": "pending",
+        "remain": "21 saat 31 dakika",
+        "expiresAt": "2026-09-27T08:48:35.612Z"
+      },
+      {
+        "id": "o_433c70c8-19f9-4d02-b835-9da88069b4b5",
+        "title": "Garson",
+        "place": "Zarif Cheff Restaurant",
+        "pay": "45.000",
+        "logo": "/assets/logos/zarif.svg",
+        "district": "Kadıköy",
+        "when": "16 Ağu · 12:00 - 16:00",
+        "status": "pending",
+        "remain": "21 saat 31 dakika",
+        "expiresAt": "2026-09-27T08:48:35.612Z"
+      },
+      {
+        "id": "o_garson",
+        "title": "Garson",
+        "place": "Zarif Cheff Restaurant",
+        "pay": "45.000",
+        "logo": "/assets/logos/zarif.svg",
+        "district": "Kadıköy",
+        "when": "16 Ağu · 12:00 - 16:00",
+        "status": "pending",
+        "remain": "21 saat 31 dakika",
+        "expiresAt": "2026-09-27T08:48:32.977Z"
+      },
+      {
+        "id": "o_barista",
+        "title": "Barista",
+        "place": "Horizon Cafe",
+        "pay": "38.000",
+        "logo": "/assets/logos/horizon.svg",
+        "district": "Kadıköy",
+        "when": "16 Ağu · 12:00 - 16:00",
+        "status": "pending",
+        "remain": "21 saat 31 dakika",
+        "expiresAt": "2026-09-27T08:48:32.977Z"
+      },
+      {
+        "id": "o_komi",
+        "title": "Komi",
+        "place": "Phoenix Kitchen",
+        "pay": "32.000",
+        "logo": "/assets/logos/phoenix.svg",
+        "district": "Kadıköy",
+        "when": "16 Ağu · 12:00 - 16:00",
+        "status": "pending",
+        "remain": "17 saat 59 dakika",
+        "expiresAt": "2026-09-27T05:16:32.977Z"
+      }
+    ]
+  }
+}
