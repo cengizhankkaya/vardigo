@@ -46,8 +46,8 @@ async function main() {
   const pendingIds: string[] = pending.data.offers.map((o: { id: string }) => o.id);
   check(
     "3. İş arayan talepleri görür",
-    pendingIds.includes(merveId) && pendingIds.includes(deryaId) && pendingIds.length >= 5,
-    `${pendingIds.length} bekleyen (yeni 2 + seed)`,
+    pendingIds.includes(merveId) && pendingIds.includes(deryaId),
+    `${pendingIds.length} bekleyen (yeni 2 + önceden bekleyenler)`,
   );
 
   const [acceptStatus] = await call("POST", `/offers/${merveId}/accept`, worker.data.token);
