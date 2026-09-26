@@ -3,10 +3,22 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { openApiDocument } from "../src/docs/openapi.js";
 import { createTestApp } from "./support/test-app.js";
 
-describe("OpenAPI document", () => {
+describe("API docs", () => {
   let app: ReturnType<typeof createTestApp>["app"];
   beforeEach(() => {
     ({ app } = createTestApp());
+  });
+
+  it("serves Swagger UI", async () => {
+    const res = await request(app).get("/api/docs/");
+    expect(res.status).toBe(200);
+    expect(res.text).toContain("swagger-ui");
+  });
+
+  it("serves the OpenAPI document as JSON", async () => {
+    const res = await request(app).get("/api/openapi.json");
+    expect(res.status).toBe(200);
+    expect(res.body.openapi).toBe("3.1.0");
   });
 
   const operations = Object.entries(openApiDocument.paths).flatMap(([path, methods]) =>

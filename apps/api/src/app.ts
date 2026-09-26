@@ -1,4 +1,6 @@
 import express from "express";
+import swaggerUi from "swagger-ui-express";
+import { openApiDocument } from "./docs/openapi.js";
 import { DEMO_RECIPIENT_USER_ID, demoJob, demoOfferDetails } from "./demo/demo-job.js";
 import { candidateLabels, pendingCountLabel } from "./demo/labels.js";
 import { authRoutes } from "./modules/auth/http/auth-routes.js";
@@ -27,6 +29,18 @@ export function createApp({ db, now = Date.now }: AppDeps) {
   const app = express();
   app.disable("x-powered-by");
   app.use(express.json());
+
+  app.get("/api/openapi.json", (_req, res) => {
+    res.json(openApiDocument);
+  });
+  app.use(
+    "/api/docs",
+    swaggerUi.serve,
+    swaggerUi.setup(openApiDocument, {
+      customSiteTitle: "Vardigo API",
+      swaggerOptions: { persistAuthorization: true },
+    }),
+  );
 
   const api = express.Router();
   api.get("/health", (_req, res) => sendOk(res, { status: "up" }));
