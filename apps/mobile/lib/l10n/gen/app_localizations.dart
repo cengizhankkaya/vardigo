@@ -340,11 +340,149 @@ abstract class AppLocalizations {
   /// **'Beklenmeyen bir hata oluştu. Tekrar dene.'**
   String get errorUnexpected;
 
-  /// No description provided for @offersComingSoon.
+  /// No description provided for @offersTitle.
   ///
   /// In tr, this message translates to:
-  /// **'Görüşme Talepleri ekranı sonraki adımda eklenecek.'**
-  String get offersComingSoon;
+  /// **'Görüşme Talepleri'**
+  String get offersTitle;
+
+  /// No description provided for @offersPendingSubtitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'{count} talep yanıt bekliyor'**
+  String offersPendingSubtitle(int count);
+
+  /// No description provided for @offersAnsweredSubtitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Cevaplanan talepler'**
+  String get offersAnsweredSubtitle;
+
+  /// No description provided for @offersExpiredSubtitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Süresi dolan talepler'**
+  String get offersExpiredSubtitle;
+
+  /// No description provided for @tabPending.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bekleyen'**
+  String get tabPending;
+
+  /// No description provided for @tabAnswered.
+  ///
+  /// In tr, this message translates to:
+  /// **'Cevaplanan'**
+  String get tabAnswered;
+
+  /// No description provided for @tabExpired.
+  ///
+  /// In tr, this message translates to:
+  /// **'Süresi Dolan'**
+  String get tabExpired;
+
+  /// No description provided for @emptyPending.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bekleyen talep yok'**
+  String get emptyPending;
+
+  /// No description provided for @emptyAnswered.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kabul veya red ettiğin talepler burada listelenir'**
+  String get emptyAnswered;
+
+  /// No description provided for @emptyExpired.
+  ///
+  /// In tr, this message translates to:
+  /// **'Süresi dolan talep yok'**
+  String get emptyExpired;
+
+  /// No description provided for @sortExpiring.
+  ///
+  /// In tr, this message translates to:
+  /// **'Süresi Yakın'**
+  String get sortExpiring;
+
+  /// No description provided for @sortPay.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ücret'**
+  String get sortPay;
+
+  /// No description provided for @payAmount.
+  ///
+  /// In tr, this message translates to:
+  /// **'₺{amount}'**
+  String payAmount(String amount);
+
+  /// No description provided for @viewDetails.
+  ///
+  /// In tr, this message translates to:
+  /// **'Detayları Gör'**
+  String get viewDetails;
+
+  /// No description provided for @hideDetails.
+  ///
+  /// In tr, this message translates to:
+  /// **'Detayları Gizle'**
+  String get hideDetails;
+
+  /// No description provided for @countdown.
+  ///
+  /// In tr, this message translates to:
+  /// **'Teklifin sonlanmasına {time} kaldı.'**
+  String countdown(String time);
+
+  /// No description provided for @hoursMinutes.
+  ///
+  /// In tr, this message translates to:
+  /// **'{hours} saat {minutes} dakika'**
+  String hoursMinutes(int hours, int minutes);
+
+  /// No description provided for @statusAccepted.
+  ///
+  /// In tr, this message translates to:
+  /// **'İlgileniyorsun'**
+  String get statusAccepted;
+
+  /// No description provided for @statusRejected.
+  ///
+  /// In tr, this message translates to:
+  /// **'İlgilenmiyorsun'**
+  String get statusRejected;
+
+  /// No description provided for @statusExpired.
+  ///
+  /// In tr, this message translates to:
+  /// **'Süresi doldu'**
+  String get statusExpired;
+
+  /// No description provided for @offerAccepted.
+  ///
+  /// In tr, this message translates to:
+  /// **'{title} talebine ilgilendiğini bildirdin'**
+  String offerAccepted(String title);
+
+  /// No description provided for @offerRejected.
+  ///
+  /// In tr, this message translates to:
+  /// **'{title} talebini reddettin'**
+  String offerRejected(String title);
+
+  /// No description provided for @detailPlace.
+  ///
+  /// In tr, this message translates to:
+  /// **'{district}, {city} · {note}'**
+  String detailPlace(String district, String city, String note);
+
+  /// No description provided for @detailPayWhen.
+  ///
+  /// In tr, this message translates to:
+  /// **'{pay} · {when}'**
+  String detailPayWhen(String pay, String when);
 }
 
 class _AppLocalizationsDelegate

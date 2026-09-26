@@ -97,5 +97,96 @@
   "errorNetwork": "Sunucuya ulaşılamadı. Backend'in çalıştığından emin olup tekrar dene.",
   "errorTimeout": "Sunucu zamanında yanıt vermedi. Tekrar dene.",
   "errorUnexpected": "Beklenmeyen bir hata oluştu. Tekrar dene.",
-  "offersComingSoon": "Görüşme Talepleri ekranı sonraki adımda eklenecek."
+  "offersTitle": "Görüşme Talepleri",
+  "offersPendingSubtitle": "{count} talep yanıt bekliyor",
+  "@offersPendingSubtitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "offersAnsweredSubtitle": "Cevaplanan talepler",
+  "offersExpiredSubtitle": "Süresi dolan talepler",
+  "tabPending": "Bekleyen",
+  "tabAnswered": "Cevaplanan",
+  "tabExpired": "Süresi Dolan",
+  "emptyPending": "Bekleyen talep yok",
+  "emptyAnswered": "Kabul veya red ettiğin talepler burada listelenir",
+  "emptyExpired": "Süresi dolan talep yok",
+  "sortExpiring": "Süresi Yakın",
+  "sortPay": "Ücret",
+  "payAmount": "₺{amount}",
+  "@payAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "viewDetails": "Detayları Gör",
+  "hideDetails": "Detayları Gizle",
+  "countdown": "Teklifin sonlanmasına {time} kaldı.",
+  "@countdown": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "hoursMinutes": "{hours} saat {minutes} dakika",
+  "@hoursMinutes": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "statusAccepted": "İlgileniyorsun",
+  "statusRejected": "İlgilenmiyorsun",
+  "statusExpired": "Süresi doldu",
+  "offerAccepted": "{title} talebine ilgilendiğini bildirdin",
+  "@offerAccepted": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "offerRejected": "{title} talebini reddettin",
+  "@offerRejected": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "detailPlace": "{district}, {city} · {note}",
+  "@detailPlace": {
+    "placeholders": {
+      "district": {
+        "type": "String"
+      },
+      "city": {
+        "type": "String"
+      },
+      "note": {
+        "type": "String"
+      }
+    }
+  },
+  "detailPayWhen": "{pay} · {when}",
+  "@detailPayWhen": {
+    "placeholders": {
+      "pay": {
+        "type": "String"
+      },
+      "when": {
+        "type": "String"
+      }
+    }
+  }
 }

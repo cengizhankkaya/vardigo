@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:vardigo/features/candidates/domain/candidate.dart';
+import 'package:vardigo/features/offers/domain/offer.dart';
 
 Candidate candidate(String id, {bool perfect = true}) => Candidate(
   id: id,
@@ -53,5 +54,84 @@ class FakeCandidatesRepository implements CandidatesRepository {
     final pending = pendingSend;
     if (pending != null) return pending.future;
     return [for (final id in workerIds) 'o_$id'];
+  }
+}
+
+final testNow = DateTime.utc(2026, 9, 26, 10);
+
+Offer offer(
+  String id, {
+  OfferStatus status = OfferStatus.pending,
+  Duration left = const Duration(hours: 21, minutes: 32),
+  String pay = '45.000',
+}) => Offer(
+  id: id,
+  title: id,
+  place: 'Zarif Cheff Restaurant',
+  pay: pay,
+  logoPath: '/assets/logos/zarif.svg',
+  district: 'Kadıköy',
+  when: '16 Ağu · 12:00 - 16:00',
+  status: status,
+  remain: '21 saat 32 dakika',
+  expiresAt: testNow.add(left),
+  city: 'İstanbul',
+  note: 'Şube: Sinanpaşa Mah.',
+);
+
+/// In-memory inbox. Answering moves an offer to the answered tab.
+class FakeOffersRepository implements OffersRepository {
+  final offers = <String, Offer>{
+    'o_garson': offer('o_garson', left: const Duration(hours: 5, minutes: 32)),
+    'o_barista': offer('o_barista', pay: '38.000'),
+    'o_komi': offer('o_komi', status: OfferStatus.expired, left: Duration.zero),
+  };
+  final fetches = <(OfferTab, OfferSort?)>[];
+  Object? respondError;
+
+  @override
+  Future<OfferList> fetch({
+    OfferTab tab = OfferTab.pending,
+    OfferSort? sort,
+  }) async {
+    fetches.add((tab, sort));
+    bool inTab(Offer o) => switch (tab) {
+      OfferTab.pending => o.status == OfferStatus.pending,
+      OfferTab.answered =>
+        o.status == OfferStatus.accepted || o.status == OfferStatus.rejected,
+      OfferTab.expired => o.status == OfferStatus.expired,
+    };
+    return OfferList(
+      pendingCount: offers.values.where((o) => o.isPending).length,
+      pendingCountLabel: 12,
+      offers: offers.values.where(inTab).toList(),
+    );
+  }
+
+  @override
+  Future<Offer> detail(String id) async => offers[id]!;
+
+  @override
+  Future<Offer> accept(String id) => _answer(id, OfferStatus.accepted);
+
+  @override
+  Future<Offer> reject(String id) => _answer(id, OfferStatus.rejected);
+
+  Future<Offer> _answer(String id, OfferStatus status) async {
+    final error = respondError;
+    if (error != null) throw error;
+    final old = offers[id]!;
+    return offers[id] = Offer(
+      id: old.id,
+      title: old.title,
+      place: old.place,
+      pay: old.pay,
+      logoPath: old.logoPath,
+      district: old.district,
+      when: old.when,
+      status: status,
+      remain: old.remain,
+      expiresAt: old.expiresAt,
+    );
   }
 }

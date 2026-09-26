@@ -7,7 +7,7 @@
 | Parça | Durum |
 |---|---|
 | Backend | Tamamlandı: case'teki tüm endpoint'ler, SQLite kalıcılığı, Swagger, 131 test |
-| Mobil | Rol seçimi ve Eşleşen Personeller ekranı gerçek API'yle çalışıyor; Görüşme Talepleri ekranı sırada |
+| Mobil | İki case ekranı (Eşleşen Personeller, Görüşme Talepleri) ve demo rol seçimi gerçek API'yle çalışıyor |
 
 ## Hızlı başlangıç (backend)
 
