@@ -4,16 +4,16 @@ Node.js + TypeScript + Express REST API. Veri Node'un yerleşik SQLite modülüy
 
 ## Gereksinim
 
-- Node.js 24 veya üstü (`nvm use` ile [.nvmrc](.nvmrc) sürümü seçilebilir)
+- Node.js 24 LTS veya 26+ (`nvm use` ile [.nvmrc](.nvmrc) sürümü seçilebilir)
 - npm
 
-Daha eski Node'da `npm install` ve sunucu açık bir mesajla durur.
+Daha eski Node'da `npm install` ve sunucu açık bir mesajla durur. Node 25'te sunucu çalışır ama `npm install`/`npm ci` durur, çünkü `vitest` bu sürümü desteklemez ve [.npmrc](.npmrc) `engine-strict=true` ile sürüm uyumsuzluğunu hata sayar.
 
 ## Komutlar
 
 ```bash
 cd apps/api
-npm install
+npm ci             # package-lock.json'daki sürümlerle kurar
 npm run dev        # http://localhost:3000/api, değişiklikte yeniden başlar
 npm test
 npm run typecheck
