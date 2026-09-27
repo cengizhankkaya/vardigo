@@ -5,7 +5,7 @@ Codex (ilk iskelet), Claude Code / Claude Opus 5.5 (backend ve mobil), terminal,
 Xcode iOS simülatörü. Backend: Node.js 24, Express 5, TypeScript, node:sqlite, Vitest + Supertest,
 Swagger UI. Mobil: Flutter 3.47, Riverpod, Dio, flutter_svg, FlutterGen, gen-l10n.
 
-SIRA (26 Eylül 2026; her adım ayrı branch, küçük commit'ler, CI yeşilken main'e merge)
+SIRA (26–27 Eylül 2026; her adım ayrı branch, küçük commit'ler, CI yeşilken main'e merge)
 Backend
   1. İskelet ve { ok, data | error } cevap zarfı          6. GET /offers ve detay, kalan süre
   2. SQLite, migration, seed.json'un bir kez yüklenmesi   7. Swagger (/api/docs)
@@ -29,7 +29,7 @@ Mobil
       domain / application / infrastructure / presentation; dosya başına bir public tip;
       use case'ler, I…/…Impl adları, katman kurallarını CI'da denetleyen mimari testi
   21. Marka: uygulama ikonu ve yerel açılış ekranı, açılış logosu, rol ekranında
-      logo ve açık/koyu anahtarı
+      logo ve açık/koyu anahtarı; README'ye ekran görüntüleri
   22. İşveren aday kartında talebin durumu (bekliyor / kabul / ret / süresi doldu);
       yanıt bekleyen aday seçilemez
 Sonuç: 197 backend + 120 mobil test; her ekran referans PNG ile simülatörde yan yana karşılaştırıldı.
@@ -46,8 +46,11 @@ TAKILDIĞIM NOKTALAR
 - Urbanist'te ₺ yok; işaret sistem fontuyla çiziliyor. online.svg'deki gölge filtresini
   flutter_svg çizmiyor. İkisi de README'de.
 - Case fotoğrafları referanstaki kişilerle eşleşmiyor; seed eşlemesi korundu.
-- Telefon çerçevesinin durum çubuğu Navigator'ın üstünde, Material dışında kaldığı için
-  9:41 varsayılan sarı alt çizgiyle çiziliyordu; stil açıkça verildi, testle korunuyor.
+- Telefon çerçevesindeki 9:41, Material dışında kaldığı için sarı alt çizgiyle çiziliyordu;
+  stil açıkça verildi, testle korunuyor.
+- Talep gönderilince aday kartları yenilenmiyordu; zaman aşımında sunucu talebi kaydetmişse
+  aday kilitli kartta seçili kalabiliyordu. İncelemede bulundu: her gönderimden sonra liste
+  yenileniyor, yanıt bekleyen aday seçimden düşüyor; testlerle korunuyor.
 
 BİLEREK YAPILMAYANLAR
 - Gerçek kimlik doğrulama: case sabit demo token istiyor.
