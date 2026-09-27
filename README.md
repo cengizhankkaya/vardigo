@@ -4,11 +4,12 @@
 
 - **İşveren** "Eşleşen Personeller" ekranında adayları görür, seçer ve görüşme talebi gönderir.
 - **İş arayan** "Görüşme Talepleri" ekranında gelen talepleri görür, kabul eder veya reddeder. Kararlar kalıcıdır.
+- **İşveren** aday kartında talebin ne olduğunu görür: yanıt bekleniyor, kabul etti, reddetti veya süresi doldu.
 
 | Parça | Durum |
 |---|---|
-| Backend | Tamamlandı: case'teki tüm endpoint'ler, SQLite kalıcılığı, Swagger (yanıtlar şemaya karşı testli), 194 test |
-| Mobil | Tamamlandı: iki case ekranı, rol seçimi, açık/koyu tema, uygulama ikonu ve açılış logosu, 390×844 telefon çerçevesi, golden testler, 110 test |
+| Backend | Tamamlandı: case'teki tüm endpoint'ler, SQLite kalıcılığı, Swagger (yanıtlar şemaya karşı testli), 197 test |
+| Mobil | Tamamlandı: iki case ekranı, rol seçimi, açık/koyu tema, uygulama ikonu ve açılış logosu, 390×844 telefon çerçevesi, golden testler, 117 test |
 
 **İçindekiler:** [Değerlendirenler için: indir ve çalıştır](#değerlendirenler-için-indir-ve-çalıştır) · [Case akışını deneme](#case-akışını-deneme) · [Yalnız API'yi inceleme](#yalnız-apiyi-inceleme) · [Testler](#testler) · [Sorun giderme](#sorun-giderme) · [API özeti](#api-özeti) · [Case yorumları](#case-yorumları) · [Teknoloji ve klasörler](#teknoloji-ve-klasörler) · [Geliştirme süreci](#geliştirme-süreci)
 
@@ -113,10 +114,13 @@ Temiz veriyle başlamak için API kapalıyken bir kez `cd apps/api && npm run db
 1. **İşveren** kartına dokunun. "Eşleşen Personeller" açılır: "%100 Eşleşme (6)" ve "Benzer Personeller (6)" sekmeleri, ilk aday Merve seçili.
 2. "Benzer Personeller" sekmesine geçip Derya'yı da seçin. Üstte "2 kişi seçildi", altta "Görüşme Talebi Gönder (2)" yazar. Seçim sekmeler arasında korunur.
 3. "Sırala" düğmesi Önerilen → En Yakın → Puan arasında geçiş yapar.
-4. "Görüşme Talebi Gönder (2)" düğmesine basın. Talepler oluşturulur, gönderilenler seçimden çıkar. Aynı adaylara tekrar göndermek anlaşılır bir hata mesajı (409) verir.
+4. "Görüşme Talebi Gönder (2)" düğmesine basın. Talepler oluşturulur, gönderilenler seçimden çıkar ve kartlarında "Görüşme talebi gönderildi · yanıt bekleniyor" etiketi belirir. Yanıt bekleyen aday tekrar seçilemez (API de ikinci talebi 409 ile reddeder).
 5. Sol üstteki geri düğmesiyle rol seçimine dönün (oturum kapanır) ve **İş arayan** kartına dokunun. "Bekleyen" sekmesinde seed'deki 3 talebin yanında yeni gönderilen 2 talep de görünür; her kartta kalan süre sayacı vardır.
 6. Bir talepte **İlgileniyorum**, diğerinde **İlgilenmiyorum** seçin. İkisi de "Cevaplanan" sekmesine geçer.
-7. Uygulamayı kapatıp yeniden açın: kararlar aynı kalır, çünkü veri SQLite dosyasında tutulur (`apps/api/data/vardigo.db`).
+7. Geri dönüp **İşveren** olarak tekrar girin. Merve ve Derya'nın kartlarında artık "Görüşme talebini kabul etti" / "Görüşme talebini reddetti" yazar. Yanıtlanan adaya yeni talep gönderilebilir.
+8. Uygulamayı kapatıp yeniden açın: kararlar aynı kalır, çünkü veri SQLite dosyasında tutulur (`apps/api/data/vardigo.db`).
+
+İki taraf aynı API ve veritabanını kullanır; bağlantı `offers` tablosudur. Anlık bildirim yoktur: ekranlar açılışta, aşağı çekip yenileyince ve uygulama öne gelince API'den güncel durumu alır. Case'te tek iş arayan hesabı olduğu için hangi adaya gönderilirse gönderilsin talep o hesabın gelen kutusuna düşer.
 
 Ek olarak: rol ekranının sağ üstündeki anahtar açık/koyu temayı değiştirir, seçim cihazda saklanır. Debug derlemede rol ekranından "Tasarım galerisi" (font, renk, ikon ve bileşen örnekleri) açılır.
 
@@ -166,12 +170,12 @@ Smoke testi veri yazar; tekrar çalıştırmadan önce sunucuyu durdurup `npm ru
 
 ```bash
 cd apps/api
-npm test            # 194 test; her test kendi geçici veritabanını kullanır
+npm test            # 197 test; her test kendi geçici veritabanını kullanır
 npm run typecheck
 
 cd apps/mobile
 flutter analyze
-flutter test        # 110 test (4 golden dahil)
+flutter test        # 117 test (6 golden dahil)
 ```
 
 - **Golden testler** iki case ekranını açık ve koyu temada 390×844'te çizip kayıtlı PNG'lerle karşılaştırır. PNG'ler macOS'ta üretildiği için Linux ve Windows'ta yazı çizimi farkıyla başarısız olabilir; orada `flutter test --exclude-tags golden` kullanın.
@@ -211,7 +215,7 @@ Tüm yanıtlar `{ ok: true, data }` veya `{ ok: false, error: { code, message } 
 | Metot | Yol | Rol | Açıklama |
 |---|---|---|---|
 | POST | `/api/auth/login` | — | `{ "role": "employer" \| "worker" }` → demo token |
-| GET | `/api/candidates` | İşveren | Eşleşen adaylar ve iki sekmenin sayıları; `tab=perfect\|similar`, `sort=recommended\|near\|rating` |
+| GET | `/api/candidates` | İşveren | Eşleşen adaylar, iki sekmenin sayıları ve her adaya giden son talebin durumu (`offerStatus`); `tab=perfect\|similar`, `sort=recommended\|near\|rating` |
 | POST | `/api/offers` | İşveren | `{ "workerIds": [...] }` → seçilen adaylara görüşme talebi (hepsi ya da hiçbiri) |
 | GET | `/api/offers` | İş arayan | Talepler; `status=pending\|answered\|expired`, `sort=recommended\|expiring\|pay` |
 | GET | `/api/offers/:id` | İş arayan | Talep detayı |
