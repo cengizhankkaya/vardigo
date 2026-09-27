@@ -5,10 +5,11 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../app/router/app_router.dart';
 import '../../../../core/l10n/l10n.dart';
+import '../../../../core/presentation/widgets/brand_logo.dart';
 import '../../../../core/presentation/widgets/error_view.dart';
 import '../../../../core/theme/theme.dart';
 import '../../../../core/theme/tokens/app_spacing.dart';
-import '../../../appearance/presentation/widgets/theme_mode_picker.dart';
+import '../../../appearance/presentation/widgets/theme_mode_switch.dart';
 import '../../domain/entities/role.dart';
 import '../controllers/session_controller.dart';
 import '../widgets/role_card.dart';
@@ -79,45 +80,130 @@ class _RoleSelectScreenState extends ConsumerState<RoleSelectScreen> {
     final l10n = context.l10n;
     final error = _error;
     final failedRole = _failedRole;
+    final dark = Theme.of(context).brightness == Brightness.dark;
+    final primary = ColorScheme.of(context).primary;
     return Scaffold(
-      body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.all(AppSpacing.page),
-          children: [
-            const SizedBox(height: 40),
-            Text(l10n.roleTitle, style: context.textStyles.title20),
-            const SizedBox(height: 4),
-            Text(l10n.roleSubtitle, style: context.textStyles.caption13),
-            const SizedBox(height: 24),
-            RoleCard(
-              title: l10n.roleEmployer,
-              hint: l10n.roleEmployerHint,
-              loading: _loggingIn == Role.employer,
-              onTap: () => _continueAs(Role.employer),
-            ),
-            const SizedBox(height: 12),
-            RoleCard(
-              title: l10n.roleWorker,
-              hint: l10n.roleWorkerHint,
-              loading: _loggingIn == Role.worker,
-              onTap: () => _continueAs(Role.worker),
-            ),
-            if (error != null && failedRole != null)
-              ErrorView(error: error, onRetry: () => _continueAs(failedRole)),
-            const SizedBox(height: 32),
-            const ThemeModePicker(),
-            if (kDebugMode) ...[
-              const SizedBox(height: 32),
-              TextButton(
-                onPressed: () => const GalleryRoute().push<void>(context),
-                child: Text(
-                  l10n.openGallery,
-                  style: context.textStyles.label14,
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          IgnorePointer(
+            child: ExcludeSemantics(
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  gradient: RadialGradient(
+                    center: const Alignment(0, -0.65),
+                    radius: 0.95,
+                    colors: [
+                      primary.withValues(alpha: dark ? 0.16 : 0.065),
+                      primary.withValues(alpha: 0),
+                    ],
+                  ),
                 ),
               ),
-            ],
-          ],
-        ),
+            ),
+          ),
+          Positioned(
+            right: -145,
+            bottom: -110,
+            child: IgnorePointer(
+              child: BrandLogo(
+                key: const ValueKey('login-brand-watermark'),
+                size: 520,
+                opacity: dark ? 0.055 : 0.035,
+                decorative: true,
+              ),
+            ),
+          ),
+          SafeArea(
+            child: LayoutBuilder(
+              builder: (context, constraints) => SingleChildScrollView(
+                padding: const EdgeInsets.fromLTRB(
+                  AppSpacing.page,
+                  12,
+                  AppSpacing.page,
+                  24,
+                ),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight: (constraints.maxHeight - 36).clamp(
+                      0,
+                      double.infinity,
+                    ),
+                  ),
+                  child: Center(
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 440),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Align(
+                            alignment: Alignment.centerRight,
+                            child: ThemeModeSwitch(),
+                          ),
+                          const SizedBox(height: 12),
+                          const BrandLogo(size: 184),
+                          const SizedBox(height: 32),
+                          Text(
+                            l10n.roleTitle,
+                            textAlign: TextAlign.center,
+                            style: context.textStyles.title20.copyWith(
+                              fontSize: 26,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            l10n.roleSubtitle,
+                            textAlign: TextAlign.center,
+                            style: context.textStyles.caption13.copyWith(
+                              height: 1.5,
+                            ),
+                          ),
+                          const SizedBox(height: 28),
+                          RoleCard(
+                            title: l10n.roleEmployer,
+                            hint: l10n.roleEmployerHint,
+                            icon: Icons.business_center_outlined,
+                            loading: _loggingIn == Role.employer,
+                            onTap: _loggingIn == null
+                                ? () => _continueAs(Role.employer)
+                                : null,
+                          ),
+                          const SizedBox(height: 12),
+                          RoleCard(
+                            title: l10n.roleWorker,
+                            hint: l10n.roleWorkerHint,
+                            icon: Icons.person_outline_rounded,
+                            loading: _loggingIn == Role.worker,
+                            onTap: _loggingIn == null
+                                ? () => _continueAs(Role.worker)
+                                : null,
+                          ),
+                          if (error != null && failedRole != null)
+                            ErrorView(
+                              error: error,
+                              onRetry: () => _continueAs(failedRole),
+                            ),
+                          if (kDebugMode) ...[
+                            const SizedBox(height: 32),
+                            TextButton(
+                              onPressed: () =>
+                                  const GalleryRoute().push<void>(context),
+                              child: Text(
+                                l10n.openGallery,
+                                style: context.textStyles.label14,
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

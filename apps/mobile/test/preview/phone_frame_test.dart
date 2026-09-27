@@ -99,7 +99,7 @@ void main() {
     expect(
       find.descendant(
         of: find.byType(PhoneFrame),
-        matching: find.text('Demo hesabı seç'),
+        matching: find.text('Hoş geldin'),
       ),
       findsOneWidget,
     );

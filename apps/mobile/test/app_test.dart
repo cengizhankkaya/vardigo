@@ -18,7 +18,7 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
-    expect(find.text('Demo hesabı seç'), findsOneWidget);
+    expect(find.text('Hoş geldin'), findsOneWidget);
     expect(find.text('İşveren'), findsOneWidget);
     expect(find.text('İş arayan'), findsOneWidget);
   });
