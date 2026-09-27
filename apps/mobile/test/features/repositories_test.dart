@@ -53,8 +53,9 @@ void main() {
       sort: CandidateSort.near,
     );
     expect(adapter.requests.single.uri.query, 'tab=perfect&sort=near');
-    expect(list.totalPerfect, 26);
-    expect(list.candidates, hasLength(4));
+    expect(list.totalPerfect, 6);
+    expect(list.totalSimilar, 6);
+    expect(list.candidates, hasLength(12));
 
     final merve = list.candidates.first;
     expect(merve.name, 'Merve Y.');
