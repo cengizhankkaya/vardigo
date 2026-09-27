@@ -37,11 +37,17 @@ done
 need() {
   command -v "$1" >/dev/null || { echo "$1 bulunamadı: $2" >&2; exit 1; }
 }
-need node "Node.js 24 veya üstü gerekli (https://nodejs.org)"
+need node "Node.js 24 LTS gerekli (https://nodejs.org)"
 need flutter "Flutter 3.47 gerekli (https://docs.flutter.dev/get-started)"
 node_major="$(node -p 'process.versions.node.split(".")[0]')"
 if (( node_major < 24 )); then
-  echo "Node.js 24 veya üstü gerekli; bu makinede $(node -v) var." >&2
+  echo "Node.js 24 LTS gerekli; bu makinede $(node -v) var." >&2
+  exit 1
+fi
+# Node 25 runs the API, but `npm ci` refuses it (vitest supports 24 and 26+).
+if (( node_major == 25 )) && [[ ! -d "$api/node_modules" ]]; then
+  echo "Bağımlılıklar Node 25 ile kurulamaz; Node.js 24 LTS (veya 26+) kullanın." >&2
+  echo "Ör. nvm ile: nvm install 24 && nvm use 24" >&2
   exit 1
 fi
 
