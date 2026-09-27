@@ -93,7 +93,7 @@ cd apps/mobile
 flutter test       # 102 test (4 golden dahil); canlı API testi için apps/mobile/README.md
 ```
 
-CI her push'ta backend testlerini, derleme ve smoke testini, mobil kod üretimi/format/analiz/testlerini ve uygulamanın repository'lerini gerçek sunucuya karşı çalıştırır.
+CI her push'ta backend testlerini, derleme ve smoke testini, mobil kod üretimi/format/analiz/testlerini, golden testleri macOS'ta ve uygulamanın repository'lerini gerçek sunucuya karşı çalıştırır.
 
 Case'in altı adımlık minimum testi, sunucu yeniden başlatma dahil [apps/api/test/minimum-flow.test.ts](apps/api/test/minimum-flow.test.ts) içinde de otomatik çalışır.
 

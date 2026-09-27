@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 /// Golden tests only: draw with the real Urbanist instead of the test font,
-/// and let a few edge pixels differ so macOS and Linux (CI) agree.
+/// and let a few edge pixels differ between runs.
 Future<void> testExecutable(FutureOr<void> Function() testMain) async {
   TestWidgetsFlutterBinding.ensureInitialized();
   final urbanist = FontLoader('Urbanist');
@@ -33,8 +33,9 @@ Future<void> testExecutable(FutureOr<void> Function() testMain) async {
   await testMain();
 }
 
-/// Passes when at most [_tolerance] of the pixels differ: font rasterising
-/// differs slightly between platforms, a layout change moves far more.
+/// Passes when at most [_tolerance] of the pixels differ: a layout change
+/// moves far more. The PNGs are drawn and checked on macOS (see
+/// dart_test.yaml); Linux rasterises text too differently for this.
 class _TolerantComparator extends LocalFileComparator {
   _TolerantComparator(super.testFile);
 

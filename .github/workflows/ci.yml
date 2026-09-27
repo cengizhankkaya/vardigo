@@ -59,7 +59,30 @@ jobs:
           git diff --exit-code -- lib/gen lib/core/l10n/gen lib/app/router/app_router.g.dart
       - run: dart format --output=none --set-exit-if-changed lib test
       - run: flutter analyze
-      - run: flutter test
+      # Goldens run in the macOS job below: text is rasterised differently on Linux.
+      - run: flutter test --exclude-tags golden
+
+  goldens:
+    name: Mobile goldens
+    runs-on: macos-latest
+    defaults:
+      run:
+        working-directory: apps/mobile
+    steps:
+      - uses: actions/checkout@v7
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.47.1
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      - run: flutter test --tags golden
+      - name: Keep the diff images
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: golden-failures
+          path: apps/mobile/test/goldens/failures/
 
   contract:
     name: Mobile against live API
