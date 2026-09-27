@@ -32,9 +32,9 @@ void main() {
     tester,
   ) async {
     await pumpScreen(tester);
-    expect(find.text('26 personel bulundu'), findsOneWidget);
-    expect(find.text('%100 Eşleşme (26)'), findsOneWidget);
-    expect(find.text('Benzer Personeller (16)'), findsOneWidget);
+    expect(find.text('2 personel bulundu'), findsOneWidget);
+    expect(find.text('%100 Eşleşme (2)'), findsOneWidget);
+    expect(find.text('Benzer Personeller (2)'), findsOneWidget);
     expect(find.text('w_merve'), findsOneWidget);
     expect(find.text('w_ferhat'), findsOneWidget);
     expect(find.text('w_derya'), findsNothing);
@@ -45,10 +45,10 @@ void main() {
 
   testWidgets('keeps selections from both tabs in the count', (tester) async {
     await pumpScreen(tester);
-    await tester.tap(find.text('Benzer Personeller (16)'));
+    await tester.tap(find.text('Benzer Personeller (2)'));
     await tester.pumpAndSettle();
     expect(find.text('w_derya'), findsOneWidget);
-    expect(find.text('16 personel bulundu'), findsOneWidget);
+    expect(find.text('2 personel bulundu'), findsOneWidget);
 
     await tester.tap(find.text('w_derya'));
     await tester.pump();

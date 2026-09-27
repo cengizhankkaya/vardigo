@@ -31,11 +31,11 @@ describe("resolveExpiresAt", () => {
 });
 
 describe("seedDatabase", () => {
-  it("loads 2 users, 4 candidates and 3 pending offers", () => {
+  it("loads 2 users, 12 candidates and 3 pending offers", () => {
     const db = freshDb();
     expect(seedDatabase(db, NOW)).toBe(true);
     expect(count(db, "users")).toBe(2);
-    expect(count(db, "candidates")).toBe(4);
+    expect(count(db, "candidates")).toBe(12);
     expect(count(db, "offers")).toBe(3);
 
     const komi = db.prepare("SELECT status, expires_at_ms FROM offers WHERE id = 'o_komi'").get();

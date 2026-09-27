@@ -31,8 +31,13 @@ async function main() {
 
   const [, employer] = await call("POST", "/auth/login", undefined, { role: "employer" });
   const [, candidates] = await call("GET", "/candidates", employer.data.token);
+  const { totalPerfect, totalSimilar } = candidates.data;
   const names = candidates.data.candidates.map((c: { name: string }) => c.name);
-  check("1. İşveren adayları görür", names.length === 4, `${names.length} kişi (${names.join(", ")})`);
+  check(
+    "1. İşveren adayları görür",
+    names.length > 0 && names.length === totalPerfect + totalSimilar,
+    `${names.length} kişi (%100 eşleşme ${totalPerfect}, benzer ${totalSimilar})`,
+  );
 
   const [sentStatus, sent] = await call("POST", "/offers", employer.data.token, { workerIds: ["w_merve", "w_derya"] });
   if (sent.error?.code === "OFFER_PENDING_EXISTS") {

@@ -6,6 +6,12 @@ const comparators: Record<CandidateSort, (a: Candidate, b: Candidate) => number>
   rating: (a, b) => Number(b.rating) - Number(a.rating),
 };
 
+/** Header counts of both tabs, from the whole pool whatever tab is shown. */
+export function countCandidates(candidates: readonly Candidate[]): { totalPerfect: number; totalSimilar: number } {
+  const totalPerfect = candidates.filter(isPerfect).length;
+  return { totalPerfect, totalSimilar: candidates.length - totalPerfect };
+}
+
 /** Filters by tab and sorts; ties keep the incoming (seed) order. */
 export function listCandidates(
   candidates: readonly Candidate[],

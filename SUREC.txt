@@ -28,12 +28,13 @@ Mobil
   20. Feature-first yapı: core/ (api, theme, l10n, ortak widget'lar) ve feature başına
       domain / application / infrastructure / presentation; dosya başına bir public tip;
       use case'ler, I…/…Impl adları, katman kurallarını CI'da denetleyen mimari testi
-Sonuç: 144 backend + 95 mobil test; her ekran referans PNG ile simülatörde yan yana karşılaştırıldı.
+Sonuç: 194 backend + 102 mobil test; her ekran referans PNG ile simülatörde yan yana karşılaştırıldı.
 
 TAKILDIĞIM NOKTALAR
 - Case paketi kendi içinde çelişiyor (Benzer sekmesi "ters sıra" mı score filtresi mi,
-  4 aday ama başlıkta 26/16, 3 teklif ama 12). API spesifikasyonu esas alındı;
-  tasarımdaki sayılar ayrı etiket alanlarında döndürüldü. README'de yazılı.
+  4 aday ama başlıkta 26/16, 3 teklif ama 12). API spesifikasyonu esas alındı.
+  Aday sayıları sabit etiket yerine tablodan hesaplanıyor; seed'e 8 demo aday eklendi
+  (6 / 6). Talep başlığındaki 12 ayrı etiket alanında. README'de yazılı.
 - Süresi dolan teklif: hata dönerken transaction geri alınırsa teklif tekrar "pending"
   kalıyordu. Kullanım senaryosu sonuç döndürüyor; "expired" kaydediliyor, 409 sonra üretiliyor.
 - .gitignore'daki "docs/" kuralı her docs klasörünü dışlıyordu; Swagger dosyası Git'e

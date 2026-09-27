@@ -51,8 +51,8 @@ class FakeCandidatesRepository implements ICandidatesRepository {
   Future<CandidateList> fetch({CandidateTab? tab, CandidateSort? sort}) async {
     fetches.add((tab, sort));
     return CandidateList(
-      totalPerfect: 26,
-      totalSimilar: 16,
+      totalPerfect: all.where((c) => c.perfect).length,
+      totalSimilar: all.where((c) => !c.perfect).length,
       selectedHint: 1,
       candidates: [
         for (final c in all)

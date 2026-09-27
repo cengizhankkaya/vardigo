@@ -30,7 +30,7 @@ npm run smoke      # case minimum testini çalışan sunucuya karşı koşturur
 
 ## Veritabanı
 
-Sunucu açılırken tabloları oluşturur ve veritabanı boşsa [src/demo/seed.json](src/demo/seed.json) verisini yükler (2 hesap, 4 aday, 3 teklif). Seed yalnız bir kez yüklenir; sonraki açılışlarda kabul/ret kararları ve süreler korunur. Seed'deki `USE_NOW_PLUS_21H32M` gibi süreler ilk yükleme anına göre hesaplanır. Temiz başlangıç için `npm run db:reset` kullanılır.
+Sunucu açılırken tabloları oluşturur ve veritabanı boşsa [src/demo/seed.json](src/demo/seed.json) verisini yükler (2 hesap, 12 aday, 3 teklif). Seed yalnız bir kez yüklenir; sonraki açılışlarda kabul/ret kararları ve süreler korunur. Seed'deki `USE_NOW_PLUS_21H32M` gibi süreler ilk yükleme anına göre hesaplanır. Temiz başlangıç için `npm run db:reset` kullanılır.
 
 Seed yüklenmeden önce doğrulanır: her adayın `perfect` alanı score ≥ 80 kuralıyla uyuşmalı, `rating` 0–5 arası `"4.9"` biçiminde olmalı (puan sıralaması bu değeri sayıya çevirir; `"4,8"` sıralamayı sessizce bozardı), tekliflerin `workerId` alanı bilinen bir hesaba ve `expiresAt` alanı çözümlenebilir bir süreye ait olmalı. Biri tutmazsa sunucu hata mesajıyla açılmaz ve veritabanına hiçbir şey yazılmaz.
 
@@ -116,9 +116,9 @@ curl "http://localhost:3000/api/candidates?tab=perfect&sort=near" \
 | `tab` | `perfect` (score ≥ 80), `similar` (score < 80) | yok: tüm adaylar |
 | `sort` | `recommended` (score azalan), `near` (km artan), `rating` (puan azalan) | `recommended` |
 
-`expectedPay` ("25.000", aylık ₺) ve `payCompatible` kartlardaki "Ücret beklentisi uyuşuyor / uyuşmuyor" satırını besler. Case seed'inde ücret bilgisi olmadığı için değerler referans tasarımdan alınmıştır ([src/demo/candidate-pay.ts](src/demo/candidate-pay.ts)).
+`expectedPay` ("25.000", aylık ₺) ve `payCompatible` kartlardaki "Ücret beklentisi uyuşuyor / uyuşmuyor" satırını besler. Case seed'inde ücret bilgisi olmadığı için case'in 4 adayının değerleri referans tasarımdan alınmıştır, eklenen 8 adayınkiler demo değeridir ([src/demo/candidate-pay.ts](src/demo/candidate-pay.ts)).
 
-Geçersiz değer `400 VALIDATION_ERROR` döner. `totalPerfect` (26), `totalSimilar` (16) ve `selectedHint` (1) referans tasarımdaki sabit etiketlerdir; listedeki gerçek aday sayısı 4'tür. Eşit değerlerde seed sırası korunur.
+Geçersiz değer `400 VALIDATION_ERROR` döner. `totalPerfect` ve `totalSimilar` aday tablosundan hesaplanır ve `tab` filtresinden bağımsızdır: temiz seed'de 6 / 6, toplam 12 aday (case seed'indeki 4 adaya 8 demo aday eklendi; referanstaki 26 / 16 kullanılmaz). `selectedHint` (1) ilk açılışta seçili gelecek aday sayısıdır. Eşit değerlerde seed sırası korunur.
 
 ## Görüşme talebi gönderme (işveren)
 
@@ -211,7 +211,7 @@ Case'teki altı adımlık akış [test/minimum-flow.test.ts](test/minimum-flow.t
 
 ```bash
 npm run db:reset && npm run dev
-# 1. işveren: 4 aday
+# 1. işveren: 12 aday
 curl http://localhost:3000/api/candidates -H "Authorization: Bearer dev-employer"
 # 2. Merve + Derya'ya talep
 curl -X POST http://localhost:3000/api/offers -H "Authorization: Bearer dev-employer" \

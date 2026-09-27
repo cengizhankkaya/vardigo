@@ -37,9 +37,10 @@ void main() {
       await session.login(Role.employer);
       final candidates = container.read(candidatesRepositoryProvider);
       final list = await candidates.fetch();
-      expect(list.candidates, hasLength(4));
+      expect(list.candidates, hasLength(list.totalPerfect + list.totalSimilar));
       final perfect = await candidates.fetch(tab: CandidateTab.perfect);
       expect(perfect.candidates.every((c) => c.perfect), isTrue);
+      expect(perfect.candidates, hasLength(list.totalPerfect));
 
       final ids = [list.candidates[0].id, list.candidates[1].id];
       final created = await candidates.sendInterviewRequests(ids);

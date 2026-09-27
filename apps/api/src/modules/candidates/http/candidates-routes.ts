@@ -1,15 +1,9 @@
 import { type RequestHandler, Router } from "express";
 import { optionalQuery } from "../../../platform/http/query.js";
 import { sendOk } from "../../../platform/http/response.js";
-import { listCandidates } from "../application/list-candidates.js";
+import { countCandidates, listCandidates } from "../application/list-candidates.js";
 import { type Candidate, type CandidatePay, CANDIDATE_SORTS, CANDIDATE_TABS, isPerfect } from "../domain/candidate.js";
 import type { CandidatesRepository } from "../domain/candidates-repository.js";
-
-export interface CandidateLabels {
-  totalPerfect: number;
-  totalSimilar: number;
-  selectedHint: number;
-}
 
 /** "25.000", same style as the offer pay field. */
 function formatPay(value: number): string {
@@ -34,7 +28,7 @@ function toDto(candidate: Candidate, pay: CandidatePay | undefined) {
 
 export function candidatesRoutes(
   candidates: CandidatesRepository,
-  labels: CandidateLabels,
+  selectedHint: number,
   pay: Record<string, CandidatePay>,
   guard: RequestHandler,
 ): Router {
@@ -43,9 +37,11 @@ export function candidatesRoutes(
   router.get("/", guard, (req, res) => {
     const tab = optionalQuery(req.query.tab, "tab", CANDIDATE_TABS);
     const sort = optionalQuery(req.query.sort, "sort", CANDIDATE_SORTS);
+    const pool = candidates.findAll();
     sendOk(res, {
-      ...labels,
-      candidates: listCandidates(candidates.findAll(), { tab, sort }).map((c) => toDto(c, pay[c.id])),
+      ...countCandidates(pool),
+      selectedHint,
+      candidates: listCandidates(pool, { tab, sort }).map((c) => toDto(c, pay[c.id])),
     });
   });
 

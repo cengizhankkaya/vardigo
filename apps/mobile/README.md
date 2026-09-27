@@ -289,7 +289,8 @@ core/presentation/pages/route_error_screen.dart  # bilinmeyen adres sayfası
 
 ### Referansla farklar
 
-- Referansın ilk sekmesinde 4 kişi var; API kuralı (score ≥ 80) bu sekmede 2 kişi döndürür.
+- Referansta başlık sayıları 26 / 16; uygulama API'nin hesapladığı sayıları gösterir (temiz seed'de 6 / 6). Golden, fixture'daki ilk dört adayı (score sırasıyla Merve, Elif, Ferhat, Burak) çizer.
+- Case'te 4 fotoğraf var; seed'e eklenen 8 aday bunları tekrar kullanır.
 - Case paketindeki fotoğraf dosyaları referans görseldeki kişilerle eşleşmiyor (ör. `merve.png` referansta "Ayşe K." kartındaki fotoğraf). Seed eşlemesi korunur.
 - Puan yıldızı referansta daha sarı görünür; spesifikasyondaki `#FA7319` kullanılır.
 - Görüşme Talepleri başlığındaki sayı gerçek bekleyen sayısıdır (`pendingCount`, temiz seed'de 3); referanstaki 12 sabit etikettir.

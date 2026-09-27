@@ -1,8 +1,8 @@
 {
   "ok": true,
   "data": {
-    "totalPerfect": 26,
-    "totalSimilar": 16,
+    "totalPerfect": 6,
+    "totalSimilar": 6,
     "selectedHint": 1,
     "candidates": [
       {
@@ -19,6 +19,19 @@
         "payCompatible": true
       },
       {
+        "id": "w_elif",
+        "name": "Elif K.",
+        "rating": "4.8",
+        "attend": "%98 katılım",
+        "km": "2.3 km",
+        "photo": "/assets/photos/derya.png",
+        "online": true,
+        "perfect": true,
+        "score": 90,
+        "expectedPay": "24.000",
+        "payCompatible": true
+      },
+      {
         "id": "w_ferhat",
         "name": "Ferhat C.",
         "rating": "4.9",
@@ -29,6 +42,71 @@
         "perfect": true,
         "score": 88,
         "expectedPay": "25.000",
+        "payCompatible": false
+      },
+      {
+        "id": "w_burak",
+        "name": "Burak T.",
+        "rating": "4.7",
+        "attend": "%96 katılım",
+        "km": "3.1 km",
+        "photo": "/assets/photos/ferhat.png",
+        "online": false,
+        "perfect": true,
+        "score": 85,
+        "expectedPay": "27.000",
+        "payCompatible": true
+      },
+      {
+        "id": "w_zeynep",
+        "name": "Zeynep A.",
+        "rating": "4.6",
+        "attend": "%95 katılım",
+        "km": "6.4 km",
+        "photo": "/assets/photos/ayse.png",
+        "online": true,
+        "perfect": true,
+        "score": 83,
+        "expectedPay": "30.000",
+        "payCompatible": false
+      },
+      {
+        "id": "w_emre",
+        "name": "Emre D.",
+        "rating": "4.5",
+        "attend": "%93 katılım",
+        "km": "0.8 km",
+        "photo": "/assets/photos/ferhat.png",
+        "online": true,
+        "perfect": true,
+        "score": 81,
+        "expectedPay": "22.000",
+        "payCompatible": true
+      },
+      {
+        "id": "w_selin",
+        "name": "Selin B.",
+        "rating": "4.4",
+        "attend": "%90 katılım",
+        "km": "2.9 km",
+        "photo": "/assets/photos/merve.png",
+        "online": false,
+        "perfect": false,
+        "score": 78,
+        "expectedPay": "26.000",
+        "payCompatible": true
+      },
+      {
+        "id": "w_can",
+        "name": "Can Ö.",
+        "rating": "4.1",
+        "attend": "%84 katılım",
+        "km": "5.6 km",
+        "photo": "/assets/photos/ferhat.png",
+        "online": true,
+        "perfect": false,
+        "score": 74,
+        "expectedPay": "32.000",
         "payCompatible": false
       },
       {
@@ -45,6 +123,19 @@
         "payCompatible": false
       },
       {
+        "id": "w_irem",
+        "name": "İrem S.",
+        "rating": "3.9",
+        "attend": "%82 katılım",
+        "km": "3.8 km",
+        "photo": "/assets/photos/derya.png",
+        "online": true,
+        "perfect": false,
+        "score": 68,
+        "expectedPay": "23.000",
+        "payCompatible": true
+      },
+      {
         "id": "w_ayse",
         "name": "Ayşe K.",
         "rating": "3.8",
@@ -56,6 +147,19 @@
         "score": 64,
         "expectedPay": "25.000",
         "payCompatible": true
+      },
+      {
+        "id": "w_mert",
+        "name": "Mert Y.",
+        "rating": "3.6",
+        "attend": "%78 katılım",
+        "km": "7.2 km",
+        "photo": "/assets/photos/ferhat.png",
+        "online": false,
+        "perfect": false,
+        "score": 59,
+        "expectedPay": "28.000",
+        "payCompatible": false
       }
     ]
   }
