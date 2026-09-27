@@ -31,7 +31,32 @@ describe("GET /api/candidates", () => {
       score: 92,
       expectedPay: "25.000",
       payCompatible: true,
+      offerStatus: null,
     });
+  });
+
+  it("shows the employer what the job seeker answered", async () => {
+    const worker = "Bearer dev-worker";
+    const statuses = async () =>
+      Object.fromEntries(
+        (await get()).body.data.candidates
+          .filter((c: { offerStatus: string | null }) => c.offerStatus !== null)
+          .map((c: { id: string; offerStatus: string }) => [c.id, c.offerStatus]),
+      );
+    expect(await statuses()).toEqual({});
+
+    const sent = await request(app)
+      .post("/api/offers")
+      .set("Authorization", EMPLOYER)
+      .send({ workerIds: ["w_merve", "w_derya"] });
+    expect(await statuses()).toEqual({ w_merve: "pending", w_derya: "pending" });
+
+    const byWorker = Object.fromEntries(
+      sent.body.data.created.map((o: { id: string; workerId: string }) => [o.workerId, o.id]),
+    );
+    await request(app).post(`/api/offers/${byWorker.w_merve}/accept`).set("Authorization", worker);
+    await request(app).post(`/api/offers/${byWorker.w_derya}/reject`).set("Authorization", worker);
+    expect(await statuses()).toEqual({ w_merve: "accepted", w_derya: "rejected" });
   });
 
   it("returns the pay line from the reference design", async () => {

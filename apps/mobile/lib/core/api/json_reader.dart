@@ -29,6 +29,10 @@ extension type JsonReader(Map<String, Object?> json) {
     throw _mismatch(key);
   }
 
+  /// Like [readEnum], but null when the field is null or missing.
+  T? readOptionalEnum<T extends Enum>(String key, List<T> values) =>
+      json[key] == null ? null : readEnum(key, values);
+
   List<T> readList<T>(String key, T Function(JsonReader item) map) =>
       read<List<Object?>>(key).map((item) => map(JsonReader.of(item))).toList();
 

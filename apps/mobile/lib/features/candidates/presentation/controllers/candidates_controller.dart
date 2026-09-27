@@ -56,13 +56,17 @@ class CandidatesController extends Notifier<CandidatesState> {
   }
 
   /// The reference opens with Merve selected; the API says how many of the
-  /// first candidates to preselect. Applied once per screen visit.
+  /// first candidates to preselect. Applied once per screen visit, and never
+  /// to a candidate whose request is still waiting for an answer.
   void applyInitialSelection(CandidateList list) {
     if (state.initialSelectionApplied) return;
     state = state.copyWith(
       selected: {
         ...state.selected,
-        ...list.candidates.take(list.selectedHint).map((c) => c.id),
+        ...list.candidates
+            .take(list.selectedHint)
+            .where((c) => !c.awaitingAnswer)
+            .map((c) => c.id),
       },
       initialSelectionApplied: true,
     );

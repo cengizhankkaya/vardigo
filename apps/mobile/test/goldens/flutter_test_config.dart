@@ -28,6 +28,13 @@ Future<void> testExecutable(FutureOr<void> Function() testMain) async {
   }
   await roboto.load();
 
+  // Icons.* glyphs; without the font they draw as empty boxes.
+  final icons = FontLoader('MaterialIcons');
+  final iconBytes = File('$sdkFonts/MaterialIcons-Regular.otf')
+      .readAsBytesSync();
+  icons.addFont(Future.value(ByteData.sublistView(iconBytes)));
+  await icons.load();
+
   final local = goldenFileComparator as LocalFileComparator;
   goldenFileComparator = _TolerantComparator(local.basedir.resolve('_'));
   await testMain();

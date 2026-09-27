@@ -1,16 +1,16 @@
 import { type RequestHandler, Router } from "express";
 import { optionalQuery } from "../../../platform/http/query.js";
 import { sendOk } from "../../../platform/http/response.js";
-import { countCandidates, listCandidates } from "../application/list-candidates.js";
+import type { OfferStatus } from "../../offers/domain/offer.js";
+import { getCandidateList, type GetCandidateListDeps } from "../application/get-candidate-list.js";
 import { type Candidate, type CandidatePay, CANDIDATE_SORTS, CANDIDATE_TABS, isPerfect } from "../domain/candidate.js";
-import type { CandidatesRepository } from "../domain/candidates-repository.js";
 
 /** "25.000", same style as the offer pay field. */
 function formatPay(value: number): string {
   return value.toLocaleString("tr-TR", { maximumFractionDigits: 0 });
 }
 
-function toDto(candidate: Candidate, pay: CandidatePay | undefined) {
+function toDto(candidate: Candidate, offerStatus: OfferStatus | null, pay: CandidatePay | undefined) {
   return {
     id: candidate.id,
     name: candidate.name,
@@ -23,11 +23,12 @@ function toDto(candidate: Candidate, pay: CandidatePay | undefined) {
     score: candidate.score,
     expectedPay: pay ? formatPay(pay.expectedPay) : null,
     payCompatible: pay?.payCompatible ?? null,
+    offerStatus,
   };
 }
 
 export function candidatesRoutes(
-  candidates: CandidatesRepository,
+  list: GetCandidateListDeps,
   selectedHint: number,
   pay: Record<string, CandidatePay>,
   guard: RequestHandler,
@@ -37,11 +38,14 @@ export function candidatesRoutes(
   router.get("/", guard, (req, res) => {
     const tab = optionalQuery(req.query.tab, "tab", CANDIDATE_TABS);
     const sort = optionalQuery(req.query.sort, "sort", CANDIDATE_SORTS);
-    const pool = candidates.findAll();
+    const listing = getCandidateList(list, { tab, sort });
     sendOk(res, {
-      ...countCandidates(pool),
+      totalPerfect: listing.totalPerfect,
+      totalSimilar: listing.totalSimilar,
       selectedHint,
-      candidates: listCandidates(pool, { tab, sort }).map((c) => toDto(c, pay[c.id])),
+      candidates: listing.candidates.map(({ candidate, offerStatus }) =>
+        toDto(candidate, offerStatus, pay[candidate.id]),
+      ),
     });
   });
 

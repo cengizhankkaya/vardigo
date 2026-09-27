@@ -270,6 +270,7 @@ core/presentation/pages/route_error_screen.dart  # bilinmeyen adres sayfası
    - İlk açılışta API'nin `selectedHint` değeri kadar ilk aday (Merve) seçili gelir; bu bir kez uygulanır.
    - Seçim sekmeler arasında korunur; sayı iki sekmedeki seçimlerin toplamıdır.
    - Gönderim sırasında sekme, sıralama ve seçim kilitlenir. Başarıda gönderilenler seçimden çıkar; 409 gibi hatalarda backend mesajı gösterilir ve seçim korunur.
+   - Kart, adaya giden son talebin durumunu gösterir (API'nin `offerStatus` alanı): "yanıt bekleniyor", "kabul etti", "reddetti", "süresi doldu". Renkler iş arayanın kendi durum etiketiyle aynıdır. Yanıt bekleyen aday seçilemez ve ilk açılışta da seçili gelmez; yanıtlanan adaya yeni talep gönderilebilir.
    - Sunucudan yanıt gelmezse otomatik tekrar gönderilmez; "doğrulanamadı" uyarısı gösterilir.
    - Yükleniyor, boş liste ve hata + "Tekrar dene" durumları vardır; liste aşağı çekilerek yenilenir.
 3. **Görüşme Talepleri (iş arayan):** Bekleyen / Cevaplanan / Süresi Dolan sekmeleri (`status=pending|answered|expired`), sıralama (Önerilen → Süresi Yakın → Ücret).
@@ -280,11 +281,11 @@ core/presentation/pages/route_error_screen.dart  # bilinmeyen adres sayfası
 
 ### Görsel testler (golden)
 
-[test/goldens/](test/goldens/) iki case ekranını açık ve koyu temada 390×844'te (iPhone güvenli alanıyla, 2× piksel) çizer ve kayıtlı PNG'lerle karşılaştırır:
+[test/goldens/](test/goldens/) iki case ekranını açık ve koyu temada 390×844'te (iPhone güvenli alanıyla, 2× piksel) çizer ve kayıtlı PNG'lerle karşılaştırır. Eşleşen Personeller ayrıca talepler gönderilip yanıtlandıktan sonraki hâliyle de çizilir (`candidates_answered_*.png`):
 
-- Veri temiz seed'den alınmış gerçek yanıtlardır (`candidates.json`, `offers_seed.json`); saat seed anına sabittir, sayaçlar 21 sa 32 dk / 18 sa 0 dk okur.
+- Veri gerçek backend yanıtlarıdır: temiz seed (`candidates.json`, `offers_seed.json`) ve dört adaya talep gönderilip ikisi yanıtlandıktan sonraki %100 Eşleşme sekmesi (`candidates_answered.json`). Saat seed anına sabittir, sayaçlar 21 sa 32 dk / 18 sa 0 dk okur.
 - Fotoğraf ve logolar backend'in kendi dosyalarıdır (`apps/api/public/assets`), ağ kullanılmaz.
-- Yazı gerçek Urbanist'tir; Urbanist'te olmayan ₺ için Flutter SDK'daki Roboto yedek font olarak yüklenir (cihazda sistem fontu bu işi görür). Font yükleme yalnız bu klasörü etkiler (`test/goldens/flutter_test_config.dart`); diğer testler Flutter'ın test fontuyla çalışır.
+- Yazı gerçek Urbanist'tir; Urbanist'te olmayan ₺ için Flutter SDK'daki Roboto yedek font olarak yüklenir (cihazda sistem fontu bu işi görür). Material ikonları için SDK'daki MaterialIcons fontu yüklenir. Font yükleme yalnız bu klasörü etkiler (`test/goldens/flutter_test_config.dart`); diğer testler Flutter'ın test fontuyla çalışır.
 - PNG'ler macOS'ta üretilir; CI da onları macOS'ta (`Mobile goldens` işi) kontrol eder, çünkü Linux yazıyı farklı çizer. Ubuntu'daki `Mobile` işi bunları `--exclude-tags golden` ile atlar. Başarısızlıkta fark görüntüleri `golden-failures` artifact'ı olarak saklanır.
 - Aynı platformdaki küçük çizim farkları için piksellerin %0,5'ine kadar fark kabul edilir; 2 px'lik bir boşluk değişikliği bile ~%6 fark verir.
 - Goldenlar referans PNG'lerin kopyası değildir; aşağıdaki farklar bilerek korunur. Görevleri, onaylanmış görünümün sonradan bozulmasını yakalamaktır.

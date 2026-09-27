@@ -10,6 +10,7 @@ import '../support/fake_repositories.dart';
 import 'package:vardigo/features/candidates/domain/entities/candidate_tab.dart';
 import 'package:vardigo/features/candidates/domain/entities/candidate_sort.dart';
 import 'package:vardigo/features/candidates/domain/entities/candidate_list.dart';
+import 'package:vardigo/features/candidates/domain/entities/candidate_offer_status.dart';
 import 'package:vardigo/features/candidates/presentation/controllers/candidate_query.dart';
 import 'package:vardigo/features/candidates/presentation/controllers/candidates_state.dart';
 import 'package:vardigo/features/candidates/presentation/controllers/submit_result.dart';
@@ -54,6 +55,16 @@ void main() {
     controller().toggle('w_merve');
     controller().applyInitialSelection(await load());
     expect(state().selected, isEmpty);
+  });
+
+  test('does not preselect a candidate still waiting for an answer', () async {
+    repo.pool = [
+      candidate('w_merve', offerStatus: CandidateOfferStatus.pending),
+      candidate('w_ferhat'),
+    ];
+    controller().applyInitialSelection(await load());
+    expect(state().selected, isEmpty);
+    expect(state().initialSelectionApplied, isTrue);
   });
 
   test('keeps the selection across tabs', () async {

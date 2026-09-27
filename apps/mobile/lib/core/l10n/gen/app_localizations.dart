@@ -250,6 +250,30 @@ abstract class AppLocalizations {
   /// **'Benzer Personeller ({count})'**
   String tabSimilar(int count);
 
+  /// No description provided for @candidateOfferPending.
+  ///
+  /// In tr, this message translates to:
+  /// **'Görüşme talebi gönderildi · yanıt bekleniyor'**
+  String get candidateOfferPending;
+
+  /// No description provided for @candidateOfferAccepted.
+  ///
+  /// In tr, this message translates to:
+  /// **'Görüşme talebini kabul etti'**
+  String get candidateOfferAccepted;
+
+  /// No description provided for @candidateOfferRejected.
+  ///
+  /// In tr, this message translates to:
+  /// **'Görüşme talebini reddetti'**
+  String get candidateOfferRejected;
+
+  /// No description provided for @candidateOfferExpired.
+  ///
+  /// In tr, this message translates to:
+  /// **'Görüşme talebinin süresi doldu'**
+  String get candidateOfferExpired;
+
   /// No description provided for @selectedCount.
   ///
   /// In tr, this message translates to:

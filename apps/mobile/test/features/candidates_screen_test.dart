@@ -5,6 +5,8 @@ import 'package:vardigo/core/error/exceptions/api_exception.dart';
 import 'package:vardigo/core/l10n/l10n.dart';
 import 'package:vardigo/core/theme/app_theme.dart';
 import 'package:vardigo/features/candidates/application/candidates_repository_provider.dart';
+import 'package:vardigo/features/candidates/domain/entities/candidate.dart';
+import 'package:vardigo/features/candidates/domain/entities/candidate_offer_status.dart';
 import 'package:vardigo/features/candidates/presentation/pages/candidates_screen.dart';
 
 import '../support/fake_repositories.dart';
@@ -12,8 +14,13 @@ import '../support/fake_repositories.dart';
 void main() {
   late FakeCandidatesRepository repo;
 
-  Future<void> pumpScreen(WidgetTester tester, {ThemeData? theme}) async {
+  Future<void> pumpScreen(
+    WidgetTester tester, {
+    ThemeData? theme,
+    List<Candidate>? pool,
+  }) async {
     repo = FakeCandidatesRepository();
+    if (pool != null) repo.pool = pool;
     await tester.pumpWidget(
       ProviderScope(
         overrides: [candidatesRepositoryProvider.overrideWithValue(repo)],
@@ -41,6 +48,55 @@ void main() {
     expect(find.text('1 kişi seçildi'), findsOneWidget);
     expect(find.text('Görüşme Talebi Gönder (1)'), findsOneWidget);
     expect(find.text('Ücret beklentisi uyuşuyor'), findsNWidgets(2));
+  });
+
+  testWidgets('shows what became of each request and locks waiting ones', (
+    tester,
+  ) async {
+    await pumpScreen(
+      tester,
+      pool: [
+        candidate('w_merve', offerStatus: CandidateOfferStatus.pending),
+        candidate('w_ferhat', offerStatus: CandidateOfferStatus.accepted),
+        candidate(
+          'w_derya',
+          perfect: false,
+          offerStatus: CandidateOfferStatus.rejected,
+        ),
+        candidate(
+          'w_ayse',
+          perfect: false,
+          offerStatus: CandidateOfferStatus.expired,
+        ),
+      ],
+    );
+    expect(
+      find.text('Görüşme talebi gönderildi · yanıt bekleniyor'),
+      findsOneWidget,
+    );
+    expect(find.text('Görüşme talebini kabul etti'), findsOneWidget);
+    // Merve is waiting, so she is neither preselected nor selectable.
+    expect(find.text('0 kişi seçildi'), findsOneWidget);
+    await tester.tap(find.text('w_merve'));
+    await tester.pump();
+    expect(find.text('0 kişi seçildi'), findsOneWidget);
+
+    // An answered request can be followed by a new one.
+    await tester.tap(find.text('w_ferhat'));
+    await tester.pump();
+    expect(find.text('1 kişi seçildi'), findsOneWidget);
+
+    await tester.tap(find.text('Benzer Personeller (2)'));
+    await tester.pumpAndSettle();
+    expect(find.text('Görüşme talebini reddetti'), findsOneWidget);
+    expect(find.text('Görüşme talebinin süresi doldu'), findsOneWidget);
+  });
+
+  testWidgets('shows no request status before anything is sent', (
+    tester,
+  ) async {
+    await pumpScreen(tester);
+    expect(find.textContaining('Görüşme talebi'), findsNothing);
   });
 
   testWidgets('keeps selections from both tabs in the count', (tester) async {

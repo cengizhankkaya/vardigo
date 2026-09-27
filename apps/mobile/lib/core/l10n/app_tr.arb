@@ -61,6 +61,10 @@
       }
     }
   },
+  "candidateOfferPending": "Görüşme talebi gönderildi · yanıt bekleniyor",
+  "candidateOfferAccepted": "Görüşme talebini kabul etti",
+  "candidateOfferRejected": "Görüşme talebini reddetti",
+  "candidateOfferExpired": "Görüşme talebinin süresi doldu",
   "selectedCount": "{count} kişi seçildi",
   "@selectedCount": {
     "placeholders": {

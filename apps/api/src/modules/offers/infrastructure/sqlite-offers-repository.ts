@@ -44,6 +44,19 @@ export class SqliteOffersRepository implements OffersRepository {
       .map((row) => String(row.candidate_id));
   }
 
+  latestStatusByCandidate(): Map<string, OfferStatus> {
+    const rows = this.db
+      .prepare(
+        `SELECT candidate_id, status FROM (
+           SELECT candidate_id, status,
+             ROW_NUMBER() OVER (PARTITION BY candidate_id ORDER BY created_at_ms DESC, rowid DESC) AS n
+           FROM offers WHERE candidate_id IS NOT NULL
+         ) WHERE n = 1`,
+      )
+      .all();
+    return new Map(rows.map((row) => [String(row.candidate_id), row.status as OfferStatus]));
+  }
+
   insert(offer: NewOffer): void {
     const { job } = offer;
     this.db

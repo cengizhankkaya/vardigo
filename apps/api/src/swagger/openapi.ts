@@ -117,6 +117,7 @@ export const openApiDocument = {
         type: "object",
         required: [
           "id", "name", "rating", "attend", "km", "photo", "online", "perfect", "score", "expectedPay", "payCompatible",
+          "offerStatus",
         ],
         properties: {
           id: { type: "string", example: "w_merve" },
@@ -130,6 +131,11 @@ export const openApiDocument = {
           score: { type: "integer", example: 92 },
           expectedPay: { type: ["string", "null"], example: "25.000", description: "Aylık ücret beklentisi (₺)" },
           payCompatible: { type: ["boolean", "null"], description: "Ücret beklentisi işe uyuyor mu" },
+          offerStatus: {
+            type: ["string", "null"],
+            enum: ["pending", "accepted", "rejected", "expired", null],
+            description: "Adaya gönderilen son görüşme talebinin durumu; hiç gönderilmediyse null",
+          },
         },
         additionalProperties: false,
       },
@@ -255,6 +261,7 @@ export const openApiDocument = {
                   score: 92,
                   expectedPay: "25.000",
                   payCompatible: true,
+                  offerStatus: null,
                 },
               ],
             },

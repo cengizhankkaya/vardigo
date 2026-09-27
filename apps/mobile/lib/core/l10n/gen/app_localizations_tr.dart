@@ -99,6 +99,19 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
+  String get candidateOfferPending =>
+      'Görüşme talebi gönderildi · yanıt bekleniyor';
+
+  @override
+  String get candidateOfferAccepted => 'Görüşme talebini kabul etti';
+
+  @override
+  String get candidateOfferRejected => 'Görüşme talebini reddetti';
+
+  @override
+  String get candidateOfferExpired => 'Görüşme talebinin süresi doldu';
+
+  @override
   String selectedCount(int count) {
     return '$count kişi seçildi';
   }

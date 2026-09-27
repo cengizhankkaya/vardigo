@@ -5,6 +5,7 @@ import 'package:vardigo/features/appearance/domain/entities/app_theme_mode.dart'
 import 'package:vardigo/features/appearance/domain/repositories/i_theme_mode_repository.dart';
 import 'package:vardigo/features/candidates/domain/entities/candidate.dart';
 import 'package:vardigo/features/candidates/domain/entities/candidate_list.dart';
+import 'package:vardigo/features/candidates/domain/entities/candidate_offer_status.dart';
 import 'package:vardigo/features/candidates/domain/entities/candidate_sort.dart';
 import 'package:vardigo/features/candidates/domain/entities/candidate_tab.dart';
 import 'package:vardigo/features/candidates/domain/repositories/i_candidates_repository.dart';
@@ -18,7 +19,11 @@ import 'package:vardigo/features/session/domain/entities/role.dart';
 import 'package:vardigo/features/session/domain/entities/session.dart';
 import 'package:vardigo/features/session/domain/repositories/i_session_repository.dart';
 
-Candidate candidate(String id, {bool perfect = true}) => Candidate(
+Candidate candidate(
+  String id, {
+  bool perfect = true,
+  CandidateOfferStatus? offerStatus,
+}) => Candidate(
   id: id,
   name: id,
   rating: '4.9',
@@ -30,6 +35,7 @@ Candidate candidate(String id, {bool perfect = true}) => Candidate(
   score: perfect ? 90 : 70,
   expectedPay: '25.000',
   payCompatible: perfect,
+  offerStatus: offerStatus,
 );
 
 /// In-memory candidates: w_merve and w_ferhat are perfect, w_derya and
@@ -47,15 +53,18 @@ class FakeCandidatesRepository implements ICandidatesRepository {
     candidate('w_ayse', perfect: false),
   ];
 
+  /// The pool fetch answers with; tests replace it to set request statuses.
+  List<Candidate> pool = all;
+
   @override
   Future<CandidateList> fetch({CandidateTab? tab, CandidateSort? sort}) async {
     fetches.add((tab, sort));
     return CandidateList(
-      totalPerfect: all.where((c) => c.perfect).length,
-      totalSimilar: all.where((c) => !c.perfect).length,
+      totalPerfect: pool.where((c) => c.perfect).length,
+      totalSimilar: pool.where((c) => !c.perfect).length,
       selectedHint: 1,
       candidates: [
-        for (final c in all)
+        for (final c in pool)
           if (tab == null || c.perfect == (tab == CandidateTab.perfect)) c,
       ],
     );

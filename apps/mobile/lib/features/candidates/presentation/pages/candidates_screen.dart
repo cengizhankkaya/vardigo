@@ -92,7 +92,7 @@ class _CandidatesScreenState extends ConsumerState<CandidatesScreen> {
                     CandidateCard(
                       candidate: candidate,
                       selected: state.selected.contains(candidate.id),
-                      onToggle: state.submitting
+                      onToggle: state.submitting || candidate.awaitingAnswer
                           ? null
                           : () => controller.toggle(candidate.id),
                     ),

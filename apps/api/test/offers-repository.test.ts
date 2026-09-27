@@ -35,6 +35,22 @@ describe("SqliteOffersRepository", () => {
     expect(offers.candidatesWithPendingOffer([])).toEqual([]);
   });
 
+  it("reports the newest offer's status per candidate", () => {
+    expect(offers.latestStatusByCandidate()).toEqual(new Map([["w_merve", "pending"]]));
+
+    offers.markResponded("o_1", "u_worker", "rejected", TEST_NOW);
+    offers.insert({ id: "o_2", recipientUserId: "u_worker", candidateId: "w_merve", job, createdAtMs: TEST_NOW + 1 });
+    offers.insert({ id: "o_3", recipientUserId: "u_worker", candidateId: "w_derya", job, createdAtMs: TEST_NOW });
+    offers.markResponded("o_3", "u_worker", "accepted", TEST_NOW);
+    // The seed's own offers have no candidate and never show up.
+    expect(offers.latestStatusByCandidate()).toEqual(
+      new Map([
+        ["w_derya", "accepted"],
+        ["w_merve", "pending"],
+      ]),
+    );
+  });
+
   it("expires offers exactly at expiresAt, not before", () => {
     offers.expireDue(TEST_NOW + 999);
     expect(statusOf("o_1")).toBe("pending");
