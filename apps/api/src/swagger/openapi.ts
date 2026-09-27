@@ -231,16 +231,16 @@ export const openApiDocument = {
               type: "object",
               required: ["totalPerfect", "totalSimilar", "selectedHint", "candidates"],
               properties: {
-                totalPerfect: { type: "integer", description: "Tasarımdaki sabit etiket" },
-                totalSimilar: { type: "integer", description: "Tasarımdaki sabit etiket" },
+                totalPerfect: { type: "integer", description: "score ≥ 80 aday sayısı; tab filtresinden bağımsız" },
+                totalSimilar: { type: "integer", description: "score < 80 aday sayısı; tab filtresinden bağımsız" },
                 selectedHint: { type: "integer", description: "İlk açılışta seçili gelecek aday sayısı" },
                 candidates: { type: "array", items: { $ref: "#/components/schemas/Candidate" } },
               },
               additionalProperties: false,
             },
             {
-              totalPerfect: 26,
-              totalSimilar: 16,
+              totalPerfect: 6,
+              totalSimilar: 6,
               selectedHint: 1,
               candidates: [
                 {

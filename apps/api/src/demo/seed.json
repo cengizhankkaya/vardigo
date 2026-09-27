@@ -51,6 +51,102 @@
       "online": true,
       "perfect": true,
       "score": 88
+    },
+    {
+      "id": "w_elif",
+      "name": "Elif K.",
+      "rating": "4.8",
+      "attend": "%98 katılım",
+      "km": "2.3 km",
+      "kmValue": 2.3,
+      "photo": "photos/derya.png",
+      "online": true,
+      "perfect": true,
+      "score": 90
+    },
+    {
+      "id": "w_burak",
+      "name": "Burak T.",
+      "rating": "4.7",
+      "attend": "%96 katılım",
+      "km": "3.1 km",
+      "kmValue": 3.1,
+      "photo": "photos/ferhat.png",
+      "online": false,
+      "perfect": true,
+      "score": 85
+    },
+    {
+      "id": "w_zeynep",
+      "name": "Zeynep A.",
+      "rating": "4.6",
+      "attend": "%95 katılım",
+      "km": "6.4 km",
+      "kmValue": 6.4,
+      "photo": "photos/ayse.png",
+      "online": true,
+      "perfect": true,
+      "score": 83
+    },
+    {
+      "id": "w_emre",
+      "name": "Emre D.",
+      "rating": "4.5",
+      "attend": "%93 katılım",
+      "km": "0.8 km",
+      "kmValue": 0.8,
+      "photo": "photos/ferhat.png",
+      "online": true,
+      "perfect": true,
+      "score": 81
+    },
+    {
+      "id": "w_selin",
+      "name": "Selin B.",
+      "rating": "4.4",
+      "attend": "%90 katılım",
+      "km": "2.9 km",
+      "kmValue": 2.9,
+      "photo": "photos/merve.png",
+      "online": false,
+      "perfect": false,
+      "score": 78
+    },
+    {
+      "id": "w_can",
+      "name": "Can Ö.",
+      "rating": "4.1",
+      "attend": "%84 katılım",
+      "km": "5.6 km",
+      "kmValue": 5.6,
+      "photo": "photos/ferhat.png",
+      "online": true,
+      "perfect": false,
+      "score": 74
+    },
+    {
+      "id": "w_irem",
+      "name": "İrem S.",
+      "rating": "3.9",
+      "attend": "%82 katılım",
+      "km": "3.8 km",
+      "kmValue": 3.8,
+      "photo": "photos/derya.png",
+      "online": true,
+      "perfect": false,
+      "score": 68
+    },
+    {
+      "id": "w_mert",
+      "name": "Mert Y.",
+      "rating": "3.6",
+      "attend": "%78 katılım",
+      "km": "7.2 km",
+      "kmValue": 7.2,
+      "photo": "photos/ferhat.png",
+      "online": false,
+      "perfect": false,
+      "score": 59
     }
   ],
   "offers": [
@@ -95,8 +191,6 @@
     }
   ],
   "labels": {
-    "totalPerfect": 26,
-    "totalSimilar": 16,
     "pendingCountLabel": 12
   }
 }

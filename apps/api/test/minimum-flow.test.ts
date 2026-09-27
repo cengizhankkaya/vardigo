@@ -24,11 +24,11 @@ describe("case minimum flow", () => {
     const first = start(path);
     const api = request(first.app);
 
-    // 1. employer login → GET /candidates → 4 people
+    // 1. employer login → GET /candidates → 12 people
     const employer = await api.post("/api/auth/login").send({ role: "employer" });
     const employerAuth = `Bearer ${employer.body.data.token}`;
     const candidates = await api.get("/api/candidates").set("Authorization", employerAuth);
-    expect(candidates.body.data.candidates).toHaveLength(4);
+    expect(candidates.body.data.candidates).toHaveLength(12);
 
     // 2. select Merve + Derya → POST /offers
     const sent = await api
