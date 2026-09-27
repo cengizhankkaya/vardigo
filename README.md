@@ -6,7 +6,7 @@
 
 | Parça | Durum |
 |---|---|
-| Backend | Tamamlandı: case'teki tüm endpoint'ler, SQLite kalıcılığı, Swagger (yanıtlar şemaya karşı testli), 184 test |
+| Backend | Tamamlandı: case'teki tüm endpoint'ler, SQLite kalıcılığı, Swagger (yanıtlar şemaya karşı testli), 194 test |
 | Mobil | Tamamlandı: iki case ekranı (Eşleşen Personeller, Görüşme Talepleri), demo rol seçimi, 390×844 telefon çerçevesi, golden testler, 102 test |
 
 ## 5 dakikada çalışan demo
@@ -56,7 +56,7 @@ npm run smoke
 ```
 
 ```text
-✓ 1. İşveren adayları görür: 4 kişi (Merve Y., Ferhat C., Derya A., Ayşe K.)
+✓ 1. İşveren adayları görür: 12 kişi (%100 eşleşme 6, benzer 6)
 ✓ 2. Merve + Derya'ya talep: 201 created 2
 ✓ 3. İş arayan talepleri görür: 5 bekleyen (yeni 2 + önceden bekleyenler)
 ✓ 4. Biri kabul, biri ret: accept 200, reject 200
@@ -86,7 +86,7 @@ Tüm yanıtlar `{ ok: true, data }` veya `{ ok: false, error: { code, message } 
 
 ```bash
 cd apps/api
-npm test           # 184 test; her test kendi geçici veritabanını kullanır
+npm test           # 194 test; her test kendi geçici veritabanını kullanır
 npm run typecheck
 
 cd apps/mobile
@@ -119,9 +119,9 @@ vardigo/
 
 Case paketindeki bazı bilgiler birbiriyle çelişiyor veya tanımsız; uygulanan kararlar:
 
-- **Sekmeler:** API spesifikasyonundaki score ≥ 80 kuralı esas alındı. "%100 Eşleşme" sekmesinde Merve ve Ferhat, "Benzer" sekmesinde Derya ve Ayşe görünür. Ekran spesifikasyonundaki "ikinci sekmede aynı kartlar ters sırada" ifadesi uygulanmadı.
-- **Başlık sayıları:** 26 / 16 ve bekleyen talep için 12, referans tasarımdaki sabit etiketlerdir (`totalPerfect`, `totalSimilar`, `pendingCountLabel`). Gerçek sayılar ayrı alanlarda döner: 4 aday, `pendingCount`.
-- **Aday ücret satırı:** Seed'de ücret bilgisi yok; kartlardaki "Ücret beklentisi uyuşuyor/uyuşmuyor · ₺25.000 / ay" değerleri referans tasarımdan alındı (Merve ve Ayşe uyuşuyor, Derya ve Ferhat uyuşmuyor).
+- **Sekmeler:** API spesifikasyonundaki score ≥ 80 kuralı esas alındı. "%100 Eşleşme" sekmesinde Merve ve Ferhat dahil 6, "Benzer" sekmesinde Derya ve Ayşe dahil 6 kişi görünür. Ekran spesifikasyonundaki "ikinci sekmede aynı kartlar ters sırada" ifadesi uygulanmadı.
+- **Aday sayıları:** Referanstaki 26 / 16 sabit etiket olarak alınmadı; `totalPerfect` ve `totalSimilar` aday tablosundan hesaplanır (seçili sekmeden bağımsız). Case seed'indeki 4 adaya 8 demo aday eklendi (toplam 12, 6 / 6). Case'te yalnız 4 fotoğraf olduğu için yeni adaylar bu fotoğrafları tekrar kullanır. Bekleyen talep başlığındaki 12 ise referanstaki sabit etikettir (`pendingCountLabel`); gerçek sayı `pendingCount` alanında döner.
+- **Aday ücret satırı:** Seed'de ücret bilgisi yok; case'in 4 adayının "Ücret beklentisi uyuşuyor/uyuşmuyor · ₺25.000 / ay" değerleri referans tasarımdan alındı (Merve ve Ayşe uyuşuyor, Derya ve Ferhat uyuşmuyor). Eklenen adayların ücretleri demo değeridir.
 - **Talep sıralaması:** Referansta "Sırala: Önerilen" düğmesi var ama seçenekler tanımlı değil. Önerilen (en yeni önce), süresi en yakın biten ve ücret seçenekleri eklendi.
 - **Tek iş arayan:** Case'te bir iş arayan hesabı olduğu için hangi adaya gönderilirse gönderilsin talepler o hesabın gelen kutusuna düşer.
 - **Süre:** Seed'deki `USE_NOW_PLUS_21H32M` gibi süreler ilk kurulum anından hesaplanır. Yanıtlanmış talepler süre geçince `expired` olmaz.
