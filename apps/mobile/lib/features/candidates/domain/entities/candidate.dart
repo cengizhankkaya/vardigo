@@ -1,3 +1,5 @@
+import 'candidate_offer_status.dart';
+
 class Candidate {
   const Candidate({
     required this.id,
@@ -11,6 +13,7 @@ class Candidate {
     required this.score,
     this.expectedPay,
     this.payCompatible,
+    this.offerStatus,
   });
 
   final String id;
@@ -32,4 +35,11 @@ class Candidate {
   /// Monthly pay expectation, "25.000"; null when unknown.
   final String? expectedPay;
   final bool? payCompatible;
+
+  /// The newest interview request sent to this candidate; null when none.
+  final CandidateOfferStatus? offerStatus;
+
+  /// A request is still waiting for an answer, so another one would be
+  /// refused (409); the candidate cannot be selected until it is answered.
+  bool get awaitingAnswer => offerStatus == CandidateOfferStatus.pending;
 }

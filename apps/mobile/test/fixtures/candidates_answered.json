@@ -1,0 +1,94 @@
+{
+  "ok": true,
+  "data": {
+    "totalPerfect": 6,
+    "totalSimilar": 6,
+    "selectedHint": 1,
+    "candidates": [
+      {
+        "id": "w_merve",
+        "name": "Merve Y.",
+        "rating": "4.9",
+        "attend": "%100 katılım",
+        "km": "4.9 km",
+        "photo": "/assets/photos/merve.png",
+        "online": true,
+        "perfect": true,
+        "score": 92,
+        "expectedPay": "25.000",
+        "payCompatible": true,
+        "offerStatus": "pending"
+      },
+      {
+        "id": "w_elif",
+        "name": "Elif K.",
+        "rating": "4.8",
+        "attend": "%98 katılım",
+        "km": "2.3 km",
+        "photo": "/assets/photos/derya.png",
+        "online": true,
+        "perfect": true,
+        "score": 90,
+        "expectedPay": "24.000",
+        "payCompatible": true,
+        "offerStatus": "accepted"
+      },
+      {
+        "id": "w_ferhat",
+        "name": "Ferhat C.",
+        "rating": "4.9",
+        "attend": "%100 katılım",
+        "km": "4.9 km",
+        "photo": "/assets/photos/ferhat.png",
+        "online": true,
+        "perfect": true,
+        "score": 88,
+        "expectedPay": "25.000",
+        "payCompatible": false,
+        "offerStatus": "rejected"
+      },
+      {
+        "id": "w_burak",
+        "name": "Burak T.",
+        "rating": "4.7",
+        "attend": "%96 katılım",
+        "km": "3.1 km",
+        "photo": "/assets/photos/ferhat.png",
+        "online": false,
+        "perfect": true,
+        "score": 85,
+        "expectedPay": "27.000",
+        "payCompatible": true,
+        "offerStatus": "pending"
+      },
+      {
+        "id": "w_zeynep",
+        "name": "Zeynep A.",
+        "rating": "4.6",
+        "attend": "%95 katılım",
+        "km": "6.4 km",
+        "photo": "/assets/photos/ayse.png",
+        "online": true,
+        "perfect": true,
+        "score": 83,
+        "expectedPay": "30.000",
+        "payCompatible": false,
+        "offerStatus": null
+      },
+      {
+        "id": "w_emre",
+        "name": "Emre D.",
+        "rating": "4.5",
+        "attend": "%93 katılım",
+        "km": "0.8 km",
+        "photo": "/assets/photos/ferhat.png",
+        "online": true,
+        "perfect": true,
+        "score": 81,
+        "expectedPay": "22.000",
+        "payCompatible": true,
+        "offerStatus": null
+      }
+    ]
+  }
+}

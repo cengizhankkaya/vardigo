@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:vardigo/core/api/api_config.dart';
@@ -9,6 +12,7 @@ import 'package:vardigo/features/session/infrastructure/repositories/session_rep
 
 import '../support/fake_adapter.dart';
 
+import 'package:vardigo/features/candidates/domain/entities/candidate_offer_status.dart';
 import 'package:vardigo/features/candidates/domain/entities/candidate_tab.dart';
 import 'package:vardigo/features/candidates/domain/entities/candidate_sort.dart';
 import 'package:vardigo/features/offers/domain/entities/offer_status.dart';
@@ -64,6 +68,44 @@ void main() {
     expect(merve.perfect, isTrue);
     expect(merve.expectedPay, '25.000');
     expect(merve.payCompatible, isTrue);
+  });
+
+  test('candidates carry what became of the last request', () async {
+    final repo = CandidatesRepositoryImpl(
+      api({'GET /api/candidates': () => fixture('candidates_answered')}),
+    );
+    final list = await repo.fetch(tab: CandidateTab.perfect);
+    expect(
+      {for (final c in list.candidates) c.name: c.offerStatus},
+      {
+        'Merve Y.': CandidateOfferStatus.pending,
+        'Elif K.': CandidateOfferStatus.accepted,
+        'Ferhat C.': CandidateOfferStatus.rejected,
+        'Burak T.': CandidateOfferStatus.pending,
+        'Zeynep A.': null,
+        'Emre D.': null,
+      },
+    );
+    expect(list.candidates.first.awaitingAnswer, isTrue);
+  });
+
+  test('an unknown request status is reported as a bad response', () async {
+    final repo = CandidatesRepositoryImpl(
+      api({
+        'GET /api/candidates': () {
+          final body = File('test/fixtures/candidates.json')
+              .readAsStringSync()
+              .replaceFirst('"offerStatus": null', '"offerStatus": "archived"');
+          return FakeAdapter.json(jsonDecode(body) as Map<String, Object?>);
+        },
+      }),
+    );
+    await expectLater(
+      repo.fetch(),
+      throwsA(
+        isA<ApiException>().having((e) => e.code, 'code', 'BAD_RESPONSE'),
+      ),
+    );
   });
 
   test('omits empty query parameters', () async {

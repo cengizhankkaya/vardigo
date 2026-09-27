@@ -2,6 +2,7 @@ import '../../../../core/api/api_client.dart';
 import '../../../../core/api/json_reader.dart';
 import '../../domain/entities/candidate.dart';
 import '../../domain/entities/candidate_list.dart';
+import '../../domain/entities/candidate_offer_status.dart';
 import '../../domain/entities/candidate_sort.dart';
 import '../../domain/entities/candidate_tab.dart';
 import '../../domain/repositories/i_candidates_repository.dart';
@@ -48,4 +49,8 @@ Candidate candidateFromJson(JsonReader json) => Candidate(
   score: json.read<int>('score'),
   expectedPay: json.readOptional<String>('expectedPay'),
   payCompatible: json.readOptional<bool>('payCompatible'),
+  offerStatus: json.readOptionalEnum(
+    'offerStatus',
+    CandidateOfferStatus.values,
+  ),
 );

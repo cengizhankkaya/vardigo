@@ -31,13 +31,16 @@ void main() {
   final seededAt = DateTime.utc(2026, 9, 26, 23, 30, 0, 549);
 
   const origin = 'http://api.test';
+  // The fresh seed, or the perfect tab after four requests were sent and
+  // two of them answered.
+  var candidatesFixture = 'candidates';
   final api = ApiClient(
     const ApiConfig(origin),
     token: () => 'dev-token',
     dio: Dio()
       ..httpClientAdapter = FakeAdapter(
         (options) async => switch (options.uri.path) {
-          '/api/candidates' => fixture('candidates'),
+          '/api/candidates' => fixture(candidatesFixture),
           '/api/offers' => fixture('offers_seed'),
           final path => throw StateError('unexpected request $path'),
         },
@@ -101,6 +104,18 @@ void main() {
       await expectLater(
         find.byType(MaterialApp),
         matchesGoldenFile('candidates_$name.png'),
+      );
+    });
+
+    testWidgets('candidates screen with answered requests, $name', (
+      tester,
+    ) async {
+      candidatesFixture = 'candidates_answered';
+      addTearDown(() => candidatesFixture = 'candidates');
+      await pumpScreen(tester, const CandidatesScreen(), theme);
+      await expectLater(
+        find.byType(MaterialApp),
+        matchesGoldenFile('candidates_answered_$name.png'),
       );
     });
 

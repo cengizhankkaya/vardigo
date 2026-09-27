@@ -8,10 +8,12 @@ import '../../../../../core/theme/tokens/app_spacing.dart';
 import '../../../domain/entities/candidate.dart';
 import 'candidate_avatar.dart';
 import 'candidate_info.dart';
+import 'candidate_offer_badge.dart';
 import 'pay_match_line.dart';
 
-/// One candidate: photo, name, rating / attendance / distance, pay line and
-/// a checkbox. The whole card toggles the selection.
+/// One candidate: photo, name, rating / attendance / distance, what became
+/// of the last interview request, pay line and a checkbox. The whole card
+/// toggles the selection; a request still waiting for an answer locks it.
 class CandidateCard extends StatelessWidget {
   const CandidateCard({
     super.key,
@@ -32,6 +34,7 @@ class CandidateCard extends StatelessWidget {
     final colors = context.appColors;
     return Semantics(
       checked: selected,
+      enabled: !candidate.awaitingAnswer,
       label: candidate.name,
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
@@ -80,6 +83,7 @@ class _Content extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final expectedPay = candidate.expectedPay;
+    final offerStatus = candidate.offerStatus;
     return Column(
       children: [
         Row(
@@ -88,9 +92,19 @@ class _Content extends StatelessWidget {
             const SizedBox(width: AppSpacing.cardPhotoText),
             Expanded(child: CandidateInfo(candidate)),
             const SizedBox(width: 8),
-            AppCheckbox(selected: selected),
+            Opacity(
+              opacity: candidate.awaitingAnswer ? 0.35 : 1,
+              child: AppCheckbox(selected: selected),
+            ),
           ],
         ),
+        if (offerStatus != null) ...[
+          const SizedBox(height: 10),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: CandidateOfferBadge(offerStatus),
+          ),
+        ],
         if (expectedPay != null) ...[
           const SizedBox(height: 12),
           PayMatchLine(
