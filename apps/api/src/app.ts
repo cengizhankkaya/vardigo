@@ -56,7 +56,10 @@ export function createApp({ db, now = Date.now }: AppDeps) {
   const api = express.Router();
   api.get("/health", (_req, res) => sendOk(res, { status: "up" }));
   api.use("/auth", authRoutes(users));
-  api.use("/candidates", candidatesRoutes(candidates, candidateSelectedHint, candidatePay, employerOnly));
+  api.use(
+    "/candidates",
+    candidatesRoutes({ unitOfWork, candidates, offers, now }, candidateSelectedHint, candidatePay, employerOnly),
+  );
   api.use(
     "/offers",
     offersRoutes({

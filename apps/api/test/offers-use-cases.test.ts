@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it } from "vitest";
+import { getCandidateList } from "../src/modules/candidates/application/get-candidate-list.js";
 import type { Candidate } from "../src/modules/candidates/domain/candidate.js";
 import type { CandidatesRepository } from "../src/modules/candidates/domain/candidates-repository.js";
 import { createOffers } from "../src/modules/offers/application/create-offers.js";
@@ -43,6 +44,11 @@ class InMemoryOffers implements OffersRepository {
 
   candidatesWithPendingOffer(candidateIds: readonly string[]): string[] {
     return this.rows.filter((r) => r.status === "pending" && candidateIds.includes(r.candidateId)).map((r) => r.candidateId);
+  }
+
+  latestStatusByCandidate(): Map<string, OfferStatus> {
+    const newestLast = [...this.rows].sort((a, b) => a.createdAtMs - b.createdAtMs);
+    return new Map(newestLast.map((r) => [r.candidateId, r.status]));
   }
 
   insert({ id, recipientUserId, candidateId, job, createdAtMs }: NewOffer): void {
@@ -183,5 +189,27 @@ describe("offer use cases without a database", () => {
       offers: [],
     });
     expect(listOffers({ unitOfWork, offers, now: () => now }, USER, "expired").offers).toHaveLength(1);
+  });
+
+  it("the employer sees what became of each request", () => {
+    const list = () =>
+      getCandidateList({ unitOfWork, candidates, offers, now: () => now }).candidates.map((c) => [
+        c.candidate.id,
+        c.offerStatus,
+      ]);
+    expect(list()).toEqual([["w_merve", null], ["w_derya", null]]);
+
+    createOffers(createDeps(), ["w_merve", "w_derya"]);
+    respondToOffer({ unitOfWork, offers, now: () => now }, USER, "o_1", "accepted");
+    expect(list()).toEqual([["w_merve", "accepted"], ["w_derya", "pending"]]);
+
+    // The pending one runs out; listing closes it rather than showing it as pending.
+    now = NOW + 24 * HOUR;
+    expect(list()).toEqual([["w_merve", "accepted"], ["w_derya", "expired"]]);
+    expect(offers.rows.find((r) => r.id === "o_2")?.status).toBe("expired");
+
+    // A new request after the answer is what the employer sees next.
+    createOffers(createDeps(), ["w_merve"]);
+    expect(list()).toEqual([["w_merve", "pending"], ["w_derya", "expired"]]);
   });
 });

@@ -5,6 +5,8 @@ export interface OffersRepository {
   /** Marks pending offers whose time is up as expired. */
   expireDue(nowMs: number): void;
   candidatesWithPendingOffer(candidateIds: readonly string[]): string[];
+  /** Status of the newest offer sent to each candidate; candidates never sent one are absent. */
+  latestStatusByCandidate(): Map<string, OfferStatus>;
   insert(offer: NewOffer): void;
   listForRecipient(recipientUserId: string, statuses: readonly OfferStatus[], sort?: OfferSort): Offer[];
   countPending(recipientUserId: string): number;

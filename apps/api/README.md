@@ -118,6 +118,8 @@ curl "http://localhost:3000/api/candidates?tab=perfect&sort=near" \
 
 `expectedPay` ("25.000", aylık ₺) ve `payCompatible` kartlardaki "Ücret beklentisi uyuşuyor / uyuşmuyor" satırını besler. Case seed'inde ücret bilgisi olmadığı için case'in 4 adayının değerleri referans tasarımdan alınmıştır, eklenen 8 adayınkiler demo değeridir ([src/demo/candidate-pay.ts](src/demo/candidate-pay.ts)).
 
+`offerStatus`, adaya gönderilen **son** görüşme talebinin durumudur: `pending`, `accepted`, `rejected`, `expired` ya da hiç talep yoksa `null`. İşveren, iş arayanın yanıtını buradan görür. Süresi geçmiş bekleyen talepler okumadan önce `expired` yapılır; böylece sayacı bitmiş talep "bekliyor" görünmez. `pending` olan adaya yeni talep `409 OFFER_PENDING_EXISTS` alır; yanıtlanmış veya süresi dolmuş adaya yeniden gönderilebilir.
+
 Geçersiz değer `400 VALIDATION_ERROR` döner. `totalPerfect` ve `totalSimilar` aday tablosundan hesaplanır ve `tab` filtresinden bağımsızdır: temiz seed'de 6 / 6, toplam 12 aday (case seed'indeki 4 adaya 8 demo aday eklendi; referanstaki 26 / 16 kullanılmaz). `selectedHint` (1) ilk açılışta seçili gelecek aday sayısıdır. Eşit değerlerde seed sırası korunur.
 
 ## Görüşme talebi gönderme (işveren)
