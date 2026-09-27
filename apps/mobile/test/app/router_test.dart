@@ -17,8 +17,8 @@ void main() {
   group('guardRedirect', () {
     const employer = Session(token: 'dev-employer', role: Role.employer);
     const worker = Session(token: 'dev-worker', role: Role.worker);
-    String? guard(String location, Session? session, {bool gallery = true}) =>
-        guardRedirect(Uri.parse(location), session, allowGallery: gallery);
+    String? guard(String location, Session? session) =>
+        guardRedirect(Uri.parse(location), session);
 
     test('opens a screen for the account it belongs to', () {
       expect(guard('/candidates', employer), isNull);
@@ -32,11 +32,6 @@ void main() {
         '/?from=%2Fcandidates%3Ftab%3Dsimilar',
       );
       expect(guard('/offers', employer), '/?from=%2Foffers');
-    });
-
-    test('closes the gallery outside debug builds', () {
-      expect(guard('/gallery', null), isNull);
-      expect(guard('/gallery', null, gallery: false), '/');
     });
 
     test('each role has a home screen', () {

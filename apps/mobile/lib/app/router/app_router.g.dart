@@ -26,12 +26,6 @@ RouteBase get $roleSelectRoute => GoRouteData.$route(
       hasOverriddenOnExit: false,
       factory: $OffersRoute._fromState,
     ),
-    GoRouteData.$route(
-      path: 'gallery',
-      name: 'gallery',
-      hasOverriddenOnExit: false,
-      factory: $GalleryRoute._fromState,
-    ),
   ],
 );
 
@@ -161,26 +155,6 @@ const _$OfferSortEnumMap = {
   OfferSort.expiring: 'expiring',
   OfferSort.pay: 'pay',
 };
-
-mixin $GalleryRoute on GoRouteData {
-  static GalleryRoute _fromState(GoRouterState state) => const GalleryRoute();
-
-  @override
-  String get location => GoRouteData.$location('/gallery');
-
-  @override
-  void go(BuildContext context) => context.go(location);
-
-  @override
-  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
-
-  @override
-  void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location);
-
-  @override
-  void replace(BuildContext context) => context.replace(location);
-}
 
 T? _$convertMapValue<T>(
   String key,

@@ -13,27 +13,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get appTitle => 'Vardigo';
 
   @override
-  String get galleryTitle => 'Tasarım galerisi';
-
-  @override
-  String get galleryFontSection => 'Urbanist';
-
-  @override
-  String get galleryFontSample => 'Eşleşen Personeller · ğüşıöç İŞĞ ₺25.000';
-
-  @override
-  String get galleryTextStyleSection => 'Yazı stilleri';
-
-  @override
-  String get galleryColorSection => 'Renkler';
-
-  @override
-  String get galleryIconSection => 'İkonlar (orijinal renk, 24)';
-
-  @override
-  String get galleryUsageSection => 'Kullanım örnekleri';
-
-  @override
   String get notInterested => 'İlgilenmiyorum';
 
   @override
@@ -62,9 +41,6 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get roleWorkerHint => 'Gelen görüşme taleplerini gör, yanıtla';
-
-  @override
-  String get openGallery => 'Tasarım galerisi';
 
   @override
   String get themeDark => 'Koyu tema';

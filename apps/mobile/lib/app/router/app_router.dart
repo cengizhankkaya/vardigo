@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -7,7 +6,6 @@ import '../../core/presentation/pages/route_error_screen.dart';
 import '../../features/candidates/domain/entities/candidate_sort.dart';
 import '../../features/candidates/domain/entities/candidate_tab.dart';
 import '../../features/candidates/presentation/pages/candidates_screen.dart';
-import '../../features/design_gallery/presentation/pages/design_preview_screen.dart';
 import '../../features/offers/domain/entities/offer_sort.dart';
 import '../../features/offers/domain/entities/offer_tab.dart';
 import '../../features/offers/presentation/pages/offers_screen.dart';
@@ -20,7 +18,6 @@ import 'route_definitions.dart';
 part '../../features/candidates/presentation/routes/candidates_routes.dart';
 part '../../features/offers/presentation/routes/offers_routes.dart';
 part '../../features/session/presentation/routes/session_routes.dart';
-part '../../features/design_gallery/presentation/routes/design_gallery_routes.dart';
 part 'app_router.g.dart';
 part 'route_guard.dart';
 
@@ -33,11 +30,8 @@ final appRouterProvider = Provider<GoRouter>((ref) {
     // Runs on every go and push. The session changes only on role
     // selection, so there is no refreshListenable: a refresh would re-read
     // the address before a pop is reported and bring the popped screen back.
-    redirect: (context, state) => guardRedirect(
-      state.uri,
-      ref.read(sessionProvider),
-      allowGallery: kDebugMode,
-    ),
+    redirect: (context, state) =>
+        guardRedirect(state.uri, ref.read(sessionProvider)),
     errorBuilder: (context, state) => RouteErrorScreen(
       location: state.uri.toString(),
       onHome: () => const RoleSelectRoute().go(context),

@@ -97,7 +97,7 @@ lib/features/appearance/                       # tema durumu (Riverpod)
 
 ### Kurallar
 
-- Widget'ta renk yazılmaz; `ColorName` yalnız `app_palette.dart`'ta, telefon çerçevesinin cihaz parçalarında (bezel, island) ve tasarım galerisinin palet örneklerinde geçer.
+- Widget'ta renk yazılmaz; `ColorName` yalnız `app_palette.dart`'ta, ve telefon çerçevesinin cihaz parçalarında (bezel, island) geçer.
 - Renk ve yazı temadan okunur:
 
   ```dart
@@ -143,8 +143,6 @@ lib/features/appearance/                       # tema durumu (Riverpod)
 - `assets/branding/vardigo_splash_logo.png`: Vardigo logosu. [BrandLogo](lib/core/presentation/widgets/brand_logo.dart) bunu rol ekranında ve açılışta çizer. iOS/Android uygulama ikonları ve yerel açılış görselleri bu dosyadan [tool/export_branding.swift](tool/export_branding.swift) ile üretilir (macOS, `apps/mobile` içinde: `swift -module-cache-path /tmp/vardigo-branding-modules tool/export_branding.swift`).
 - Açılış: yerel açılış ekranı ilk kareye kadar statik logoyu gösterir; ardından [StartupBranding](lib/app/startup/startup_branding.dart) 1,5 sn'lik bir kez oynayan logo geçişi yapar. Router altında hazır kalır, yani deep link ve rol yönlendirmesi beklemez; sistemde animasyonlar kapalıysa geçiş atlanır.
 
-[Tasarım galerisi](lib/features/design_gallery/presentation/pages/design_preview_screen.dart) (debug derlemede rol ekranından açılır): font ağırlıkları, Türkçe karakterler, 10 yazı stili, ana renkler, tüm ikonlar ve referanstaki kullanım örnekleri.
-
 ## Telefon çerçevesi
 
 Case, referanstaki gibi siyah bezel ve Dynamic Island'lı bir telefon çerçevesi istiyor. `REFERENCE_FRAME=true` ile uygulama [PhoneFrame](lib/app/reference_frame/phone_frame.dart) içinde açılır:
@@ -186,8 +184,7 @@ lib/
 │   ├── session/               # demo giriş, rol seçimi
 │   ├── candidates/            # eşleşen personeller (işveren)
 │   ├── offers/                # görüşme talepleri (iş arayan)
-│   ├── appearance/            # tema seçimi
-│   └── design_gallery/        # yalnız presentation: debug tasarım galerisi
+│   └── appearance/            # tema seçimi
 └── gen/                       # FlutterGen çıktısı (asset, renk, font)
 ```
 
@@ -246,7 +243,6 @@ core/presentation/pages/route_error_screen.dart  # bilinmeyen adres sayfası
 | `/` (`?from=...`) | Rol seçimi (Hoş geldin) | Herkes |
 | `/candidates?tab=perfect\|similar&sort=recommended\|near\|rating` | Eşleşen Personeller | İşveren |
 | `/offers?tab=pending\|answered\|expired&sort=recommended\|expiring\|pay` | Görüşme Talepleri | İş arayan |
-| `/gallery` | Tasarım galerisi | Yalnız debug derleme |
 
 - **Kullanım:** `const OffersRoute(tab: OfferTab.answered).push(context)`, `const RoleSelectRoute().go(context)`, geri için `context.pop()`.
 - **Koruma:** Başka hesabın ekranına giden adres rol seçimine `?from=<adres>` ile döner. Doğru hesap seçilince o adrese devam edilir, diğer hesap seçilirse kendi ekranı açılır. Koruma her `go` ve `push`'ta çalışır.
@@ -265,7 +261,7 @@ core/presentation/pages/route_error_screen.dart  # bilinmeyen adres sayfası
 
 ## Ekranlar
 
-1. **Rol seçimi (Hoş geldin):** Vardigo logosu, İşveren veya İş arayan; seçilen rolle `POST /auth/login` yapılır, giriş sürerken iki kart da kilitlenir. Başka bir ekrandan buraya dönünce oturum kapanır. Açık/koyu tema sağ üstteki anahtarla seçilir. Debug derlemede buradan tasarım galerisi de açılır.
+1. **Rol seçimi (Hoş geldin):** Vardigo logosu, İşveren veya İş arayan; seçilen rolle `POST /auth/login` yapılır, giriş sürerken iki kart da kilitlenir. Başka bir ekrandan buraya dönünce oturum kapanır. Açık/koyu tema sağ üstteki anahtarla seçilir.
 2. **Eşleşen Personeller (işveren):** sekmeler (`tab=perfect|similar`), sıralama düğmesi (Önerilen → En Yakın → Puan), çoklu seçim ve "Görüşme Talebi Gönder (N)".
    - İlk açılışta API'nin `selectedHint` değeri kadar ilk aday (Merve) seçili gelir; bu bir kez uygulanır.
    - Seçim sekmeler arasında korunur; sayı iki sekmedeki seçimlerin toplamıdır.

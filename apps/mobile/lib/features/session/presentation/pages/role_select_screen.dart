@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -184,17 +183,6 @@ class _RoleSelectScreenState extends ConsumerState<RoleSelectScreen> {
                               error: error,
                               onRetry: () => _continueAs(failedRole),
                             ),
-                          if (kDebugMode) ...[
-                            const SizedBox(height: 32),
-                            TextButton(
-                              onPressed: () =>
-                                  const GalleryRoute().push<void>(context),
-                              child: Text(
-                                l10n.openGallery,
-                                style: context.textStyles.label14,
-                              ),
-                            ),
-                          ],
                         ],
                       ),
                     ),

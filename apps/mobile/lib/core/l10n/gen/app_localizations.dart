@@ -100,48 +100,6 @@ abstract class AppLocalizations {
   /// **'Vardigo'**
   String get appTitle;
 
-  /// No description provided for @galleryTitle.
-  ///
-  /// In tr, this message translates to:
-  /// **'Tasarım galerisi'**
-  String get galleryTitle;
-
-  /// No description provided for @galleryFontSection.
-  ///
-  /// In tr, this message translates to:
-  /// **'Urbanist'**
-  String get galleryFontSection;
-
-  /// No description provided for @galleryFontSample.
-  ///
-  /// In tr, this message translates to:
-  /// **'Eşleşen Personeller · ğüşıöç İŞĞ ₺25.000'**
-  String get galleryFontSample;
-
-  /// No description provided for @galleryTextStyleSection.
-  ///
-  /// In tr, this message translates to:
-  /// **'Yazı stilleri'**
-  String get galleryTextStyleSection;
-
-  /// No description provided for @galleryColorSection.
-  ///
-  /// In tr, this message translates to:
-  /// **'Renkler'**
-  String get galleryColorSection;
-
-  /// No description provided for @galleryIconSection.
-  ///
-  /// In tr, this message translates to:
-  /// **'İkonlar (orijinal renk, 24)'**
-  String get galleryIconSection;
-
-  /// No description provided for @galleryUsageSection.
-  ///
-  /// In tr, this message translates to:
-  /// **'Kullanım örnekleri'**
-  String get galleryUsageSection;
-
   /// No description provided for @notInterested.
   ///
   /// In tr, this message translates to:
@@ -195,12 +153,6 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Gelen görüşme taleplerini gör, yanıtla'**
   String get roleWorkerHint;
-
-  /// No description provided for @openGallery.
-  ///
-  /// In tr, this message translates to:
-  /// **'Tasarım galerisi'**
-  String get openGallery;
 
   /// No description provided for @themeDark.
   ///

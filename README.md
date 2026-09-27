@@ -9,7 +9,7 @@
 | Parça | Durum |
 |---|---|
 | Backend | Tamamlandı: case'teki tüm endpoint'ler, SQLite kalıcılığı, Swagger (yanıtlar şemaya karşı testli), 197 test |
-| Mobil | Tamamlandı: iki case ekranı, rol seçimi, açık/koyu tema, uygulama ikonu ve açılış logosu, 390×844 telefon çerçevesi, golden testler, 122 test |
+| Mobil | Tamamlandı: iki case ekranı, rol seçimi, açık/koyu tema, uygulama ikonu ve açılış logosu, 390×844 telefon çerçevesi, golden testler, 120 test |
 
 | Rol seçimi | İşveren: Eşleşen Personeller | İş arayan: Bekleyen talepler | İş arayan: Yanıt sonrası |
 |:---:|:---:|:---:|:---:|
@@ -128,7 +128,7 @@ Temiz veriyle başlamak için API kapalıyken bir kez `cd apps/api && npm run db
 
 İki taraf aynı API ve veritabanını kullanır; bağlantı `offers` tablosudur. Anlık bildirim yoktur: ekranlar açılışta, aşağı çekip yenileyince ve uygulama öne gelince API'den güncel durumu alır. Case'te tek iş arayan hesabı olduğu için hangi adaya gönderilirse gönderilsin talep o hesabın gelen kutusuna düşer.
 
-Ek olarak: rol ekranının sağ üstündeki anahtar açık/koyu temayı değiştirir, seçim cihazda saklanır. Debug derlemede rol ekranından "Tasarım galerisi" (font, renk, ikon ve bileşen örnekleri) açılır.
+Ek olarak: rol ekranının sağ üstündeki anahtar açık/koyu temayı değiştirir, seçim cihazda saklanır.
 
 ---
 
@@ -181,7 +181,7 @@ npm run typecheck
 
 cd apps/mobile
 flutter analyze
-flutter test        # 122 test (6 golden dahil)
+flutter test        # 120 test (6 golden dahil)
 ```
 
 - **Golden testler** iki case ekranını açık ve koyu temada 390×844'te çizip kayıtlı PNG'lerle karşılaştırır. PNG'ler macOS'ta üretildiği için Linux ve Windows'ta yazı çizimi farkıyla başarısız olabilir; orada `flutter test --exclude-tags golden` kullanın.
