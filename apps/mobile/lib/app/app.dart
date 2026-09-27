@@ -7,6 +7,7 @@ import '../features/appearance/domain/entities/app_theme_mode.dart';
 import '../features/appearance/presentation/controllers/theme_mode_controller.dart';
 import 'reference_frame/reference_frame_view.dart';
 import 'router/app_router.dart';
+import 'startup/startup_branding.dart';
 
 class VardigoApp extends ConsumerWidget {
   const VardigoApp({
@@ -32,9 +33,10 @@ class VardigoApp extends ConsumerWidget {
       },
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      builder: referenceFrame
-          ? (context, child) => ReferenceFrameView(child: child!)
-          : null,
+      builder: (context, child) {
+        final branded = StartupBranding(child: child!);
+        return referenceFrame ? ReferenceFrameView(child: branded) : branded;
+      },
       routerConfig: ref.watch(appRouterProvider),
     );
   }
