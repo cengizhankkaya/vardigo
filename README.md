@@ -11,6 +11,12 @@
 | Backend | Tamamlandı: case'teki tüm endpoint'ler, SQLite kalıcılığı, Swagger (yanıtlar şemaya karşı testli), 197 test |
 | Mobil | Tamamlandı: iki case ekranı, rol seçimi, açık/koyu tema, uygulama ikonu ve açılış logosu, 390×844 telefon çerçevesi, golden testler, 122 test |
 
+| Rol seçimi | İşveren: Eşleşen Personeller | İş arayan: Bekleyen talepler | İş arayan: Yanıt sonrası |
+|:---:|:---:|:---:|:---:|
+| <img src="screenshots/1-rol-secimi.png" width="200" alt="Rol seçimi"> | <img src="screenshots/2-isveren-eslesen-personeller.png" width="200" alt="Eşleşen Personeller"> | <img src="screenshots/3-is-arayan-bekleyen.png" width="200" alt="Görüşme Talepleri, bekleyen"> | <img src="screenshots/4-is-arayan-cevaplanan.png" width="200" alt="Görüşme Talepleri, cevaplanan"> |
+
+iOS simülatöründe, gerçek API'ye bağlı olarak alındı.
+
 **İçindekiler:** [Değerlendirenler için: indir ve çalıştır](#değerlendirenler-için-indir-ve-çalıştır) · [Case akışını deneme](#case-akışını-deneme) · [Yalnız API'yi inceleme](#yalnız-apiyi-inceleme) · [Testler](#testler) · [Sorun giderme](#sorun-giderme) · [API özeti](#api-özeti) · [Case yorumları](#case-yorumları) · [Teknoloji ve klasörler](#teknoloji-ve-klasörler) · [Geliştirme süreci](#geliştirme-süreci)
 
 ---
@@ -253,6 +259,7 @@ vardigo/
 │   ├── api/            # Backend: kaynak, testler, seed verisi, fotoğraf ve logolar
 │   └── mobile/         # Flutter iOS/Android uygulaması
 ├── .github/workflows/  # CI
+├── screenshots/        # README'deki ekran görüntüleri
 ├── demo.sh             # Tek komutla API + uygulama
 └── SUREC.txt           # Süreç notu: araçlar, sıra, takılınan noktalar
 ```
