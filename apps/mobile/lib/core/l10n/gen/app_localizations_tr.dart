@@ -45,10 +45,10 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get roleTitle => 'Demo hesabı seç';
+  String get roleTitle => 'Hoş geldin';
 
   @override
-  String get roleSubtitle => 'Case\'teki iki sabit hesaptan biriyle devam et.';
+  String get roleSubtitle => 'İşveren veya iş arayan olarak devam et.';
 
   @override
   String get roleEmployer => 'İşveren';
@@ -67,16 +67,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get openGallery => 'Tasarım galerisi';
 
   @override
-  String get appearance => 'Görünüm';
-
-  @override
-  String get themeSystem => 'Sistem';
-
-  @override
-  String get themeLight => 'Açık';
-
-  @override
-  String get themeDark => 'Koyu';
+  String get themeDark => 'Koyu tema';
 
   @override
   String get routeNotFoundTitle => 'Sayfa bulunamadı';

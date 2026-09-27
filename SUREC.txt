@@ -28,7 +28,9 @@ Mobil
   20. Feature-first yapı: core/ (api, theme, l10n, ortak widget'lar) ve feature başına
       domain / application / infrastructure / presentation; dosya başına bir public tip;
       use case'ler, I…/…Impl adları, katman kurallarını CI'da denetleyen mimari testi
-Sonuç: 194 backend + 102 mobil test; her ekran referans PNG ile simülatörde yan yana karşılaştırıldı.
+  21. Marka: uygulama ikonu ve yerel açılış ekranı, açılış logosu, rol ekranında
+      logo ve açık/koyu anahtarı
+Sonuç: 194 backend + 110 mobil test; her ekran referans PNG ile simülatörde yan yana karşılaştırıldı.
 
 TAKILDIĞIM NOKTALAR
 - Case paketi kendi içinde çelişiyor (Benzer sekmesi "ters sıra" mı score filtresi mi,

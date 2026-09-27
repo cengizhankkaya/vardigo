@@ -18,17 +18,14 @@
       }
     }
   },
-  "roleTitle": "Demo hesabı seç",
-  "roleSubtitle": "Case'teki iki sabit hesaptan biriyle devam et.",
+  "roleTitle": "Hoş geldin",
+  "roleSubtitle": "İşveren veya iş arayan olarak devam et.",
   "roleEmployer": "İşveren",
   "roleEmployerHint": "Eşleşen personelleri gör, görüşme talebi gönder",
   "roleWorker": "İş arayan",
   "roleWorkerHint": "Gelen görüşme taleplerini gör, yanıtla",
   "openGallery": "Tasarım galerisi",
-  "appearance": "Görünüm",
-  "themeSystem": "Sistem",
-  "themeLight": "Açık",
-  "themeDark": "Koyu",
+  "themeDark": "Koyu tema",
   "routeNotFoundTitle": "Sayfa bulunamadı",
   "routeNotFoundBody": "{location} adresinde bir ekran yok.",
   "@routeNotFoundBody": {

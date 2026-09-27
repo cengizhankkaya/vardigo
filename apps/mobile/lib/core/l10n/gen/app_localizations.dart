@@ -163,13 +163,13 @@ abstract class AppLocalizations {
   /// No description provided for @roleTitle.
   ///
   /// In tr, this message translates to:
-  /// **'Demo hesabı seç'**
+  /// **'Hoş geldin'**
   String get roleTitle;
 
   /// No description provided for @roleSubtitle.
   ///
   /// In tr, this message translates to:
-  /// **'Case\'teki iki sabit hesaptan biriyle devam et.'**
+  /// **'İşveren veya iş arayan olarak devam et.'**
   String get roleSubtitle;
 
   /// No description provided for @roleEmployer.
@@ -202,28 +202,10 @@ abstract class AppLocalizations {
   /// **'Tasarım galerisi'**
   String get openGallery;
 
-  /// No description provided for @appearance.
-  ///
-  /// In tr, this message translates to:
-  /// **'Görünüm'**
-  String get appearance;
-
-  /// No description provided for @themeSystem.
-  ///
-  /// In tr, this message translates to:
-  /// **'Sistem'**
-  String get themeSystem;
-
-  /// No description provided for @themeLight.
-  ///
-  /// In tr, this message translates to:
-  /// **'Açık'**
-  String get themeLight;
-
   /// No description provided for @themeDark.
   ///
   /// In tr, this message translates to:
-  /// **'Koyu'**
+  /// **'Koyu tema'**
   String get themeDark;
 
   /// No description provided for @routeNotFoundTitle.

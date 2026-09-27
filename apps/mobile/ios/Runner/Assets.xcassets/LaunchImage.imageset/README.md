@@ -1,5 +1,14 @@
-# Launch Screen Assets
+# Vardigo launch assets
 
-You can customize the launch screen with your own desired assets by replacing the image files in this directory.
+These 220pt images and the platform launcher icons are exported from
+`assets/branding/vardigo_splash_logo.png` without changing the original artwork.
 
-You can also do it by opening your Flutter project's Xcode project with `open ios/Runner.xcworkspace`, selecting `Runner/Assets.xcassets` in the Project Navigator and dropping in the desired images.
+To reproduce them on macOS, run from `apps/mobile`:
+
+```sh
+swift -module-cache-path /tmp/vardigo-branding-modules tool/export_branding.swift
+```
+
+The native launch screen is static until Flutter renders its first frame; the
+Flutter startup widget provides the animation. The native background follows
+the system's light/dark appearance. Flutter then applies the saved in-app theme.

@@ -68,7 +68,7 @@ flutter gen-l10n                                           # metinler (flutter r
 
 ## Tema ve token'lar
 
-Uygulamanın açık (referans tasarım) ve koyu teması vardır. Seçim rol ekranındaki **Görünüm: Sistem / Açık / Koyu** ile yapılır, cihazda saklanır ve uygulama yeniden açıldığında korunur. Varsayılan **Açık**tır: cihaz koyu moddayken de case ekranları referansla aynı açılır; koyu tema yalnız seçilince devreye girer.
+Uygulamanın açık (referans tasarım) ve koyu teması vardır. Seçim rol ekranının sağ üstündeki **açık/koyu anahtarı** ile yapılır, cihazda saklanır ve uygulama yeniden açıldığında korunur. Varsayılan **Açık**tır: cihaz koyu moddayken de case ekranları referansla aynı açılır; koyu tema yalnız seçilince devreye girer.
 
 ### Yapı
 
@@ -92,7 +92,7 @@ lib/features/appearance/                       # tema durumu (Riverpod)
 ├── application/                               # port provider'ı, GetThemeMode / SaveThemeMode
 ├── infrastructure/repositories/               # ThemeModeRepositoryImpl (shared_preferences)
 ├── presentation/controllers/theme_mode_controller.dart  # themeModeControllerProvider
-└── presentation/widgets/theme_mode_picker.dart          # Görünüm seçici
+└── presentation/widgets/theme_mode_switch.dart          # açık/koyu anahtarı
 ```
 
 ### Kurallar
@@ -140,6 +140,8 @@ lib/features/appearance/                       # tema durumu (Riverpod)
 - Urbanist'te ₺ işareti yok; bu karakter sistem fontuyla çizilir.
 - `online.svg` içindeki çok hafif gölge (filtre) flutter_svg tarafından çizilmez; beyaz halka ve yeşil nokta görünür.
 - Aday fotoğrafları ve işletme logoları uygulamaya gömülmez; API'nin `/assets/...` adreslerinden yüklenir.
+- `assets/branding/vardigo_splash_logo.png`: Vardigo logosu. [BrandLogo](lib/core/presentation/widgets/brand_logo.dart) bunu rol ekranında ve açılışta çizer. iOS/Android uygulama ikonları ve yerel açılış görselleri bu dosyadan [tool/export_branding.swift](tool/export_branding.swift) ile üretilir (macOS, `apps/mobile` içinde: `swift -module-cache-path /tmp/vardigo-branding-modules tool/export_branding.swift`).
+- Açılış: yerel açılış ekranı ilk kareye kadar statik logoyu gösterir; ardından [StartupBranding](lib/app/startup/startup_branding.dart) 1,5 sn'lik bir kez oynayan logo geçişi yapar. Router altında hazır kalır, yani deep link ve rol yönlendirmesi beklemez; sistemde animasyonlar kapalıysa geçiş atlanır.
 
 [Tasarım galerisi](lib/features/design_gallery/presentation/pages/design_preview_screen.dart) (debug derlemede rol ekranından açılır): font ağırlıkları, Türkçe karakterler, 10 yazı stili, ana renkler, tüm ikonlar ve referanstaki kullanım örnekleri.
 
@@ -241,7 +243,7 @@ core/presentation/pages/route_error_screen.dart  # bilinmeyen adres sayfası
 
 | Adres | Ekran | Kim açabilir |
 |---|---|---|
-| `/` (`?from=...`) | Demo hesabı seç | Herkes |
+| `/` (`?from=...`) | Rol seçimi (Hoş geldin) | Herkes |
 | `/candidates?tab=perfect\|similar&sort=recommended\|near\|rating` | Eşleşen Personeller | İşveren |
 | `/offers?tab=pending\|answered\|expired&sort=recommended\|expiring\|pay` | Görüşme Talepleri | İş arayan |
 | `/gallery` | Tasarım galerisi | Yalnız debug derleme |
@@ -263,7 +265,7 @@ core/presentation/pages/route_error_screen.dart  # bilinmeyen adres sayfası
 
 ## Ekranlar
 
-1. **Demo hesabı seç:** İşveren veya İş arayan; seçilen rolle `POST /auth/login` yapılır. Başka bir ekrandan buraya dönünce oturum kapanır. Görünüm (Sistem / Açık / Koyu) buradan seçilir. Debug derlemede buradan tasarım galerisi de açılır.
+1. **Rol seçimi (Hoş geldin):** Vardigo logosu, İşveren veya İş arayan; seçilen rolle `POST /auth/login` yapılır, giriş sürerken iki kart da kilitlenir. Başka bir ekrandan buraya dönünce oturum kapanır. Açık/koyu tema sağ üstteki anahtarla seçilir. Debug derlemede buradan tasarım galerisi de açılır.
 2. **Eşleşen Personeller (işveren):** sekmeler (`tab=perfect|similar`), sıralama düğmesi (Önerilen → En Yakın → Puan), çoklu seçim ve "Görüşme Talebi Gönder (N)".
    - İlk açılışta API'nin `selectedHint` değeri kadar ilk aday (Merve) seçili gelir; bu bir kez uygulanır.
    - Seçim sekmeler arasında korunur; sayı iki sekmedeki seçimlerin toplamıdır.

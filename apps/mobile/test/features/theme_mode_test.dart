@@ -7,6 +7,7 @@ import 'package:vardigo/features/appearance/application/theme_mode_repository_pr
 import 'package:vardigo/features/appearance/domain/entities/app_theme_mode.dart';
 import 'package:vardigo/features/appearance/infrastructure/repositories/theme_mode_repository_impl.dart';
 import 'package:vardigo/features/appearance/presentation/controllers/theme_mode_controller.dart';
+import 'package:vardigo/features/appearance/presentation/widgets/theme_mode_switch.dart';
 import 'package:vardigo/features/session/presentation/pages/role_select_screen.dart';
 import 'package:vardigo/gen/colors.gen.dart';
 
@@ -49,7 +50,7 @@ void main() {
     expect(repo.read(), AppThemeMode.dark);
   });
 
-  testWidgets('picking "Koyu" switches the app to the dark theme', (
+  testWidgets('the switch flips the app between light and dark', (
     tester,
   ) async {
     tester.view.physicalSize = const Size(600, 1200);
@@ -69,13 +70,15 @@ void main() {
 
     ThemeData theme() =>
         Theme.of(tester.element(find.byType(RoleSelectScreen)));
-    await tester.tap(find.text('Açık'));
-    await tester.pumpAndSettle();
     expect(theme().brightness, Brightness.light);
 
-    await tester.tap(find.text('Koyu'));
+    await tester.tap(find.byType(ThemeModeSwitch));
     await tester.pumpAndSettle();
     expect(theme().brightness, Brightness.dark);
     expect(theme().scaffoldBackgroundColor, ColorName.strong);
+
+    await tester.tap(find.byType(ThemeModeSwitch));
+    await tester.pumpAndSettle();
+    expect(theme().brightness, Brightness.light);
   });
 }
