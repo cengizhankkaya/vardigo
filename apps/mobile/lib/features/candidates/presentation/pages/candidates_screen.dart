@@ -44,20 +44,21 @@ class _CandidatesScreenState extends ConsumerState<CandidatesScreen> {
     final list = ref.watch(candidateListProvider(state.query));
     ref.listen(candidateListProvider(state.query), (_, next) {
       if (next.value case final loaded?) {
-        controller.applyInitialSelection(loaded);
+        controller
+          ..applyInitialSelection(loaded)
+          ..dropAwaiting(loaded);
       }
     });
-    // Header counts stay visible while another tab loads.
-    final totals =
-        list.value ??
-        ref
-            .watch(
-              candidateListProvider((
-                tab: CandidateTab.perfect,
-                sort: state.sort,
-              )),
-            )
-            .value;
+    // Header counts stay visible while another tab loads. This list stays
+    // loaded under the other tab, so it also keeps the selection current.
+    final perfectList = candidateListProvider((
+      tab: CandidateTab.perfect,
+      sort: state.sort,
+    ));
+    ref.listen(perfectList, (_, next) {
+      if (next.value case final loaded?) controller.dropAwaiting(loaded);
+    });
+    final totals = list.value ?? ref.watch(perfectList).value;
 
     return Scaffold(
       body: SafeArea(

@@ -9,7 +9,7 @@
 | Parça | Durum |
 |---|---|
 | Backend | Tamamlandı: case'teki tüm endpoint'ler, SQLite kalıcılığı, Swagger (yanıtlar şemaya karşı testli), 197 test |
-| Mobil | Tamamlandı: iki case ekranı, rol seçimi, açık/koyu tema, uygulama ikonu ve açılış logosu, 390×844 telefon çerçevesi, golden testler, 117 test |
+| Mobil | Tamamlandı: iki case ekranı, rol seçimi, açık/koyu tema, uygulama ikonu ve açılış logosu, 390×844 telefon çerçevesi, golden testler, 122 test |
 
 **İçindekiler:** [Değerlendirenler için: indir ve çalıştır](#değerlendirenler-için-indir-ve-çalıştır) · [Case akışını deneme](#case-akışını-deneme) · [Yalnız API'yi inceleme](#yalnız-apiyi-inceleme) · [Testler](#testler) · [Sorun giderme](#sorun-giderme) · [API özeti](#api-özeti) · [Case yorumları](#case-yorumları) · [Teknoloji ve klasörler](#teknoloji-ve-klasörler) · [Geliştirme süreci](#geliştirme-süreci)
 
@@ -175,7 +175,7 @@ npm run typecheck
 
 cd apps/mobile
 flutter analyze
-flutter test        # 117 test (6 golden dahil)
+flutter test        # 122 test (6 golden dahil)
 ```
 
 - **Golden testler** iki case ekranını açık ve koyu temada 390×844'te çizip kayıtlı PNG'lerle karşılaştırır. PNG'ler macOS'ta üretildiği için Linux ve Windows'ta yazı çizimi farkıyla başarısız olabilir; orada `flutter test --exclude-tags golden` kullanın.

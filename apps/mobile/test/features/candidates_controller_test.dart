@@ -67,6 +67,19 @@ void main() {
     expect(state().initialSelectionApplied, isTrue);
   });
 
+  test('drops only the candidates a loaded list shows waiting', () async {
+    controller()
+      ..toggle('w_merve')
+      ..toggle('w_ferhat')
+      ..toggle('w_derya');
+    repo.pool = [
+      candidate('w_merve', offerStatus: CandidateOfferStatus.pending),
+      candidate('w_ferhat', offerStatus: CandidateOfferStatus.accepted),
+    ];
+    controller().dropAwaiting(await load());
+    expect(state().selected, {'w_ferhat', 'w_derya'});
+  });
+
   test('keeps the selection across tabs', () async {
     controller().toggle('w_merve');
     controller().selectTab(CandidateTab.similar);

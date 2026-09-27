@@ -32,7 +32,7 @@ Mobil
       logo ve açık/koyu anahtarı
   22. İşveren aday kartında talebin durumu (bekliyor / kabul / ret / süresi doldu);
       yanıt bekleyen aday seçilemez
-Sonuç: 197 backend + 117 mobil test; her ekran referans PNG ile simülatörde yan yana karşılaştırıldı.
+Sonuç: 197 backend + 122 mobil test; her ekran referans PNG ile simülatörde yan yana karşılaştırıldı.
 
 TAKILDIĞIM NOKTALAR
 - Case paketi kendi içinde çelişiyor (Benzer sekmesi "ters sıra" mı score filtresi mi,
