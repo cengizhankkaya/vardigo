@@ -9,8 +9,4 @@ abstract final class RouteDefinitions {
 
   static const offersPath = 'offers';
   static const offersName = 'offers';
-
-  /// Design gallery; debug builds only.
-  static const galleryPath = 'gallery';
-  static const galleryName = 'gallery';
 }

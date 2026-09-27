@@ -17,7 +17,7 @@ Backend
 Mobil
   11. Flutter iskeleti ve CI (kod üretimi, format, analiz, test, canlı API testi)
   12. Case ikonları ve Urbanist fontu (OFL lisansıyla); FlutterGen ve gen-l10n
-  13. Tema ve token'lar, tasarım galerisi
+  13. Tema ve token'lar, tasarım galerisi (geliştirme aracı; teslimden önce kaldırıldı)
   14. API katmanı: Dio, hata modeli, repository'ler, gerçek yanıtlardan fixture'lar
   15. Eşleşen Personeller: sekme, sıralama, sekmeler arası seçim, gönderim
   16. Görüşme Talepleri: sekmeler, kabul/ret, detay, geri sayım, sıralama
@@ -32,7 +32,7 @@ Mobil
       logo ve açık/koyu anahtarı
   22. İşveren aday kartında talebin durumu (bekliyor / kabul / ret / süresi doldu);
       yanıt bekleyen aday seçilemez
-Sonuç: 197 backend + 122 mobil test; her ekran referans PNG ile simülatörde yan yana karşılaştırıldı.
+Sonuç: 197 backend + 120 mobil test; her ekran referans PNG ile simülatörde yan yana karşılaştırıldı.
 
 TAKILDIĞIM NOKTALAR
 - Case paketi kendi içinde çelişiyor (Benzer sekmesi "ters sıra" mı score filtresi mi,

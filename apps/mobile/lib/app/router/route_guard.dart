@@ -17,11 +17,7 @@ String homeLocationFor(Role role) => switch (role) {
 ///
 /// A screen that needs another account goes to role selection with the
 /// address in `from`, so choosing the right role continues there.
-String? guardRedirect(Uri uri, Session? session, {required bool allowGallery}) {
-  if (uri.pathSegments.firstOrNull == RouteDefinitions.galleryPath &&
-      !allowGallery) {
-    return const RoleSelectRoute().location;
-  }
+String? guardRedirect(Uri uri, Session? session) {
   final role = requiredRoleFor(uri);
   if (role == null || session?.role == role) return null;
   return RoleSelectRoute(from: uri.toString()).location;

@@ -14,10 +14,6 @@ part of '../../../../app/router/app_router.dart';
       path: RouteDefinitions.offersPath,
       name: RouteDefinitions.offersName,
     ),
-    TypedGoRoute<GalleryRoute>(
-      path: RouteDefinitions.galleryPath,
-      name: RouteDefinitions.galleryName,
-    ),
   ],
 )
 final class RoleSelectRoute extends GoRouteData with $RoleSelectRoute {

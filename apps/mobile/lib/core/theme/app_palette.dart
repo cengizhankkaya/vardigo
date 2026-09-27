@@ -6,7 +6,7 @@ import 'semantic_colors.dart';
 
 /// Light and dark colours, picked only from the case palette
 /// (`assets/colors/colors.xml`). This is the one place outside the phone
-/// frame and the design gallery that names [ColorName] values.
+/// frame that names [ColorName] values.
 ///
 /// Light is the reference design. Dark has no reference; it reuses the
 /// case's darkest tokens (strong, slate-700, slate-600) as surfaces and keeps
