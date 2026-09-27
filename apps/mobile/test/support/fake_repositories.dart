@@ -75,9 +75,21 @@ class FakeCandidatesRepository implements ICandidatesRepository {
     sent.add(workerIds);
     final error = sendError;
     if (error != null) throw error;
-    final pending = pendingSend;
-    if (pending != null) return pending.future;
-    return [for (final id in workerIds) 'o_$id'];
+    final created =
+        await (pendingSend?.future ??
+            Future.value([for (final id in workerIds) 'o_$id']));
+    // Like the server: each of them now has a request waiting for an answer.
+    pool = [
+      for (final c in pool)
+        workerIds.contains(c.id)
+            ? candidate(
+                c.id,
+                perfect: c.perfect,
+                offerStatus: CandidateOfferStatus.pending,
+              )
+            : c,
+    ];
+    return created;
   }
 }
 

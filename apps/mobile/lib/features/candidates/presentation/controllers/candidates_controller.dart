@@ -72,9 +72,26 @@ class CandidatesController extends Notifier<CandidatesState> {
     );
   }
 
+  /// A candidate whose request is waiting for an answer can't be selected,
+  /// so a loaded list that shows them waiting takes them out of the
+  /// selection. Otherwise they would stay checked on a locked card, e.g.
+  /// after a send that timed out although the server created the request.
+  void dropAwaiting(CandidateList list) {
+    final awaiting = {
+      for (final c in list.candidates)
+        if (c.awaitingAnswer) c.id,
+    };
+    if (!state.selected.any(awaiting.contains)) return;
+    state = state.copyWith(selected: {...state.selected}..removeAll(awaiting));
+  }
+
   /// Sends the current selection once. Never retries on its own: after a
   /// timeout the server may already have created the requests.
   /// Returns null when nothing was sent (empty selection or a send in flight).
+  ///
+  /// Every attempt reloads the lists, so the cards show what the server now
+  /// knows: the new requests after a success, and after a failure whatever
+  /// made it fail (a request that already exists, a candidate that is gone).
   Future<SubmitResult?> submit() async {
     if (state.submitting || state.selected.isEmpty) return null;
     final ids = state.selected.toList();
@@ -87,14 +104,13 @@ class CandidatesController extends Notifier<CandidatesState> {
           submitting: false,
           selected: {...state.selected}..removeAll(ids),
         );
+        ref.invalidate(candidateListProvider);
       }
       return SubmitSucceeded(created.length);
     } on ApiException catch (error) {
       if (ref.mounted) {
         state = state.copyWith(submitting: false);
-        if (error.code == 'CANDIDATE_NOT_FOUND') {
-          ref.invalidate(candidateListProvider);
-        }
+        ref.invalidate(candidateListProvider);
       }
       return SubmitFailed(error);
     }

@@ -151,6 +151,87 @@ void main() {
     expect(find.text('1 kişi seçildi'), findsOneWidget);
   });
 
+  testWidgets('marks the sent candidates as waiting right away', (
+    tester,
+  ) async {
+    await pumpScreen(tester);
+    await tester.tap(find.text('Görüşme Talebi Gönder (1)'));
+    await tester.pumpAndSettle();
+    expect(
+      find.text('Görüşme talebi gönderildi · yanıt bekleniyor'),
+      findsOneWidget,
+    );
+    await tester.tap(find.text('w_merve'));
+    await tester.pump();
+    expect(find.text('0 kişi seçildi'), findsOneWidget);
+  });
+
+  testWidgets('drops a candidate from the selection once they are waiting', (
+    tester,
+  ) async {
+    await pumpScreen(tester);
+    expect(find.text('1 kişi seçildi'), findsOneWidget);
+    // Sent from somewhere else meanwhile; a pull to refresh shows it.
+    repo.pool = [
+      candidate('w_merve', offerStatus: CandidateOfferStatus.pending),
+      ...FakeCandidatesRepository.all.skip(1),
+    ];
+    await tester.fling(find.text('w_merve'), const Offset(0, 400), 1000);
+    await tester.pumpAndSettle();
+    expect(
+      find.text('Görüşme talebi gönderildi · yanıt bekleniyor'),
+      findsOneWidget,
+    );
+    expect(find.text('0 kişi seçildi'), findsOneWidget);
+  });
+
+  testWidgets('reloads after a timeout in case the requests were created', (
+    tester,
+  ) async {
+    await pumpScreen(tester);
+    repo.sendError = const ApiException(
+      code: ApiException.timeout,
+      message: '',
+    );
+    // The server got the request; only its answer was lost.
+    repo.pool = [
+      candidate('w_merve', offerStatus: CandidateOfferStatus.pending),
+      ...FakeCandidatesRepository.all.skip(1),
+    ];
+    await tester.tap(find.text('Görüşme Talebi Gönder (1)'));
+    await tester.pumpAndSettle();
+    expect(
+      find.text('Görüşme talebi gönderildi · yanıt bekleniyor'),
+      findsOneWidget,
+    );
+    expect(find.text('0 kişi seçildi'), findsOneWidget);
+  });
+
+  testWidgets('drops a waiting candidate selected on the other tab', (
+    tester,
+  ) async {
+    await pumpScreen(tester);
+    await tester.tap(find.text('Benzer Personeller (2)'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('w_derya'));
+    await tester.pump();
+    expect(find.text('2 kişi seçildi'), findsOneWidget);
+
+    // Merve (perfect tab) got a request meanwhile, so the send is refused.
+    repo.pool = [
+      candidate('w_merve', offerStatus: CandidateOfferStatus.pending),
+      ...FakeCandidatesRepository.all.skip(1),
+    ];
+    repo.sendError = const ApiException(
+      code: 'OFFER_PENDING_EXISTS',
+      message: 'Seçilen personel için açık teklif var: w_merve',
+      statusCode: 409,
+    );
+    await tester.tap(find.text('Görüşme Talebi Gönder (2)'));
+    await tester.pumpAndSettle();
+    expect(find.text('1 kişi seçildi'), findsOneWidget);
+  });
+
   testWidgets('renders in the dark theme', (tester) async {
     await pumpScreen(tester, theme: AppTheme.dark());
     expect(tester.takeException(), isNull);
